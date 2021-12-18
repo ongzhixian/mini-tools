@@ -5,6 +5,7 @@ using MiniTools.Web.Models;
 
 namespace MiniTools.Web.Controllers;
 
+[AllowAnonymous]
 public class LoginController : Controller
 {
     private class On
