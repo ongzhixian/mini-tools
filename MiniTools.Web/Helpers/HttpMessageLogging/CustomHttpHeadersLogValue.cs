@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Net.Http.Headers;
 using System.Text;
 
-namespace Dn6Poc.DocuMgmtPortal.Logging
+namespace MiniTools.Web.Helpers.HttpMessageLogging
 {
 
     // From: https://github.com/aspnet/HttpClientFactory/blob/master/src/Microsoft.Extensions.Http/Logging/HttpHeadersLogValue.cs
@@ -15,7 +15,9 @@ namespace Dn6Poc.DocuMgmtPortal.Logging
         private string _formatted;
         private List<KeyValuePair<string, object>> _values;
 
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         public CustomHttpHeadersLogValue(Kind kind, HttpHeaders headers, HttpHeaders contentHeaders)
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
         {
             _kind = kind;
 

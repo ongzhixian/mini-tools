@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Http;
 using System.Net;
 
-namespace Dn6Poc.DocuMgmtPortal.Logging
+namespace MiniTools.Web.Helpers.HttpMessageLogging
 {
     // Base on: https://docs.microsoft.com/en-us/dotnet/core/compatibility/aspnet-core/5.0/http-httpclient-instances-log-integer-status-codes
     // From: https://github.com/dotnet/extensions/blob/release/3.1/src/HttpClientFactory/Http/src/Logging/LoggingHttpMessageHandlerBuilderFilter.cs

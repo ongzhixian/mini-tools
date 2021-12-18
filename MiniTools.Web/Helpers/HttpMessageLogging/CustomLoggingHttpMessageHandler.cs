@@ -1,11 +1,11 @@
 ﻿using System.Net;
 
-namespace Dn6Poc.DocuMgmtPortal.Logging
+namespace MiniTools.Web.Helpers.HttpMessageLogging
 {
     // From: https://github.com/dotnet/extensions/blob/release/3.1/src/HttpClientFactory/Http/src/Logging/LoggingHttpMessageHandler.cs
     public class CustomLoggingHttpMessageHandler : DelegatingHandler
     {
-        private ILogger _logger;
+        private readonly ILogger _logger;
 
         public CustomLoggingHttpMessageHandler(ILogger logger)
         {
@@ -58,14 +58,20 @@ namespace Dn6Poc.DocuMgmtPortal.Logging
 
             public static void RequestStart(ILogger logger, HttpRequestMessage request)
             {
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
                 _requestStart(logger, request.Method, request.RequestUri, null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
+#pragma warning restore CS8604 // Possible null reference argument.
 
                 if (logger.IsEnabled(LogLevel.Trace))
                 {
                     logger.Log(
                         LogLevel.Trace,
                         EventIds.RequestHeader,
+#pragma warning disable CS8604 // Possible null reference argument.
                         new CustomHttpHeadersLogValue(CustomHttpHeadersLogValue.Kind.Request, request.Headers, request.Content?.Headers),
+#pragma warning restore CS8604 // Possible null reference argument.
                         null,
                         (state, ex) => state.ToString());
                 }
@@ -73,14 +79,18 @@ namespace Dn6Poc.DocuMgmtPortal.Logging
 
             public static void RequestEnd(ILogger logger, HttpResponseMessage response, TimeSpan duration)
             {
+#pragma warning disable CS8625 // Cannot convert null literal to non-nullable reference type.
                 _requestEnd(logger, duration.TotalMilliseconds, response.StatusCode, null);
+#pragma warning restore CS8625 // Cannot convert null literal to non-nullable reference type.
 
                 if (logger.IsEnabled(LogLevel.Trace))
                 {
                     logger.Log(
                         LogLevel.Trace,
                         EventIds.ResponseHeader,
+#pragma warning disable CS8604 // Possible null reference argument.
                         new CustomHttpHeadersLogValue(CustomHttpHeadersLogValue.Kind.Response, response.Headers, response.Content?.Headers),
+#pragma warning restore CS8604 // Possible null reference argument.
                         null,
                         (state, ex) => state.ToString());
                 }
