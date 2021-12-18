@@ -5,6 +5,7 @@ using Serilog;
 using Microsoft.OpenApi.Models;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 using AppStartup = MiniTools.Web.Services.AppStartupService;
+using MiniTools.Web.ActionFilters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -40,7 +41,25 @@ builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddControllersWithViews();
 
+builder.Services.AddControllersWithViews(options => {
+    // Add the filters that you want to apply globally here
+    //options.Filters.Add(new LogActionFilterAttribute());
+
+    options.Filters.Add(
+        new Microsoft.AspNetCore.Mvc.ServiceFilterAttribute(
+            typeof(MiniTools.Web.Filters.LogResultFilterService)
+        ));
+
+    options.Filters.Add(
+        new Microsoft.AspNetCore.Mvc.ServiceFilterAttribute(
+            typeof(MiniTools.Web.Filters.LogActionFilterService)
+        ));
+});
+
 // ...Start adding your services here...
+
+builder.Services.AddScoped<MiniTools.Web.Filters.LogResultFilterService>();
+builder.Services.AddScoped<MiniTools.Web.Filters.LogActionFilterService>();
 
 // ...End of adding your services here...
 
@@ -97,13 +116,27 @@ if (app.Environment.IsDevelopment())
 }
 else
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Error");
 
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
 
 app.UseHttpsRedirection();
+
+// TODO: customise this part
+// app.UseStatusCodePages();
+// app.UseStatusCodePages(async statusCodeContext =>
+// {
+//     // using static System.Net.Mime.MediaTypeNames;
+//     statusCodeContext.HttpContext.Response.ContentType = System.Net.Mime.MediaTypeNames.Text.Plain;
+//     The default message looks like `Status Code: 404; Not Found`
+//     await statusCodeContext.HttpContext.Response.WriteAsync(
+//         $"XXX Status Code Page: {statusCodeContext.HttpContext.Response.StatusCode}");
+// });
+// https://localhost:7001/Home/StatusCode/404
+// app.UseStatusCodePagesWithRedirects("/http-status/{0}");
+app.UseStatusCodePagesWithReExecute("/http-status/{0}");
 
 app.UseStaticFiles();
 
