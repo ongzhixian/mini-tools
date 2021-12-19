@@ -37,3 +37,15 @@ TypeFilter vs ServiceFilter
 When your ActionFilter implementation is itself registered as a Service, 
 then we need to use the ServiceFilter attribute to invoke the Filter. 
 Otherwise TypeFilter attribute would do the job for us.
+
+## IOptions
+
+
+			        Reload w/o app restart	Singleton	Named Options
+IOptions<T>		    No			            Yes		    No
+IOptionsSnaphot<T>	Yes			            No		    Yes
+IOptionsMonitor<T>	Yes			            Yes		    Yes
+
+https://www.c-sharpcorner.com/article/asp-net-core-accessing-configurations-using-named-options/
+
+
