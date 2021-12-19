@@ -6,8 +6,14 @@ using Microsoft.OpenApi.Models;
 using ILogger = Microsoft.Extensions.Logging.ILogger;
 using AppStartup = MiniTools.Web.Services.AppStartupService;
 using MiniTools.Web.ActionFilters;
+using MiniTools.Web.Health;
+using MiniTools.Web.Services;
+using MongoDB.Driver;
+using MiniTools.Web.Options;
 
 var builder = WebApplication.CreateBuilder(args);
+
+AppStartup.AddAppSettings(builder.Configuration, builder.Environment);
 
 AppStartup.SetupLogging(builder.Host);
 
@@ -45,21 +51,53 @@ builder.Services.AddControllersWithViews(options => {
     // Add the filters that you want to apply globally here
     //options.Filters.Add(new LogActionFilterAttribute());
 
-    options.Filters.Add(
-        new Microsoft.AspNetCore.Mvc.ServiceFilterAttribute(
-            typeof(MiniTools.Web.Filters.LogResultFilterService)
-        ));
+    // options.Filters.Add(
+    //     new Microsoft.AspNetCore.Mvc.ServiceFilterAttribute(
+    //         typeof(MiniTools.Web.Filters.LogResultFilterService)
+    //     ));
 
-    options.Filters.Add(
-        new Microsoft.AspNetCore.Mvc.ServiceFilterAttribute(
-            typeof(MiniTools.Web.Filters.LogActionFilterService)
-        ));
+    // options.Filters.Add(
+    //     new Microsoft.AspNetCore.Mvc.ServiceFilterAttribute(
+    //         typeof(MiniTools.Web.Filters.LogActionFilterService)
+    //     ));
 });
+
+builder.Services.AddHealthChecks()
+    .AddCheck<SampleHealthCheck>("Sample")
+    .AddCheck<SampleHealthCheck2>("Sample2");
 
 // ...Start adding your services here...
 
 builder.Services.AddScoped<MiniTools.Web.Filters.LogResultFilterService>();
 builder.Services.AddScoped<MiniTools.Web.Filters.LogActionFilterService>();
+builder.Services.AddScoped<IMongoClient, MongoClient>();
+builder.Services.AddScoped<ILoginService, LoginService>();
+
+// builder.Services.AddOptions<MongoDbOptions>("ass");
+
+// services.Configure<NormalThemeDashboardSettings>(_configuration.GetSection("DashboardThemeSettings:NormalTheme"));  
+// services.Configure<DarkThemeDashboardSettings>(_configuration.GetSection("DashboardThemeSettings:DarkTheme"));  
+
+// services.AddSingleton<IThemeConfigurationReader, ThemeConfigurationReader>();  
+
+// services.Configure<DashboardThemeSettings>("Normal", _configuration.GetSection("DashboardThemeSettings:NormalTheme"));  
+// services.Configure<DashboardThemeSettings>("Dark", _configuration.GetSection("DashboardThemeSettings:DarkTheme"));  
+
+
+// A couple way to configure
+Console.WriteLine("QQQQQQQQQQQ {0}", builder.Configuration["mongodb:minitools:ConnectionString"]);
+
+// builder.Services.Configure<MongoDbSettings>(
+//     "mongodb:minitools", (s) => {
+//         s.ConnectionString = "ffake"; 
+//         //builder.Configuration["mongodb:minitools:ConnectionString"];
+//     });
+
+builder.Services.Configure<MongoDbSettings>(
+    "mongodb:minitools", 
+    builder.Configuration.GetSection("mongodb:minitools")
+    );
+
 
 // ...End of adding your services here...
 
@@ -150,13 +188,15 @@ app.UseCors("DebugAllowAll");
 
 app.UseAuthentication();
 
-app.UseAuthorization();
+// app.UseAuthorization();
 
 app.UseSession();
 
 // app.UseResponseCompression();
 
 // app.UseResponseCaching();
+
+app.MapHealthChecks("/health").AllowAnonymous();
 
 //app.MapRazorPages();
 
