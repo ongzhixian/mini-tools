@@ -93,6 +93,8 @@ Console.WriteLine("QQQQQQQQQQQ {0}", builder.Configuration["mongodb:minitools:Co
 //         //builder.Configuration["mongodb:minitools:ConnectionString"];
 //     });
 
+// builder.Services.Configure<MongoDbSettings>(options => builder.Configuration.GetSection("mongodb:minitools").Bind(options));
+
 builder.Services.Configure<MongoDbSettings>(
     "mongodb:minitools", 
     builder.Configuration.GetSection("mongodb:minitools")
