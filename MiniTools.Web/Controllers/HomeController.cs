@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
 using MiniTools.Web.Models;
+using MiniTools.Web.Services;
 
 namespace MiniTools.Web.Controllers;
 
@@ -18,7 +19,7 @@ public class HomeController : Controller
 
     public HomeController(ILogger<HomeController> logger)
     {
-        this.logger = logger;
+        this.logger = logger ?? throw new Exception(nameof(logger));
 
         logger.LogInformation(On.NEW, "{onEvent} - Controller [{controllerName}]", On.NEW, nameof(HomeController));
     }
