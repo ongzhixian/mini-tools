@@ -27,6 +27,11 @@ public static class AppStartupService
         });
     }
 
+    internal static void AddAppSettings(ConfigurationManager configuration, IWebHostEnvironment environment)
+    {
+        configuration.AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true);
+    }
+
     internal static void SetupHttpLogging(ConfigurationManager configuration, IServiceCollection services)
     {
         if (configuration.GetValue<bool>(AppSettingsKey.APPLICATION_ENABLE_HTTP_LOGGING))
