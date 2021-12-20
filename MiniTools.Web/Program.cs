@@ -10,6 +10,8 @@ using MiniTools.Web.Health;
 using MiniTools.Web.Services;
 using MongoDB.Driver;
 using MiniTools.Web.Options;
+using Microsoft.AspNetCore.Mvc.Infrastructure;
+using Microsoft.AspNetCore.Mvc.Abstractions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -72,6 +74,8 @@ builder.Services.AddScoped<MiniTools.Web.Filters.LogResultFilterService>();
 builder.Services.AddScoped<MiniTools.Web.Filters.LogActionFilterService>();
 builder.Services.AddScoped<IMongoClient, MongoClient>();
 builder.Services.AddScoped<ILoginService, LoginService>();
+
+builder.Services.AddHttpClient<UserService>();
 
 // builder.Services.AddOptions<MongoDbOptions>("ass");
 
@@ -198,13 +202,24 @@ app.UseSession();
 
 // app.UseResponseCaching();
 
-app.MapHealthChecks("/health").AllowAnonymous();
+// Map Endpoints
 
-//app.MapRazorPages();
+app.MapHealthChecks("/health").AllowAnonymous();
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "api",
+    pattern: "api/{controller=Home}/{action=Index}/{id?}");
+
+// app.MapRazorPages();
+
+// Debugging routes
+IActionDescriptorCollectionProvider actionProvider = app.Services.GetService<IActionDescriptorCollectionProvider>() ?? throw new Exception("No IActionDescriptorCollectionProvider");
+foreach (ActionDescriptor route in actionProvider.ActionDescriptors.Items)
+    Console.WriteLine(route.DisplayName);
 
 
 // Other development-only middleware
