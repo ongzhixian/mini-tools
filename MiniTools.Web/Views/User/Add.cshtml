@@ -10,8 +10,14 @@
 <form asp-controller="User" asp-action="Add" method="post">
 
     <div class="mb-3">
-        <label asp-for="Username" class="form-label">Username</label>
+        <label asp-for="Username" class="form-label">@Html.DisplayNameFor(m => m.Username)</label>
         <input asp-for="Username" type="text" class="form-control" aria-describedby="usernameHelp">
+        <div id="usernameHelp" class="form-text">Username of user.</div>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Password" class="form-label">@Html.DisplayNameFor(m => m.Password)</label>
+        <input asp-for="Password" type="text" class="form-control" aria-describedby="usernameHelp">
         <div id="usernameHelp" class="form-text">Username of user.</div>
     </div>
 
@@ -19,22 +25,18 @@
         <label asp-for="FirstName" class="form-label">@Html.DisplayNameFor(m => m.FirstName)
         </label>
         <input asp-for="FirstName" type="text" class="form-control" aria-describedby="usernameHelp">
-        <div id="usernameHelp" class="form-text">First name of user.
-
-            @Html.DisplayTextFor(m => m.LastName)
-            @Html.DisplayForModel()
-        </div>
+        <div id="usernameHelp" class="form-text">First name of user.</div>
     </div>
 
     <div class="mb-3">
-        <label asp-for="LastName" class="form-label">Username</label>
+        <label asp-for="LastName" class="form-label">@Html.DisplayNameFor(m => m.LastName)</label>
         <input asp-for="LastName" type="text" class="form-control" aria-describedby="usernameHelp">
         <div id="usernameHelp" class="form-text">Last name of user.</div>
     </div>
 
 
     <div class="mb-3">
-        <label asp-for="Email" class="form-label">Email address</label>
+        <label asp-for="Email" class="form-label">@Html.DisplayNameFor(m => m.Email)</label>
         <input asp-for="Email" type="email" class="form-control" aria-describedby="emailHelp">
         <div id="emailHelp" class="form-text">Email address of user.</div>
     </div>
