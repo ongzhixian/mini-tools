@@ -46,3 +46,7 @@ dotnet add .\MiniTools.Web\ package Serilog.Sinks.Console
 dotnet add .\MiniTools.Web\ package Serilog.Sinks.File
 dotnet add .\MiniTools.Web\ package Swashbuckle.AspNetCore
 dotnet add .\MiniTools.Web\ package MongoDB.Driver
+
+
+dotnet add .\Benchmarks\ package BenchmarkDotNet
+dotnet add .\Benchmarks\ package BenchmarkDotNet.Diagnostics.Windows
