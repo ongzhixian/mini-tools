@@ -51,11 +51,11 @@ public class UserController : Controller
     // POST: UserController/Create
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public ActionResult Create(AddUserViewModel model)
+    public async Task<ActionResult> CreateAsync(AddUserViewModel model)
     {
         try
         {
-            this.userService.AddUser(model);
+            await userService.AddUserAsync(model);
             return RedirectToAction(nameof(Index));
         }
         catch

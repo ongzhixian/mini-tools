@@ -1,4 +1,5 @@
-﻿using MongoDB.Bson;
+﻿using MiniTools.Web.Api.Requests;
+using MongoDB.Bson;
 using MongoDB.Bson.Serialization.Attributes;
 using System.Text.Json.Serialization;
 
@@ -23,5 +24,17 @@ namespace MiniTools.Web.MongoEntities
         [BsonElement("status")]
         public byte Status { get; set; }
 
+
+        public User()
+        {
+
+        }
+
+        public User(AddUserRequest req)
+        {
+            this.Username = req.Username;
+            this.Password = req.Password;
+            
+        }
     }
 }
