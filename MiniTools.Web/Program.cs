@@ -87,6 +87,7 @@ builder.Services.AddHttpClient<UserService>();
 // services.Configure<DashboardThemeSettings>("Normal", _configuration.GetSection("DashboardThemeSettings:NormalTheme"));  
 // services.Configure<DashboardThemeSettings>("Dark", _configuration.GetSection("DashboardThemeSettings:DarkTheme"));  
 
+builder.Services.AddSingleton<ApplicationSettings>(sp => new ApplicationSettings(builder.Configuration.GetSection("application")));
 
 // A couple way to configure
 Console.WriteLine("QQQQQQQQQQQ {0}", builder.Configuration["mongodb:minitools:ConnectionString"]);
@@ -103,6 +104,16 @@ builder.Services.Configure<MongoDbSettings>(
     "mongodb:minitools", 
     builder.Configuration.GetSection("mongodb:minitools")
     );
+
+// ZX:      Uncomment if we want to use IOptions to read 'Application' configuration settings from `appsettings.json`
+// Aside:   If we want a common data, we should just inject a singleton instance 🙄
+//          That is assuming the data we want stays unchanged; 
+//          If it changes periodically it might be better to use IOptionsMonitor
+// builder.Services.Configure<ApplicationSettings>(
+//     "application", 
+//     builder.Configuration.GetSection("application")
+//     );
+
 
 
 // ...End of adding your services here...
