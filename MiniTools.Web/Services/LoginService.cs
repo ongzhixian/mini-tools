@@ -4,12 +4,7 @@ using MongoDB.Driver;
 
 namespace MiniTools.Web.Services;
 
-public interface ILoginService
-{
-
-}
-
-public class LoginService : ILoginService
+public class LoginService
 {
     private class On
     {
@@ -28,6 +23,7 @@ public class LoginService : ILoginService
         // var client = new MongoClient(_configuration["mongoDb:safeTravel"]);
         // var database = client.GetDatabase("minitools");
         // _countries = database.GetCollection<Country>("country");
+        
         logger.LogInformation("mongoClient exists: {exist}", (mongoClient != null));
 
         logger.LogInformation("optionsMonitor exists: {exist}", (optionsMonitor != null));
@@ -51,4 +47,8 @@ public class LoginService : ILoginService
 
     }
 
+    public void GetJwt()
+    {
+
+    }
 }
