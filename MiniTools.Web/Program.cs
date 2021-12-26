@@ -12,6 +12,7 @@ using MongoDB.Driver;
 using MiniTools.Web.Options;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Abstractions;
+using MiniTools.Web.MongoEntities;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -73,8 +74,9 @@ builder.Services.AddHealthChecks()
 builder.Services.AddScoped<MiniTools.Web.Filters.LogResultFilterService>();
 builder.Services.AddScoped<MiniTools.Web.Filters.LogActionFilterService>();
 builder.Services.AddScoped<IMongoClient, MongoClient>();
-builder.Services.AddScoped<ILoginService, LoginService>();
+// builder.Services.AddScoped<ILoginService, LoginService>();
 
+builder.Services.AddHttpClient<LoginService>();
 builder.Services.AddHttpClient<UserService>();
 
 // builder.Services.AddOptions<MongoDbOptions>("ass");
@@ -86,6 +88,23 @@ builder.Services.AddHttpClient<UserService>();
 
 // services.Configure<DashboardThemeSettings>("Normal", _configuration.GetSection("DashboardThemeSettings:NormalTheme"));  
 // services.Configure<DashboardThemeSettings>("Dark", _configuration.GetSection("DashboardThemeSettings:DarkTheme"));  
+
+// MongoDb
+
+string miniToolsConnectionString = builder.Configuration.GetValue<string>("mongodb:minitools:ConnectionString");
+
+builder.Services.AddSingleton<IMongoClient>(sp => new MongoClient(miniToolsConnectionString));
+
+builder.Services.AddSingleton<IMongoDatabase>(sp =>
+{
+    IMongoClient mongoClient = sp.GetRequiredService<IMongoClient>();
+    string databaseName = MongoUrl.Create(miniToolsConnectionString).DatabaseName;
+    return mongoClient.GetDatabase(databaseName);
+});
+
+builder.Services.AddSingleton<IMongoCollection<User>>(sp => sp.GetRequiredService<IMongoDatabase>().GetCollection<User>("user"));
+
+// Configurations
 
 builder.Services.AddSingleton<ApplicationSettings>(sp => new ApplicationSettings(builder.Configuration.GetSection("application")));
 

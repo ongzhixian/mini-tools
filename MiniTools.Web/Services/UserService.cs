@@ -1,4 +1,7 @@
-﻿namespace MiniTools.Web.Services
+﻿using MiniTools.Web.Api.Requests;
+using MiniTools.Web.Models;
+
+namespace MiniTools.Web.Services
 {
     public class UserService
     {
@@ -20,5 +23,15 @@
         //public async Task<IEnumerable<GitHubBranch>?> GetAspNetCoreDocsBranchesAsync() =>
         //    await _httpClient.GetFromJsonAsync<IEnumerable<GitHubBranch>>(
         //        "repos/dotnet/AspNetCore.Docs/branches");
+
+        public void AddUser(AddUserViewModel model)
+        {
+            AddUserRequest postData = new AddUserRequest(model);
+            
+            // var result = await httpClient.PostAsJsonAsync<LoginRequest>("login", postData);
+            this.httpClient.PostAsJsonAsync<AddUserRequest>("login", postData);
+
+            
+        }
     }
 }
