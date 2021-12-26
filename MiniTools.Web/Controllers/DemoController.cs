@@ -17,12 +17,12 @@ public class DemoController : Controller
     }
 
     private readonly ILogger<HomeController> logger;
-    private readonly ILoginService loginService;
+    // private readonly ILoginService loginService;
 
-    public DemoController(ILogger<HomeController> logger, ILoginService loginService)
+    public DemoController(ILogger<HomeController> logger)
     {
         this.logger = logger ?? throw new Exception(nameof(logger));
-        this.loginService = loginService ?? throw new Exception(nameof(loginService));
+        // this.loginService = loginService ?? throw new Exception(nameof(loginService));
 
         // logger.LogInformation(On.NEW, "[{eventSrc}] - {onEvent}", nameof(HomeController), On.NEW);
         Log(On.NEW);
