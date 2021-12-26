@@ -22,3 +22,11 @@ body {
 .panel {
     margin: 0.5rem 0;
 }
+
+.footer {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  min-height: 2em;
+  line-height: 2em;
+}
