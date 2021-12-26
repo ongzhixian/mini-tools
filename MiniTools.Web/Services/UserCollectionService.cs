@@ -16,10 +16,36 @@ namespace MiniTools.Web.Services
             this.userCollection = userCollection;
         }
 
-        public void AddUser(User userDocument)
+        public async Task AddUserAsync(User userDocument)
         {
-            userCollection.InsertOneAsync(userDocument);
+            await userCollection.InsertOneAsync(userDocument);
         }
 
+        public async Task<User> GetUserAsync(string id)
+        {
+            return await this.userCollection.Find(r => r.Id == id).FirstOrDefaultAsync();
+        }
+
+
+        public async Task<List<User>> FindUserAsync(string searchClause)
+        {
+            return await userCollection.Find(r =>
+                r.Username.Contains(searchClause, StringComparison.InvariantCultureIgnoreCase)
+            ).ToListAsync();
+        }
+
+        public async Task<UpdateResult> UpdateUserAsync(string id)
+        {
+            UpdateDefinition<User>? update = Builders<User>.Update.Set(x => x.Status, 1);
+
+            return await userCollection.UpdateOneAsync<User>(r => r.Id == id, update);
+        }
+
+        public async Task<UpdateResult> RemoveUserAsync(string id)
+        {
+            UpdateDefinition<User>? update = Builders<User>.Update.Set(x => x.Status, 1);
+
+            return await userCollection.UpdateOneAsync<User>(r => r.Id == id, update);
+        }
     }
 }

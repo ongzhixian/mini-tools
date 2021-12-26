@@ -76,6 +76,8 @@ builder.Services.AddScoped<MiniTools.Web.Filters.LogActionFilterService>();
 builder.Services.AddScoped<IMongoClient, MongoClient>();
 // builder.Services.AddScoped<ILoginService, LoginService>();
 
+builder.Services.AddScoped<UserCollectionService>();
+
 builder.Services.AddHttpClient<LoginService>();
 builder.Services.AddHttpClient<UserService>();
 
@@ -93,11 +95,12 @@ builder.Services.AddHttpClient<UserService>();
 
 string miniToolsConnectionString = builder.Configuration.GetValue<string>("mongodb:minitools:ConnectionString");
 
-builder.Services.AddSingleton<IMongoClient>(sp => new MongoClient(miniToolsConnectionString));
+//builder.Services.AddSingleton<IMongoClient>(sp => new MongoClient(miniToolsConnectionString));
 
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
 {
-    IMongoClient mongoClient = sp.GetRequiredService<IMongoClient>();
+    //IMongoClient mongoClient = sp.GetRequiredService<IMongoClient>();
+    IMongoClient mongoClient = new MongoClient(miniToolsConnectionString);
     string databaseName = MongoUrl.Create(miniToolsConnectionString).DatabaseName;
     return mongoClient.GetDatabase(databaseName);
 });
@@ -109,7 +112,8 @@ builder.Services.AddSingleton<IMongoCollection<User>>(sp => sp.GetRequiredServic
 builder.Services.AddSingleton<ApplicationSettings>(sp => new ApplicationSettings(builder.Configuration.GetSection("application")));
 
 // A couple way to configure
-Console.WriteLine("QQQQQQQQQQQ {0}", builder.Configuration["mongodb:minitools:ConnectionString"]);
+
+// Console.WriteLine("QQQQQQQQQQQ {0}", builder.Configuration["mongodb:minitools:ConnectionString"]);
 
 // builder.Services.Configure<MongoDbSettings>(
 //     "mongodb:minitools", (s) => {
@@ -123,6 +127,41 @@ builder.Services.Configure<MongoDbSettings>(
     "mongodb:minitools", 
     builder.Configuration.GetSection("mongodb:minitools")
     );
+
+
+// Original ApiSettings use `Api` as property to hold Dictionary<string, string>
+// So using the following code does not work; cannot map `Api` directly to Dictionary<string, string> type
+// builder.Services.Configure<ApiSettings>(
+//     "api", 
+//     builder.Configuration.GetSection("Api")
+//     );
+
+// To use `Api` as property to hold Dictionary<string, string>,
+// we need to use one of following methods:
+
+// Method 1: Simple assignment to `Api` property
+//builder.Services.Configure<ApiSettings>(
+//    "api", 
+//    apiSettings => apiSettings.Api = builder.Configuration.GetSection("Api").Get<Dictionary<string, string>>()
+//    );
+
+// Method 2: If we have an more elaborate class to hold options
+//builder.Services.Configure<ApiSettings>(
+//    "api", apiSettings =>
+//    {
+//        apiSettings.Api = new Dictionary<string, string>();
+//        Dictionary<string, string>? config = builder.Configuration.GetSection("Api").Get<Dictionary<string, string>>();
+//        foreach (var key in config.Keys)
+//            apiSettings.Api.Add(key, config[key]);
+//    });
+
+// A more correct way to map appSettings.json to Dictionary<string, string>
+// We change the data class directly to be an instance of Dictionary<string, string>
+builder.Services.Configure<ApiSettings>(
+    "api",
+    builder.Configuration.GetSection("Api")
+    );
+
 
 // ZX:      Uncomment if we want to use IOptions to read 'Application' configuration settings from `appsettings.json`
 // Aside:   If we want a common data, we should just inject a singleton instance 🙄

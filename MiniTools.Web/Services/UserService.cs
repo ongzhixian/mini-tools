@@ -1,57 +1,101 @@
-﻿using MiniTools.Web.Api.Requests;
+﻿using Microsoft.Extensions.Options;
+using MiniTools.Web.Api.Requests;
 using MiniTools.Web.Models;
+using MiniTools.Web.Options;
 
-namespace MiniTools.Web.Services
+namespace MiniTools.Web.Services;
+
+public class UserService
 {
-    public class UserService
+    private const string _configurationKey = "Api:CommonApi:ServerUrl";
+
+    private readonly HttpClient httpClient;
+    private readonly ILogger<UserService> logger;
+    private readonly HttpContext httpContext;
+
+    public UserService(
+        IConfiguration configuration, 
+        ILogger<UserService> logger, 
+        HttpClient httpClient, 
+        IOptionsMonitor<ApiSettings> optionsMonitor,
+        IHttpContextAccessor httpContextAccessor)
     {
-        private const string _configurationKey = "Api:CommonApi:ServerUrl";
+        // string serverUrl = configuration.GetValue<string>(_configurationKey) ?? throw new Exception($"Invalid configuration key: [{_configurationKey}]");
 
-        private readonly HttpClient httpClient;
-        private readonly ILogger<UserService> logger;
-        private readonly HttpContext httpContext;
+        //string serverUrl = "https://localhost:7001";
 
-        public UserService(IConfiguration configuration, ILogger<UserService> logger, HttpClient httpClient, IHttpContextAccessor httpContextAccessor)
+        this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+        this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
+
+        this.httpContext = httpContextAccessor.HttpContext ?? throw new Exception("No HttpContext");
+
+        // optionsMonitor
+        if (optionsMonitor != null)
         {
-            string serverUrl = configuration.GetValue<string>(_configurationKey) ?? throw new Exception($"Invalid configuration key: [{_configurationKey}]");
+            ApiSettings apiSettings = optionsMonitor.Get("api");
 
-            this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+            logger.LogInformation("apiSettings exists: {exist}", (apiSettings != null));
 
-            this.httpContext = httpContextAccessor.HttpContext ?? throw new Exception("No HttpContext");
+            // Original implementation when we thought using `Api` property
+            //if ((apiSettings != null) && (apiSettings.Api != null))
+            //{
+            //    logger.LogInformation("NNNNNNNNNNNNNNNN");
+            //    foreach (var x in apiSettings.Api)
+            //    {
+            //        logger.LogInformation(x.Key);
+            //        logger.LogInformation(x.Value);
+            //    }    
+            //}
 
-            string? jwt = this.httpContext.Session.GetString("JWT");
+            //if (apiSettings != null)
+            //{
+            //    logger.LogInformation("NNNNNNNNNNNNNNNN");
+            //    foreach (var x in apiSettings)
+            //    {
+            //        logger.LogInformation(x.Key);
+            //        logger.LogInformation(x.Value);
+            //    }
+            //}
 
-            // Configure HTTP Client
+            // logger.LogInformation("apiSettings", apiSettings.Api["CommonApi"]);
+            // logger.LogInformation("mongoDbSettings connectionString: {connectionString}", mongoDbSettings.ConnectionString);
 
-            this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
-
-            //_httpClient.BaseAddress = new Uri("https://api.github.com/");
-            this.httpClient.BaseAddress = new Uri($"{serverUrl}");
-
-            if (jwt != null)
-                this.httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwt);
-                //_httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/vnd.github.v3+json");
-                //_httpClient.DefaultRequestHeaders.Add(HeaderNames.UserAgent, "HttpRequestsSample");
-        }
-
-
-        public async Task AddUserAsync(AddUserViewModel model)
-        {
-            var result = await httpClient.PostAsJsonAsync<AddUserRequest>("/api/User", new AddUserRequest(model));
-
-            if (!result.IsSuccessStatusCode)
+            if (apiSettings.ContainsKey("CommonApi"))
             {
-                throw new Exception("Oh no! What now?");
-            }
+                string serverUrl = apiSettings["CommonApi"];
 
-            // AddUserRequest postData = new AddUserRequest(model);
-            // // var result = await httpClient.PostAsJsonAsync<LoginRequest>("login", postData);
-            // this.httpClient.PostAsJsonAsync<AddUserRequest>("login", postData);
+                this.httpClient.BaseAddress = new Uri($"{serverUrl}"); // Example Uri: https://api.github.com/
+            }
+        }
+        
+
+        string? jwt = this.httpContext.Session.GetString("JWT");
+
+        if (jwt != null)
+            this.httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwt);
+
+        //_httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/vnd.github.v3+json");
+        //_httpClient.DefaultRequestHeaders.Add(HeaderNames.UserAgent, "HttpRequestsSample");
+    }
+
+
+    public async Task AddUserAsync(AddUserViewModel model)
+    {
+        var result = await httpClient.PostAsJsonAsync<AddUserRequest>("/api/User", new AddUserRequest(model));
+
+        if (!result.IsSuccessStatusCode)
+        {
+            throw new Exception("Oh no! What now?");
         }
 
-
-        //public async Task<IEnumerable<GitHubBranch>?> GetAspNetCoreDocsBranchesAsync() =>
-        //    await _httpClient.GetFromJsonAsync<IEnumerable<GitHubBranch>>(
-        //        "repos/dotnet/AspNetCore.Docs/branches");
+        // AddUserRequest postData = new AddUserRequest(model);
+        // // var result = await httpClient.PostAsJsonAsync<LoginRequest>("login", postData);
+        // this.httpClient.PostAsJsonAsync<AddUserRequest>("login", postData);
     }
+
+
+    //public async Task<IEnumerable<GitHubBranch>?> GetAspNetCoreDocsBranchesAsync() =>
+    //    await _httpClient.GetFromJsonAsync<IEnumerable<GitHubBranch>>(
+    //        "repos/dotnet/AspNetCore.Docs/branches");
 }

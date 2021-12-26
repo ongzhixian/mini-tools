@@ -50,7 +50,7 @@ namespace MiniTools.Web.Api
 
             User newUser = new User(model);
 
-            userCollectionService.AddUser(newUser);
+            userCollectionService.AddUserAsync(newUser);
 
             //User newUser = new User
             //{
