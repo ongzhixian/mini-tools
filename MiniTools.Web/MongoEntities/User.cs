@@ -9,15 +9,15 @@ namespace MiniTools.Web.MongoEntities
         [JsonPropertyName("id")]
         [BsonId]
         [BsonRepresentation(BsonType.ObjectId)]
-        public string Id { get; set; }
+        public string Id { get; set; } = string.Empty;
 
         [JsonPropertyName("username")]
         [BsonElement("username")]
-        public string Username { get; set; }
+        public string Username { get; set; } = string.Empty;
 
         [JsonPropertyName("password")]
         [BsonElement("password")]
-        public string Password { get; set; }
+        public string Password { get; set; } = string.Empty;
 
         [JsonPropertyName("status")]
         [BsonElement("status")]
