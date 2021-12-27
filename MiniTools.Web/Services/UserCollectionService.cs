@@ -1,26 +1,27 @@
 ﻿using MiniTools.Web.DataEntities;
 using MiniTools.Web.MongoEntities;
+using MiniTools.Web.Options;
 using MongoDB.Driver;
 
 namespace MiniTools.Web.Services
 {
     public interface IUserAccountService
     {
-        public void AddUserAccount(UserAccount userAccount);
+        void AddUserAccount(UserAccount userAccount);
 
-        public void RemoveUserAccount(string userAccountId);
+        void RemoveUserAccount(string userAccountId);
 
-        public void UpdateUserAccount(UserAccount userAccount);
+        void UpdateUserAccount(UserAccount userAccount);
 
-        public void FindUserAccount(string username);
+        void FindUserAccount(string username);
         
-        public void FindUserAccount(string firstName, string lastName);
+        void FindUserAccount(string firstName, string lastName);
 
-        public void GetUserAccount(string userAccountId);
+        void GetUserAccount(string userAccountId);
 
-        public void GetUserAccountList();
+        void GetUserAccountList();
 
-        public void GetUserAccountList(uint pageSize, uint page);
+        void GetUserAccountList(uint pageSize, uint page);
     }
 
     //public interface IUserCollectionService
@@ -44,6 +45,9 @@ namespace MiniTools.Web.Services
 
             internal static EventId ERROR = new EventId(500, "Error"); // Say no to generic errors?
             internal static EventId ADD_USER_ASYNC_ERROR = new EventId(501, "AddUserAsync Error");
+
+            internal static EventId GET_USER_ACCOUNT_LIST_ASYNC_ERROR = new EventId(501, "GetUserAccountListAsync Error");
+            
         }
 
         readonly ILogger<UserCollectionService> logger;
@@ -72,6 +76,57 @@ namespace MiniTools.Web.Services
             catch (Exception ex)
             {
                 logger.LogError(On.ADD_USER_ASYNC_ERROR, ex, "userDocument {@userDocument}", userDocument);
+                throw;
+            }
+        }
+
+        public async Task<List<User>> GetUserAccountListAsync(DataPageOption option)
+        {
+            IList<SortDefinition<User>> sortDefinitions = new List<SortDefinition<User>>();
+
+            foreach (var item in option.SortItems)
+                if (item.SortDirection == Options.SortDirection.Ascending)
+                    sortDefinitions.Add(Builders<User>.Sort.Ascending(item.FieldName));
+                else
+                    sortDefinitions.Add(Builders<User>.Sort.Descending(item.FieldName));
+
+
+            var result = await userCollection
+                .Find(Builders<User>.Filter.Empty)
+                .Sort(Builders<User>.Sort.Combine(sortDefinitions))
+                .Skip((option.Page - 1) * option.PageSize)
+                .Limit(option.PageSize)
+                .ToListAsync();
+
+            return result;
+        }
+
+        public async Task<List<User>> GetUserAccountListAsync(
+            int page = 0, int pageSize = 10, MongoDB.Driver.SortDirection sortDirection = MongoDB.Driver.SortDirection.Ascending, string sortField = "Username")
+        {
+
+            
+            try
+            {
+                SortDefinition<User> dataSort;
+
+                if (sortDirection == MongoDB.Driver.SortDirection.Ascending)
+                    dataSort = Builders<User>.Sort.Ascending(sortField);
+                else
+                    dataSort = Builders<User>.Sort.Descending(sortField);
+
+                var result = await userCollection
+                    .Find(Builders<User>.Filter.Empty)
+                    .Sort(dataSort)
+                    .Skip(page * pageSize)
+                    .Limit(pageSize)
+                    .ToListAsync();
+
+                return result;
+            }
+            catch (Exception ex)
+            {
+                //logger.LogError(On.GET_USER_ACCOUNT_LIST_ASYNC_ERROR, ex, "userDocument {@userDocument}", userDocument);
                 throw;
             }
         }
