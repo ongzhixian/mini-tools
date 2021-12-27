@@ -1,9 +1,9 @@
 ﻿@* Uncomment to use IOptionsMonitor (particularly if we want reflect real-time changes vs DI set values only at startup)
-@using Microsoft.Extensions.Options;
-@inject IOptionsMonitor<ApplicationSettings> optionsMonitor;  *@
+    @using Microsoft.Extensions.Options;
+    @inject IOptionsMonitor<ApplicationSettings> optionsMonitor;  *@
 @* Uncomment to use Configuration directly;
-@using Microsoft.Extensions.Configuration
-@inject IConfiguration Configuration *@
+    @using Microsoft.Extensions.Configuration
+    @inject IConfiguration Configuration *@
 @using MiniTools.Web.Options;
 @inject ApplicationSettings applicationSettings;
 @{
@@ -12,7 +12,7 @@
     // ApplicationSettings applicationSettings = optionsMonitor.Get("application");
 }
 <!DOCTYPE html>
-<html lang="en">  
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -35,22 +35,36 @@
                     <ul class="navbar-nav flex-grow-1">
                         @if (User.Identity.IsAuthenticated)
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Logout" asp-action="Index">Log out</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Logout" asp-action="Index">Log out</a>
+                            </li>
                         }
                         else
                         {
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Log in</a>
-                        </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Login" asp-action="Index">Log in</a>
+                            </li>
                         }
+                        <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">Manage</a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Users</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="User" asp-action="Index">Roles</a></li>
+                                @*
+                                    <li><a class="dropdown-item" href="#">Action</a></li>
+                                    <li><a class="dropdown-item" href="#">Another action</a></li>
+                                    <li><hr class="dropdown-divider"></li>
+                                    <li><a class="dropdown-item" href="#">Something else here</a></li>
+                                *@
+                            </ul>
+                        </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
                         </li>
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="User" asp-action="Index">User</a>
                         </li>

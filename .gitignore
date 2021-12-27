@@ -350,6 +350,7 @@ MigrationBackup/
 .ionide/
 
 # Custom
+ignore/
 ako.ps1
 *secrets.json
 *Production.json

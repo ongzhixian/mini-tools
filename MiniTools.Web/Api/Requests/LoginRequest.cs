@@ -10,8 +10,8 @@ public class AddUserRequest : AddUserViewModel
     {
         this.Username = model.Username;
         this.Password = model.Password;
-        this.LastName = model.LastName;
-        this.FirstName = model.FirstName;
-        this.Email = model.Email;
+        //this.LastName = model.LastName;
+        //this.FirstName = model.FirstName;
+        //this.Email = model.Email;
     }
 }

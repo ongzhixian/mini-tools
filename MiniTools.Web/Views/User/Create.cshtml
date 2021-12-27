@@ -7,7 +7,7 @@
 
 <h1>Add user</h1>
 
-<form asp-controller="User" asp-action="Create" method="post">
+<form asp-controller="User" asp-action="Create" method="post" class="col-4">
 
     <div class="mb-3">
         <label asp-for="Username" class="form-label">@Html.DisplayNameFor(m => m.Username)</label>
@@ -18,9 +18,10 @@
     <div class="mb-3">
         <label asp-for="Password" class="form-label">@Html.DisplayNameFor(m => m.Password)</label>
         <input asp-for="Password" type="text" class="form-control" aria-describedby="usernameHelp">
-        <div id="usernameHelp" class="form-text">Username of user.</div>
+        <div id="usernameHelp" class="form-text">Password of user.</div>
     </div>
 
+@*    
     <div class="mb-3">
         <label asp-for="FirstName" class="form-label">@Html.DisplayNameFor(m => m.FirstName)
         </label>
@@ -39,7 +40,7 @@
         <label asp-for="Email" class="form-label">@Html.DisplayNameFor(m => m.Email)</label>
         <input asp-for="Email" type="email" class="form-control" aria-describedby="emailHelp">
         <div id="emailHelp" class="form-text">Email address of user.</div>
-    </div>
+    </div>*@
 
     <button type="submit" class="btn btn-primary">Submit</button>
 

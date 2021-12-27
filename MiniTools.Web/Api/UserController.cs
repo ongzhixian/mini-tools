@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MiniTools.Web.Api.Requests;
+using MiniTools.Web.DataEntities;
 using MiniTools.Web.MongoEntities;
 using MiniTools.Web.Services;
 
@@ -7,6 +8,7 @@ using MiniTools.Web.Services;
 
 namespace MiniTools.Web.Api
 {
+
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase
@@ -36,35 +38,44 @@ namespace MiniTools.Web.Api
         }
 
         // POST api/<UserController>
-        //[HttpPost]
-        //public void Add([FromBody] string value)
-        //{
-        //}
-
-        // POST api/<UserController>
         [HttpPost]
-        public IActionResult Post([FromBody] AddUserRequest model)
+        public async Task<IActionResult> PostAsync([FromBody] AddUserRequest model)
         {
-            //logger.LogInformation("AAAAAAAAAAAAAAAAAAAAAA");
-            //logger.LogInformation(model.Username);
+            IActionResult result = null;
 
-            User newUser = new User(model);
+            if (!ModelState.IsValid)
+            {
+                result = BadRequest(ModelState);
+                logger.LogInformation("Result {0}", result);
+                return result;
+            }
 
-            userCollectionService.AddUserAsync(newUser);
+            try
+            {
+                UserAccount newUser = new UserAccount
+                {
+                    Username = model.Username,
+                    Password = model.Password
+                };
 
-            //User newUser = new User
-            //{
-            //    Username = value.Username,
-            //    Password = value.Password,
-            //    FirstName = value.FirstName,
-            //    LastName = value.LastName,
-            //    Email = value.Email,
-            //    Status = Models.UserStatus.Active
-            //};
+                await userCollectionService.AddUserAsync(newUser);
 
-            //await _userCollection.InsertOneAsync(newUser);
+                return CreatedAtAction(nameof(PostAsync), newUser);
+            }
+            catch (Exception ex)
+            {
+                //return UnprocessableEntity(model); // HTTP 422 
+                //return StatusCode(StatusCodes.Status500InternalServerError);
 
-            return CreatedAtAction(nameof(Post), newUser);
+                logger.LogError(ex, "model {@model}", model);
+                return Problem(
+                    detail: ex.Message, 
+                    instance: Request.Path, 
+                    statusCode: StatusCodes.Status500InternalServerError,
+                    title: $"Cannot add user", 
+                    type: nameof(PostAsync)
+                    );
+            }
         }
 
         // PUT api/<UserController>/5

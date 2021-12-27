@@ -5,17 +5,17 @@ using MiniTools.Web.Options;
 
 namespace MiniTools.Web.Services;
 
-public class UserService
+public class UserApiService
 {
     private const string _configurationKey = "Api:CommonApi:ServerUrl";
 
     private readonly HttpClient httpClient;
-    private readonly ILogger<UserService> logger;
+    private readonly ILogger<UserApiService> logger;
     private readonly HttpContext httpContext;
 
-    public UserService(
+    public UserApiService(
         IConfiguration configuration, 
-        ILogger<UserService> logger, 
+        ILogger<UserApiService> logger, 
         HttpClient httpClient, 
         IOptionsMonitor<ApiSettings> optionsMonitor,
         IHttpContextAccessor httpContextAccessor)

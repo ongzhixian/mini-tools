@@ -9,12 +9,12 @@ namespace MiniTools.Web.Controllers;
 public class UserController : Controller
 {
     private readonly ILogger<UserController> logger;
-    private readonly UserService userService;
+    private readonly UserApiService userApi;
 
-    public UserController(ILogger<UserController> logger, UserService userService)
+    public UserController(ILogger<UserController> logger, UserApiService userApi)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        this.userService = userService ?? throw new ArgumentNullException(nameof(userService));
+        this.userApi = userApi ?? throw new ArgumentNullException(nameof(userApi));
     }
 
     //[Route(Name ="UserIndex")]
@@ -40,10 +40,11 @@ public class UserController : Controller
         return View(new AddUserViewModel
         {
             Username = "SomeUsername",
-            FirstName = "SomeFirstName",
-            LastName = "SomeLastName",
-            Email = "SomeUsername@local.local",
-            Password = "SomePassword"
+            Password = "SomePassword",
+            //FirstName = "SomeFirstName",
+            //LastName = "SomeLastName",
+            //Email = "SomeUsername@local.local"
+            
         });
     }
 
@@ -55,7 +56,7 @@ public class UserController : Controller
     {
         try
         {
-            await userService.AddUserAsync(model);
+            await userApi.AddUserAsync(model);
             return RedirectToAction(nameof(Index));
         }
         catch

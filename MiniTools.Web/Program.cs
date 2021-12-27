@@ -13,6 +13,9 @@ using MiniTools.Web.Options;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.Abstractions;
 using MiniTools.Web.MongoEntities;
+using MiniTools.Web.DataEntities;
+using MongoDB.Bson.Serialization;
+using MongoDB.Bson.Serialization.Conventions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +29,7 @@ AppStartup.SetupAuthentication(builder.Configuration, builder.Services);
 
 AppStartup.SetupAuthorization(builder.Services);
 
-AppStartup.SetupHttpClient(builder.Services);
+AppStartup.SetupHttpClient(builder.Configuration, builder.Services);
 
 AppStartup.SetupSession(builder.Services);
 
@@ -79,7 +82,7 @@ builder.Services.AddScoped<IMongoClient, MongoClient>();
 builder.Services.AddScoped<UserCollectionService>();
 
 builder.Services.AddHttpClient<LoginService>();
-builder.Services.AddHttpClient<UserService>();
+builder.Services.AddHttpClient<UserApiService>();
 
 // builder.Services.AddOptions<MongoDbOptions>("ass");
 
@@ -95,6 +98,48 @@ builder.Services.AddHttpClient<UserService>();
 
 string miniToolsConnectionString = builder.Configuration.GetValue<string>("mongodb:minitools:ConnectionString");
 
+
+// Instead of placing a `[BsonElement("some-mongoDb-name")]` attribute name,
+// we can do class mapping
+//if (!BsonClassMap.IsClassMapRegistered(typeof(User)))
+//{
+//    BsonClassMap.RegisterClassMap<User>(c =>
+//    {
+//        c.AutoMap(); // Required!
+
+//        //c.GetMemberMap<string>(r => r.Note).SetElementName("someNote"); // Works
+//        //c.GetMemberMap(r => r.Note).SetElementName("someNote2"); // Works
+
+//        // No effect; Id cannot be mapped
+//        //c.GetMemberMap(r => r.Id).SetElementName("someId"); 
+
+//        // Not work (runtime error); Because these fields are inherited
+//        // To get it work, we need to map fields of inherited class
+
+//        //c.GetMemberMap(r => r.Username).SetElementName("username");
+//        //c.GetMemberMap(r => r.Password).SetElementName("password");
+//        //c.GetMemberMap(r => r.Status).SetElementName("status");
+//        //c.GetMemberMap(r => r.DateCreated).SetElementName("dateCreated");
+//        //c.GetMemberMap(r => r.PasswordExpiryDate).SetElementName("passwordExpiryDate");
+//    });
+//}
+
+// Ok, forget about class mapping
+// We can tweak the default MongoDb conventions.
+// See: https://mongodb.github.io/mongo-csharp-driver/1.11/serialization/#conventions
+//var conventionPack = new ConventionPack();
+//conventionPack.Add(new CamelCaseElementNameConvention());
+// --OR-- one-liner (same thing)
+//var conventionPack = new ConventionPack { new CamelCaseElementNameConvention()};
+//ConventionRegistry.Register("camelCase", conventionPack, t => true);
+
+// We can also filter which classes to apply the conventions
+//ConventionRegistry.Register(
+//   "My Custom Conventions",
+//   conventionPack,
+//   t => t.FullName.StartsWith("MyNamespace."));
+
+
 //builder.Services.AddSingleton<IMongoClient>(sp => new MongoClient(miniToolsConnectionString));
 
 builder.Services.AddSingleton<IMongoDatabase>(sp =>
@@ -104,6 +149,9 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
     string databaseName = MongoUrl.Create(miniToolsConnectionString).DatabaseName;
     return mongoClient.GetDatabase(databaseName);
 });
+
+
+
 
 builder.Services.AddSingleton<IMongoCollection<User>>(sp => sp.GetRequiredService<IMongoDatabase>().GetCollection<User>("user"));
 
@@ -176,10 +224,11 @@ builder.Services.Configure<ApiSettings>(
 
 // ...End of adding your services here...
 
+
 // Some ad-hoc development logging
-if (builder.Environment.IsDevelopment())
+if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue<bool>("Application:Startup:DumpDebugInfo"))
 {
-    Console.WriteLine("Is Development");
+    Console.WriteLine("# Development debug info:");
     Console.WriteLine("Jwt:ValidAudience    [{0}]", builder.Configuration["Jwt:ValidAudience"]);
     Console.WriteLine("Jwt:ValidIssuer      [{0}]", builder.Configuration["Jwt:ValidIssuer"]);
     Console.WriteLine("Jwt:SecretKey        [{0}]", builder.Configuration["Jwt:SecretKey"]);
@@ -286,9 +335,12 @@ app.MapControllerRoute(
 // app.MapRazorPages();
 
 // Debugging routes
-IActionDescriptorCollectionProvider actionProvider = app.Services.GetService<IActionDescriptorCollectionProvider>() ?? throw new Exception("No IActionDescriptorCollectionProvider");
-foreach (ActionDescriptor route in actionProvider.ActionDescriptors.Items)
-    Console.WriteLine(route.DisplayName);
+if (builder.Configuration.GetValue<bool>("Application:Startup:DumpRoutes"))
+{
+    IActionDescriptorCollectionProvider actionProvider = app.Services.GetService<IActionDescriptorCollectionProvider>() ?? throw new Exception("No IActionDescriptorCollectionProvider");
+    foreach (ActionDescriptor route in actionProvider.ActionDescriptors.Items)
+        Console.WriteLine(route.DisplayName);
+}
 
 
 // Other development-only middleware

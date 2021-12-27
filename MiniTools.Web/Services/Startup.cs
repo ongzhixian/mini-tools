@@ -192,7 +192,7 @@ public static class AppStartupService
 
     }
 
-    internal static void SetupHttpClient(IServiceCollection services)
+    internal static void SetupHttpClient(ConfigurationManager configuration, IServiceCollection services)
     {
         services.AddHttpClient(); // Add IHttpClientFactory
 
@@ -221,8 +221,11 @@ public static class AppStartupService
 
         // Place the following after all AddHttpClient registrations to implement our custom logging
 
-        services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
-        services.AddSingleton<IHttpMessageHandlerBuilderFilter, CustomLoggingHttpMessageHandlerBuilderFilter>();
+        if (configuration.GetValue<bool>(AppSettingsKey.APPLICATION_ENABLE_HTTP_LOGGING))
+        {
+            //services.RemoveAll<IHttpMessageHandlerBuilderFilter>();
+            //services.AddSingleton<IHttpMessageHandlerBuilderFilter, CustomLoggingHttpMessageHandlerBuilderFilter>();
+        }
     }
 
 }
