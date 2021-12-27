@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MiniTools.Web.DataEntities;
 using MiniTools.Web.Models;
 using MiniTools.Web.Services;
 
@@ -21,10 +22,18 @@ public class UserController : Controller
     //[HttpGet("User")]
     //[Route("")]
     // GET: UserController
-    public ActionResult Index()
+    public async Task<ActionResult> IndexAsync(ushort page, ushort pageSize)
     {
+        // https://localhost:7001/User?page=1&pageSize=25
         
-        return View();
+        page = (page <= 0) ? (ushort)1 : page;
+        pageSize = (pageSize <= 0) ? (ushort)1 : pageSize;
+
+        IEnumerable<UserAccount>? userList = await userApi.GetUserListAsync(page, pageSize);
+
+        PageDataViewModel<UserAccount> result = new PageDataViewModel<UserAccount>(page, pageSize, userList);
+
+        return View(result);
     }
 
     //[Route("Details")]
@@ -58,7 +67,7 @@ public class UserController : Controller
         try
         {
             await userApi.AddUserAsync(model);
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexAsync));
         }
         catch
         {
@@ -81,7 +90,7 @@ public class UserController : Controller
     {
         try
         {
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexAsync));
         }
         catch
         {
@@ -104,7 +113,7 @@ public class UserController : Controller
     {
         try
         {
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(IndexAsync));
         }
         catch
         {

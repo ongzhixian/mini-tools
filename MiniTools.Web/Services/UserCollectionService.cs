@@ -61,7 +61,7 @@ namespace MiniTools.Web.Services
             this.userCollection = userCollection;
         }
 
-        public async Task<User> AddUserAsync(UserAccount userDocument)
+        public async Task<UserAccount> AddUserAsync(UserAccount userDocument)
         {
             try
             {
@@ -71,7 +71,7 @@ namespace MiniTools.Web.Services
 
                 logger.LogInformation(On.ADD_USER_ASYNC_SUCCESS, "user {@user}", user);
 
-                return user;
+                return (UserAccount)user;
             }
             catch (Exception ex)
             {
@@ -80,7 +80,7 @@ namespace MiniTools.Web.Services
             }
         }
 
-        public async Task<List<User>> GetUserAccountListAsync(DataPageOption option)
+        public async Task<List<UserAccount>> GetUserAccountListAsync(DataPageOption option)
         {
             IList<SortDefinition<User>> sortDefinitions = new List<SortDefinition<User>>();
 
@@ -98,7 +98,7 @@ namespace MiniTools.Web.Services
                 .Limit(option.PageSize)
                 .ToListAsync();
 
-            return result;
+            return result.ToList<UserAccount>();
         }
 
         public async Task<List<User>> GetUserAccountListAsync(

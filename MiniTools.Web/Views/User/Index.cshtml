@@ -1,7 +1,12 @@
-﻿@*
+﻿@using MiniTools.Web.DataEntities
+@model PageDataViewModel<UserAccount>
+@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
+    uint row = ((uint)(Model.Page - 1) * (uint)(Model.PageSize)) + 1;
+
+    //(((uint)pageNumber - 1) * (uint)pageSize) + 1;
 }
 
 <h1>User Management</h1>
@@ -17,7 +22,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
+@*    <tr>
       <th scope="row">1</th>
       <td>Mark</td>
       <td>Otto</td>
@@ -36,9 +41,37 @@
       <td colspan="2">Larry the Bird</td>
       <td>Suspend</td>
       <td></td>
+    </tr>*@
+    @foreach (var item in Model.DataList)
+    {
+    <tr>
+      <th scope="row">@(row++)</th>
+      <td colspan="2">@item.Username</td>
+      <td>Suspend</td>
+      <td></td>
     </tr>
+        
+    }
   </tbody>
 </table>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link" href="#">1</a></li>
+    <li class="page-item"><a class="page-link" href="#">2</a></li>
+    <li class="page-item"><a class="page-link" href="#">3</a></li>
+    <li class="page-item">
+      <a class="page-link" href="#" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
 
 <div class="panel interactive">
     <a asp-area="" asp-controller="User" asp-action="Create" class="btn btn-primary"><span class="bi-plus-circle-fill"></span> Add user</a>

@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MiniTools.Web.Api.Requests;
+using MiniTools.Web.DataEntities;
 using MiniTools.Web.Models;
 using MiniTools.Web.Options;
 
@@ -92,6 +93,23 @@ public class UserApiService
         // AddUserRequest postData = new AddUserRequest(model);
         // // var result = await httpClient.PostAsJsonAsync<LoginRequest>("login", postData);
         // this.httpClient.PostAsJsonAsync<AddUserRequest>("login", postData);
+    }
+
+    public async Task<IEnumerable<UserAccount>?> GetUserListAsync(ushort pageNumber, ushort pageSize)
+    {
+        string url = $"/api/User?page={pageNumber}&pageSize={pageSize}";
+
+        // httpClient.GetFromJsonAsync<> // <GetUserRequest>
+        var result = await httpClient.GetAsync(url);
+
+        var res = await result.Content.ReadFromJsonAsync<IEnumerable<UserAccount>>();
+
+        if (!result.IsSuccessStatusCode)
+        {
+            throw new Exception("Oh no! What now?");
+        }
+
+        return res;
     }
 
 
