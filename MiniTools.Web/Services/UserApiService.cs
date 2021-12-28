@@ -95,14 +95,14 @@ public class UserApiService
         // this.httpClient.PostAsJsonAsync<AddUserRequest>("login", postData);
     }
 
-    public async Task<IEnumerable<UserAccount>?> GetUserListAsync(ushort pageNumber, ushort pageSize)
+    public async Task<PageData<UserAccount>?> GetUserListAsync(ushort pageNumber, ushort pageSize)
     {
         string url = $"/api/User?page={pageNumber}&pageSize={pageSize}";
 
         // httpClient.GetFromJsonAsync<> // <GetUserRequest>
         var result = await httpClient.GetAsync(url);
 
-        var res = await result.Content.ReadFromJsonAsync<IEnumerable<UserAccount>>();
+        var res = await result.Content.ReadFromJsonAsync<PageData<UserAccount>>();
 
         if (!result.IsSuccessStatusCode)
         {

@@ -24,9 +24,14 @@ body {
 }
 
 .footer {
-  position: fixed;
-  bottom: 0;
-  width: 100%;
-  min-height: 2em;
-  line-height: 2em;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    min-height: 2em;
+    line-height: 2em;
+    background-color: floralwhite;
+}
+
+.current {
+    font-weight: bold;
 }

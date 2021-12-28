@@ -1,4 +1,5 @@
 ﻿using MiniTools.Web.DataEntities;
+using MiniTools.Web.Models;
 using MiniTools.Web.MongoEntities;
 using MiniTools.Web.Options;
 using MongoDB.Driver;
@@ -80,7 +81,7 @@ namespace MiniTools.Web.Services
             }
         }
 
-        public async Task<List<UserAccount>> GetUserAccountListAsync(DataPageOption option)
+        public async Task<PageData<UserAccount>> GetUserAccountListAsync(DataPageOption option)
         {
             IList<SortDefinition<User>> sortDefinitions = new List<SortDefinition<User>>();
 
@@ -90,15 +91,37 @@ namespace MiniTools.Web.Services
                 else
                     sortDefinitions.Add(Builders<User>.Sort.Descending(item.FieldName));
 
+            //Working; but we want to provide a result with total record count
+            //var result = await userCollection
+            //    .Find(Builders<User>.Filter.Empty)
+            //    .Sort(Builders<User>.Sort.Combine(sortDefinitions))
+            //    .Skip((option.Page - 1) * option.PageSize)
+            //    .Limit(option.PageSize)
+            //    .ToListAsync();
 
-            var result = await userCollection
-                .Find(Builders<User>.Filter.Empty)
+            IFindFluent<User, User>? filteredQuery = userCollection
+                .Find(Builders<User>.Filter.Empty);
+
+            long totalRecordsFound = await filteredQuery
+                .CountDocumentsAsync();
+
+            List<User>? result = await filteredQuery
                 .Sort(Builders<User>.Sort.Combine(sortDefinitions))
                 .Skip((option.Page - 1) * option.PageSize)
                 .Limit(option.PageSize)
                 .ToListAsync();
 
-            return result.ToList<UserAccount>();
+            PageData<UserAccount> pageDataResult = new PageData<UserAccount>
+            {
+                Page = option.Page,
+                PageSize = option.PageSize,
+                DataList = result.ToList<UserAccount>(),
+                TotalRecordCount = (ulong)totalRecordsFound
+            };
+
+            return pageDataResult;
+
+            //return result.ToList<UserAccount>();
         }
 
         public async Task<List<User>> GetUserAccountListAsync(

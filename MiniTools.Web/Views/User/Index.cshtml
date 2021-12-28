@@ -5,78 +5,196 @@
 *@
 @{
     uint row = ((uint)(Model.Page - 1) * (uint)(Model.PageSize)) + 1;
+    uint recordStart = row;
+    uint recordEnd = row + (uint)Model.DataList.Count() - 1;
 
-    //(((uint)pageNumber - 1) * (uint)pageSize) + 1;
+    //ulong fullPagesCount = Model.RecordCount / Model.PageSize;
+    //ulong partialPageCount = (ulong)((Model.RecordCount % Model.PageSize > 0) ? 1 : 0);
+    //ulong totalPages = fullPagesCount + partialPageCount;
+
+
+    //int windowMid = (pageWindow / 2);
+    //int pageCenter = (pageWindow / 2) + 1;
+
+    int pageWindow = 5;
+    int windowMid = (pageWindow / 2);
+    int pageCenter = (pageWindow / 2) + 1;
+
+    // Calculate pager end
+    ulong pagerEnd = 0;
+
+    if (Model.Page <= pageCenter)
+    {
+        pagerEnd = (ulong)pageWindow;
+    }
+    else
+    {
+        pagerEnd = (ulong)(Model.Page + windowMid);
+    }
+
+    if (pagerEnd > Model.TotalPages)
+        pagerEnd = Model.TotalPages;
+
+    // Calculate pager start
+
+    ulong pagerStart = 0; 
+
+    if (pagerEnd >= ((ulong)pageWindow))
+    {
+        pagerStart = ((pagerEnd - (ulong)pageWindow)) + 1;
+    }
+    else
+    {
+        pagerStart = 1;
+    }
+
+    //
+    ulong prevPage = 0; //pagerStart - (ulong)windowMid;
+
+    if (pagerStart > (ulong)windowMid)
+    {
+        prevPage = pagerStart - (ulong)windowMid;
+    }
+    else
+    {
+        prevPage = 1;
+    }
+
+    ulong nextPage = pagerEnd + (ulong)windowMid;
+
+    if (nextPage > Model.TotalPages)
+    {
+        nextPage = Model.TotalPages;
+    }
+
+
+    //if (Model.Page < pageCenter)
+    //{
+    //    pagerStart = 1;
+    //}
+    //else
+    //{
+    //    pagerStart = Model.Page - windowMid;
+    //}
+
+    //PaginatorViewModel pageVM = new PaginatorViewModel(5, Model.Page, Model.TotalPages);
 }
 
 <h1>User Management</h1>
 
+@*<p>
+    Page: @Model.Page
+    PageSize: @Model.PageSize
+    PageSize: @Model.TotalRecordCount
+    TotalPages: @Model.TotalPages
+    Start: @recordStart
+    End: @recordEnd
+
+    PageCenter: @pageCenter
+    PagerStart: @pagerStart
+    PagerEnd: @pagerEnd
+
+    PrevPage: @prevPage
+    NextPage: @nextPage
+
+</p>*@
+
 <table class="table">
-  <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">First name</th>
-      <th scope="col">Last name</th>
-      <th scope="col">Status</th>
-      <th scope="col">Actions</th>
-    </tr>
-  </thead>
-  <tbody>
-@*    <tr>
-      <th scope="row">1</th>
-      <td>Mark</td>
-      <td>Otto</td>
-      <td>Active</td>
-      <td></td>
-    </tr>
-    <tr>
-      <th scope="row">2</th>
-      <td>Jacob</td>
-      <td>Thornton</td>
-      <td>Locked</td>
-      <td></td>
-    </tr>
-    <tr>
-      <th scope="row">3</th>
-      <td colspan="2">Larry the Bird</td>
-      <td>Suspend</td>
-      <td></td>
-    </tr>*@
-    @foreach (var item in Model.DataList)
-    {
-    <tr>
-      <th scope="row">@(row++)</th>
-      <td colspan="2">@item.Username</td>
-      <td>Suspend</td>
-      <td></td>
-    </tr>
-        
-    }
-  </tbody>
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">First name</th>
+            <th scope="col">Last name</th>
+            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @*    <tr>
+            <th scope="row">1</th>
+            <td>Mark</td>
+            <td>Otto</td>
+            <td>Active</td>
+            <td></td>
+            </tr>
+            <tr>
+            <th scope="row">2</th>
+            <td>Jacob</td>
+            <td>Thornton</td>
+            <td>Locked</td>
+            <td></td>
+            </tr>
+            <tr>
+            <th scope="row">3</th>
+            <td colspan="2">Larry the Bird</td>
+            <td>Suspend</td>
+            <td></td>
+            </tr>*@
+        @foreach (var item in Model.DataList)
+        {
+            <tr>
+                <th scope="row">@(row++)</th>
+                <td colspan="2">@item.Username</td>
+                <td>Suspend</td>
+                <td></td>
+            </tr>
+
+        }
+    </tbody>
 </table>
 
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item">
-      <a class="page-link" href="#" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
+@*<nav aria-label="Page navigation">
+    <ul class="pagination">
+
+        @if (pagerStart > prevPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-area="" asp-controller="User" asp-action="Index" asp-route-page="@prevPage" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+        }
+
+        @for (var i = pagerStart; i <= pagerEnd; i++)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-area="" asp-controller="User" asp-action="Index" asp-route-page="@i">
+                    @i
+                </a>
+            </li>
+        }
+
+
+        @if (pagerEnd < nextPage)
+        {
+            <li class="page-item">
+                <a class="page-link" asp-area="" asp-controller="User" asp-action="Index" asp-route-page="@nextPage" aria-label="Next">
+                <span aria-hidden="true">&raquo;</span>
+            </a>
+        </li>
+        }
+
+    </ul>
+
+    [ Records @recordStart - @recordEnd of @Model.RecordCount]
 </nav>
+*@
+
+@*
+@await Html.PartialAsync("_PaginatorPartial", 
+    new PaginatorViewModel(5, 
+        Model.Page, Model.TotalPages, (ulong)Model.DataList.Count(), Model.PageSize, Model.TotalRecordCount,
+        string.Empty, "User", "Index"))
+
+@await Html.PartialAsync("_PaginatorPartial", 
+    new PaginatorViewModel( 
+        Model, 5, string.Empty, "User", "Index"))
+*@
+
+@await Html.PartialAsync("_PaginatorPartial", 
+    new PaginatorViewModel( 
+        Model, 5, "User", "Index"))
 
 <div class="panel interactive">
     <a asp-area="" asp-controller="User" asp-action="Create" class="btn btn-primary"><span class="bi-plus-circle-fill"></span> Add user</a>
 </div>
-
-
-
-@*@Html.ActionLink("asa", "Add", "User")*@

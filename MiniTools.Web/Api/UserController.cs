@@ -25,9 +25,9 @@ namespace MiniTools.Web.Api
 
         // GET: api/<UserController>
         [HttpGet]
-        public async Task<IActionResult> GetAsync([FromQuery]int page, int pageSize)
+        public async Task<IActionResult> GetAsync([FromQuery]ushort page, ushort pageSize)
         {
-            var result = await userCollectionService.GetUserAccountListAsync(new Options.DataPageOption
+            Models.PageData<UserAccount>? result = await userCollectionService.GetUserAccountListAsync(new Options.DataPageOption
             {
                 PageSize = pageSize,
                 Page = page,

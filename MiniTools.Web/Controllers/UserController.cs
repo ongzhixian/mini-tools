@@ -27,11 +27,11 @@ public class UserController : Controller
         // https://localhost:7001/User?page=1&pageSize=25
         
         page = (page <= 0) ? (ushort)1 : page;
-        pageSize = (pageSize <= 0) ? (ushort)1 : pageSize;
+        pageSize = (pageSize <= 0) ? (ushort)15 : pageSize;
 
-        IEnumerable<UserAccount>? userList = await userApi.GetUserListAsync(page, pageSize);
+        PageData<UserAccount>? userList = await userApi.GetUserListAsync(page, pageSize);
 
-        PageDataViewModel<UserAccount> result = new PageDataViewModel<UserAccount>(page, pageSize, userList);
+        PageDataViewModel<UserAccount> result = new PageDataViewModel<UserAccount>(userList);
 
         return View(result);
     }

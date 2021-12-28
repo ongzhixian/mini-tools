@@ -19,9 +19,9 @@ namespace MiniTools.Web.Options
     public class DataPageOption
     {
         [Required]
-        public int Page { get; set; } = 1;
+        public ushort Page { get; set; } = 1;
         
-        public int PageSize { get; set; } = 1;
+        public ushort PageSize { get; set; } = 1;
 
         public IEnumerable<SortItem> SortItems { get; set;}
 
@@ -30,7 +30,7 @@ namespace MiniTools.Web.Options
             this.SortItems = new List<SortItem>();
         }
 
-        public DataPageOption(int pageSize) : this()
+        public DataPageOption(ushort pageSize) : this()
         {
             this.PageSize = pageSize;
         }
