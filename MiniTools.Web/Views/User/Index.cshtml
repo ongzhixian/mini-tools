@@ -191,9 +191,7 @@
         Model, 5, string.Empty, "User", "Index"))
 *@
 
-@await Html.PartialAsync("_PaginatorPartial", 
-    new PaginatorViewModel( 
-        Model, 5, "User", "Index"))
+@await Html.PartialAsync("_PaginatorPartial", new PaginatorViewModel(Model, 4, "User", "Index"))
 
 <div class="panel interactive">
     <a asp-area="" asp-controller="User" asp-action="Create" class="btn btn-primary"><span class="bi-plus-circle-fill"></span> Add user</a>

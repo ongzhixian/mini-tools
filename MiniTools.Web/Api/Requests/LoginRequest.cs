@@ -1,17 +1,15 @@
-using MiniTools.Web.Models;
+﻿using MiniTools.Web.Models;
 
 namespace MiniTools.Web.Api.Requests;
-
-public class AddUserRequest : AddUserViewModel
+public class LoginRequest : LoginViewModel
 {
-    public AddUserRequest() { }
+    public LoginRequest()
+    {
+    }
 
-    public AddUserRequest(AddUserViewModel model)
+    public LoginRequest(LoginViewModel model)
     {
         this.Username = model.Username;
         this.Password = model.Password;
-        //this.LastName = model.LastName;
-        //this.FirstName = model.FirstName;
-        //this.Email = model.Email;
     }
 }

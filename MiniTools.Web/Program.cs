@@ -79,10 +79,13 @@ builder.Services.AddScoped<MiniTools.Web.Filters.LogActionFilterService>();
 builder.Services.AddScoped<IMongoClient, MongoClient>();
 // builder.Services.AddScoped<ILoginService, LoginService>();
 
+builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<UserCollectionService>();
 
-builder.Services.AddHttpClient<LoginService>();
+
+builder.Services.AddHttpClient<AuthenticationService>();
 builder.Services.AddHttpClient<UserApiService>();
+builder.Services.AddHttpClient<AuthenticationApiService>();
 
 // builder.Services.AddOptions<MongoDbOptions>("ass");
 

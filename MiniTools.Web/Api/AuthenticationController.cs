@@ -4,14 +4,11 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
+using MiniTools.Web.Api.Requests;
+using MiniTools.Web.Services;
 
 namespace MiniTools.Web.Api;
 
-public class UserIdentityModel
-{
-    public string Username { get; set; }
-    public string Password { get; set; }
-}
 
 [ApiController]
 [Route("api/[controller]")]
@@ -20,20 +17,34 @@ public class UserIdentityController : ControllerBase
 {
     private readonly ILogger<UserIdentityController> _logger;
     private readonly IConfiguration _configuration;
+    private readonly AuthenticationService authenticationService;
 
-    public UserIdentityController(ILogger<UserIdentityController> logger, IConfiguration configuration)
+    public UserIdentityController(ILogger<UserIdentityController> logger, IConfiguration configuration, 
+        AuthenticationService authenticationService)
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
+        this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
     }
 
     [HttpPost]
     //[Route("api/authenticate")]
-    public IActionResult Authenticate([FromBody] UserIdentityModel model)
+    public async Task<IActionResult> AuthenticateAsync([FromBody] LoginRequest model)
     {
-
-        if (!IsValidCredentials())
+        if (model == null || model.Username == null || model.Password == null)
             return Unauthorized();
+
+        IOutcome oc = await authenticationService.GetValidUserAsync(model);
+
+        if (!oc.Positive)
+            return Unauthorized();
+
+        //if (!await authenticationService.ValidCredentialsAsync(model))
+        //    return Unauthorized();
+
+        
+        
+        
     
         // var userRoles = await userManager.GetRolesAsync(user);
 

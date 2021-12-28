@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MiniTools.Web.Models;
+using MiniTools.Web.Services;
 
 namespace MiniTools.Web.Controllers;
 
@@ -20,9 +21,13 @@ public class LoginController : Controller
     }
     private readonly ILogger<LoginController> logger;
 
-    public LoginController(ILogger<LoginController> logger)
+    private readonly AuthenticationApiService authenticationApiService;
+
+    public LoginController(ILogger<LoginController> logger, AuthenticationApiService authenticationApiService)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+
+        this.authenticationApiService = authenticationApiService ?? throw new ArgumentNullException(nameof(authenticationApiService));
 
         logger.LogInformation(On.NEW, "{onEvent} - Controller [{controllerName}]", On.NEW, nameof(LoginController));
     }
@@ -36,7 +41,7 @@ public class LoginController : Controller
         logView();
 
         return View(new LoginViewModel{
-            Username = "test@test.local"
+            Username = "dev"
         });
     }
 
@@ -47,16 +52,14 @@ public class LoginController : Controller
     public async Task<IActionResult> IndexAsync(LoginViewModel model)
     {
         if (!ModelState.IsValid)
-            throw new Exception("Invalid model state.");
-
+            return BadRequest(model);
+        
         try
         {
-            logger.LogInformation(model.Username);
-            logger.LogInformation(model.Password);
-
-            if (isValidCredentials())
+            if (authenticationApiService.IsValidCredentialsAsync(model))
             {
                 // TODO: Get roles
+                
 
                 var claims = new List<Claim>
                 {

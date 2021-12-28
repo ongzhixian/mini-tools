@@ -161,6 +161,13 @@ namespace MiniTools.Web.Services
             return await this.userCollection.Find(r => r.Id == id).FirstOrDefaultAsync();
         }
 
+        public async Task<User> FindUserByUsernameAsync(string username)
+        {
+            return await this.userCollection
+                .Find(r => r.Username.Contains(username, StringComparison.InvariantCultureIgnoreCase))
+                .FirstOrDefaultAsync();
+        }
+
 
         //public async Task<List<UserAccount>> FindUserAsync(string searchClause)
         //{

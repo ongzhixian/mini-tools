@@ -33,8 +33,6 @@ namespace MiniTools.Web.Api
                 Page = page,
             });
 
-            // IList<UserAccount> s;
-
             return Ok(result);
         }
 
@@ -54,7 +52,7 @@ namespace MiniTools.Web.Api
             if (!ModelState.IsValid)
             {
                 result = BadRequest(ModelState);
-                logger.LogInformation("Result {0}", result);
+                logger.LogInformation("Result {result}", result);
                 return result;
             }
 
