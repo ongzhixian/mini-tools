@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using MiniTools.Web.Api.Requests;
 using MiniTools.Web.Api.Responses;
 using MiniTools.Web.Models;
@@ -54,6 +55,24 @@ public class AuthenticationApiService
 
             if (jwt != null)
                 this.httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwt);
+
+            this.httpClient.DefaultRequestHeaders.Add(HeaderNames.TraceParent, httpContext.TraceIdentifier);
+            //this.httpClient.DefaultRequestHeaders.Add(HeaderNames.RequestId, httpContext.TraceIdentifier);
+
+            //logger.LogInformation("TraceIdentifier {0}", httpContext.TraceIdentifier);
+
+            //logger.LogInformation("RequestHeader count:{0}", httpContext.Request.Headers.Count());
+            //foreach (var item in httpContext.Request.Headers)
+            //{
+            //    logger.LogInformation("RequestHeader: [{key}] >> [{value}]", item.Key, item.Value);
+            //}
+
+            //logger.LogInformation("ResponseHeader count:{0}", httpContext.Response.Headers.Count());
+            //foreach (var item in httpContext.Response.Headers)
+            //{
+            //    logger.LogInformation("ResponseHeader: [{key}] >> [{value}]", item.Key, item.Value);
+            //}
+
         }
     }
 

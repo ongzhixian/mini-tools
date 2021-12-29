@@ -17,20 +17,22 @@ using MiniTools.Web.DataEntities;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 
+
 var builder = WebApplication.CreateBuilder(args);
 
 AppStartup.AddAppSettings(builder.Configuration, builder.Environment);
 
-AppStartup.SetupLogging(builder.Host);
+AppStartup.SetupLogging(builder.Configuration, builder.Host);
 
-builder.Logging.Configure(options =>
-{
-    options.ActivityTrackingOptions = ActivityTrackingOptions.SpanId
-                                              | ActivityTrackingOptions.TraceId
-                                              | ActivityTrackingOptions.ParentId
-                                              | ActivityTrackingOptions.Baggage
-                                              | ActivityTrackingOptions.Tags;
-});
+//builder.Logging.Configure(options =>
+//{
+    
+//    options.ActivityTrackingOptions = ActivityTrackingOptions.SpanId
+//                                              | ActivityTrackingOptions.TraceId
+//                                              | ActivityTrackingOptions.ParentId
+//                                              | ActivityTrackingOptions.Baggage
+//                                              | ActivityTrackingOptions.Tags;
+//});
 
 AppStartup.SetupHttpLogging(builder.Configuration, builder.Services);
 
@@ -384,6 +386,8 @@ if (app.Environment.IsDevelopment())
     //{
     //    c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{openApiInfo.Title}; {openApiInfo.Version}");
     //});
+
+    //app.UseSerilogRequestLogging();
 
 
     // Feature: List all routes(?)...not working...

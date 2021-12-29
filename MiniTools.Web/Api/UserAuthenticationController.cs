@@ -42,6 +42,10 @@ public class UserAuthenticationController : ControllerBase
 
         OperationResult<UserAccount> op = await authenticationService.GetValidUserAsync(model);
 
+        _logger.LogInformation(new EventId(234, "AuthAsync"), "{@res}", System.Diagnostics.Activity.Current);
+
+        
+
         if (!op.Success)
             return Unauthorized();
 
@@ -63,11 +67,15 @@ public class UserAuthenticationController : ControllerBase
 
         JwtSecurityToken token = jwtService.CreateToken(authClaims);
 
-        return Ok(new LoginResponse
+        var res = new LoginResponse
         {
             Jwt = jwtService.ToCompactSerializationFormat(token),
             ExpiryDateTime = token.ValidTo
-        });
+        };
+
+        _logger.LogInformation(new EventId(234, "AuthAsync"), "{@res}", res);
+
+        return Ok(res);
     }
 
     public string[] GetRoles(string username)

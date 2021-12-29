@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.Options;
+using Microsoft.Net.Http.Headers;
 using MiniTools.Web.Api.Requests;
 using MiniTools.Web.DataEntities;
 using MiniTools.Web.Models;
@@ -67,6 +68,8 @@ public class UserApiService
                 string serverUrl = apiSettings["CommonApi"];
 
                 this.httpClient.BaseAddress = new Uri($"{serverUrl}"); // Example Uri: https://api.github.com/
+
+                //Microsoft.Net.Http.Headers.HeaderNames.TraceParent
             }
         }
         
@@ -76,6 +79,8 @@ public class UserApiService
         if (jwt != null)
             this.httpClient.DefaultRequestHeaders.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", jwt);
 
+        
+        //this.httpClient.DefaultRequestHeaders.Add(HeaderNames.TraceParent)
         //_httpClient.DefaultRequestHeaders.Add(HeaderNames.Accept, "application/vnd.github.v3+json");
         //_httpClient.DefaultRequestHeaders.Add(HeaderNames.UserAgent, "HttpRequestsSample");
     }

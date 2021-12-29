@@ -15,16 +15,21 @@ namespace MiniTools.Web.Services;
 public static class AppSettingsKey
 {
     public const string APPLICATION_ENABLE_HTTP_LOGGING = "Application:EnableHttpLogging";
+    public const string APPLICATION_USE_SERILOG = "Application:UseSerilog";
 }
 
 public static class AppStartupService
 {
-    internal static void SetupLogging(ConfigureHostBuilder host)
+    internal static void SetupLogging(ConfigurationManager configuration, ConfigureHostBuilder host)
     {
-        host.UseSerilog((hostBuilderContext, loggerConfiguration) =>
+        // EnableHttpLogging
+        if (configuration.GetValue<bool>(AppSettingsKey.APPLICATION_USE_SERILOG))
         {
-            loggerConfiguration.ReadFrom.Configuration(hostBuilderContext.Configuration);
-        });
+            host.UseSerilog((hostBuilderContext, loggerConfiguration) =>
+            {
+                loggerConfiguration.ReadFrom.Configuration(hostBuilderContext.Configuration);
+            });
+        }
     }
 
     internal static void AddAppSettings(ConfigurationManager configuration, IWebHostEnvironment environment)
@@ -66,7 +71,7 @@ public static class AppStartupService
 
     internal static void SetupSwagger(ConfigurationManager configuration, IServiceCollection services)
     {
-        
+
         OpenApiInfo openApiInfo = configuration.GetSection("Swagger:OpenApiInfo").Get<OpenApiInfo>();
         services.AddEndpointsApiExplorer();
         services.AddSwaggerGen(options =>
