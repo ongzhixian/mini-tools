@@ -56,7 +56,7 @@ public class LoginController : Controller
         
         try
         {
-            if (authenticationApiService.IsValidCredentialsAsync(model))
+            if (await authenticationApiService.IsValidCredentialsAsync(model))
             {
                 // TODO: Get roles
                 

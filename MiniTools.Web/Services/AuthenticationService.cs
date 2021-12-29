@@ -1,6 +1,8 @@
 using Microsoft.Extensions.Options;
 using MiniTools.Web.Api.Requests;
 using MiniTools.Web.DataEntities;
+using MiniTools.Web.Models;
+using MiniTools.Web.MongoEntities;
 using MiniTools.Web.Options;
 using MongoDB.Driver;
 
@@ -8,11 +10,18 @@ namespace MiniTools.Web.Services;
 
 public class AuthenticationService
 {
-    private class On
+    private static class On
     {
-        internal static EventId NEW = new EventId(1, "New");
-        internal static EventId VIEW_HOME = new EventId(101, "View home");
+        internal static readonly EventId NEW = new EventId(1, "New");
+        internal static readonly EventId VIEW_HOME = new EventId(101, "View home");
+
+        internal static readonly EventId RECORD_FOUND = new EventId(201, "Record found");
+
+        internal static readonly EventId INVALID_MODEL = new EventId(501, "Invalid model");
+        internal static readonly EventId RECORD_NOT_FOUND = new EventId(502, "Record not found");
+        internal static readonly EventId INVALID_CREDENTIAL = new EventId(503, "Invalid credential");
     }
+
     private readonly ILogger<AuthenticationService> logger;
     private readonly UserCollectionService userCollectionService;
 
@@ -39,24 +48,34 @@ public class AuthenticationService
         return user.Password == model.Password;
     }
 
-    internal async Task<IOutcome> GetValidUserAsync(LoginRequest model)
+    public async Task<OperationResult<UserAccount>> GetValidUserAsync(LoginRequest model)
     {
         if (model == null || model.Username == null || model.Password == null)
-            return Outcome.Negative;
+        {
+            logger.LogInformation(On.INVALID_MODEL, "{@model}", model);
+            return OperationResult<UserAccount>.Fail(On.INVALID_MODEL);
+        }
 
         // Get UserAccount
 
-        var user = await userCollectionService.FindUserByUsernameAsync(model.Username);
+        User user = await userCollectionService.FindUserByUsernameAsync(model.Username);
 
         if (user == null)
-            return Outcome.Negative;
+        {
+            logger.LogInformation(On.RECORD_NOT_FOUND, "{@model}", model);
+            return OperationResult<UserAccount>.Fail(On.RECORD_NOT_FOUND);
+        }
 
         // Check password
 
         if (user.Password == model.Password)
-            return new PositiveOutcome<MongoEntities.User>(user);
+        {
+            logger.LogInformation(On.RECORD_FOUND, "{@user}", user);
+            return OperationResult<UserAccount>.Ok(On.RECORD_FOUND, user);
+        }
 
-        return Outcome.Negative;
+        logger.LogInformation(On.INVALID_CREDENTIAL, "{@model}", model);
+        return OperationResult<UserAccount>.Fail(On.INVALID_CREDENTIAL);
     }
 
 
@@ -96,125 +115,5 @@ public class AuthenticationService
 
     //}
 
-
 }
 
-public interface IOutcome
-{
-    // A Result has a Outcome (Success/Failure) (true/false)
-    bool Positive { get; }
-
-    object Value { get; }
-}
-
-public sealed class Outcome
-{
-    private static readonly object objectLock = new object();
-
-    private static NegativeOutcome? negativeResult = null;
-    private static PositiveOutcome? positiveResult = null;
-
-    public static NegativeOutcome Negative
-    {
-        get
-        {
-            if (negativeResult == null)
-            {
-                lock (objectLock)
-                {
-                    if (negativeResult == null)
-                    {
-                        negativeResult = new NegativeOutcome();
-                    }
-                }
-            }
-            return negativeResult;
-        }
-    }
-
-    public static PositiveOutcome Positive
-    {
-        get
-        {
-            if (positiveResult == null)
-            {
-                lock (objectLock)
-                {
-                    if (positiveResult == null)
-                    {
-                        positiveResult = new PositiveOutcome();
-                    }
-                }
-            }
-            return positiveResult;
-        }
-    }
-
-    //public static PositiveResult<T> Positive<T>(T a) where T : class
-    //{
-    //    return new PositiveResult<T>(a);
-    //}
-
-    private Outcome() {}
-}
-
-public class PositiveOutcome : IOutcome
-{
-    public bool Positive => true;
-
-    public object? Value => null;
-}
-
-public class NegativeOutcome : IOutcome
-{
-    public bool Positive
-    {
-        get => false;
-    }
-
-    private static NegativeOutcome? instance = null;
-
-    private static readonly object _lock = new object();
-
-    public NegativeOutcome()
-    {
-
-    }
-
-    public static NegativeOutcome Instance
-    {
-        get
-        {
-            if (instance == null)
-            {
-                lock (_lock)
-                {
-                    if (instance == null)
-                    {
-                        instance = new NegativeOutcome();
-                    }
-                }
-            }
-            return instance;
-        }
-    }
-
-}
-
-public class PositiveOutcome<T> : IOutcome where T : class
-{
-    public bool Positive => true;
-
-    public T Value;
-
-    public PositiveOutcome()
-    {
-
-    }
-
-    public PositiveOutcome(T obj)
-    {
-        this.Value = obj;
-    }
-
-}

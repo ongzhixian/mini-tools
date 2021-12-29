@@ -1,10 +1,11 @@
-
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MiniTools.Web.Api.Requests;
+using MiniTools.Web.DataEntities;
+using MiniTools.Web.Models;
 using MiniTools.Web.Services;
 
 namespace MiniTools.Web.Api;
@@ -13,14 +14,15 @@ namespace MiniTools.Web.Api;
 [ApiController]
 [Route("api/[controller]")]
 
-public class UserIdentityController : ControllerBase
+public class UserAuthenticationController : ControllerBase
 {
-    private readonly ILogger<UserIdentityController> _logger;
+    private readonly ILogger<UserAuthenticationController> _logger;
     private readonly IConfiguration _configuration;
     private readonly AuthenticationService authenticationService;
 
-    public UserIdentityController(ILogger<UserIdentityController> logger, IConfiguration configuration, 
-        AuthenticationService authenticationService)
+    public UserAuthenticationController(ILogger<UserAuthenticationController> logger, IConfiguration configuration
+        , AuthenticationService authenticationService
+        )
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
@@ -34,18 +36,13 @@ public class UserIdentityController : ControllerBase
         if (model == null || model.Username == null || model.Password == null)
             return Unauthorized();
 
-        IOutcome oc = await authenticationService.GetValidUserAsync(model);
+        OperationResult<UserAccount> op = await authenticationService.GetValidUserAsync(model);
 
-        if (!oc.Positive)
+        if (!op.Success)
             return Unauthorized();
 
-        //if (!await authenticationService.ValidCredentialsAsync(model))
-        //    return Unauthorized();
+        //UserAccount userAccount = op.Payload;
 
-        
-        
-        
-    
         // var userRoles = await userManager.GetRolesAsync(user);
 
         // var authClaims = new List<Claim>
@@ -58,6 +55,8 @@ public class UserIdentityController : ControllerBase
         // {
         //     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
         // }
+
+        //ClaimTypes.NameIdentifier
         var authClaims = new List<Claim>();
 
         authClaims.Add(new Claim(ClaimTypes.Name, model.Username));
@@ -81,10 +80,5 @@ public class UserIdentityController : ControllerBase
             token = new JwtSecurityTokenHandler().WriteToken(token),
             expiration = token.ValidTo
         });
-    }
-
-    private bool IsValidCredentials()
-    {
-        return true;
     }
 }

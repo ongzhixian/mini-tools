@@ -83,7 +83,7 @@ builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<UserCollectionService>();
 
 
-builder.Services.AddHttpClient<AuthenticationService>();
+//builder.Services.AddHttpClient<AuthenticationService>();
 builder.Services.AddHttpClient<UserApiService>();
 builder.Services.AddHttpClient<AuthenticationApiService>();
 

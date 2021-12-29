@@ -127,8 +127,6 @@ namespace MiniTools.Web.Services
         public async Task<List<User>> GetUserAccountListAsync(
             int page = 0, int pageSize = 10, MongoDB.Driver.SortDirection sortDirection = MongoDB.Driver.SortDirection.Ascending, string sortField = "Username")
         {
-
-            
             try
             {
                 SortDefinition<User> dataSort;
@@ -155,7 +153,6 @@ namespace MiniTools.Web.Services
         }
 
 
-
         public async Task<User> GetUserAsync(string id)
         {
             return await this.userCollection.Find(r => r.Id == id).FirstOrDefaultAsync();
@@ -163,9 +160,25 @@ namespace MiniTools.Web.Services
 
         public async Task<User> FindUserByUsernameAsync(string username)
         {
-            return await this.userCollection
-                .Find(r => r.Username.Contains(username, StringComparison.InvariantCultureIgnoreCase))
-                .FirstOrDefaultAsync();
+            //return await this.userCollection
+            //    .Find(r => r.Username.Contains(username, StringComparison.InvariantCultureIgnoreCase))
+            //    .FirstOrDefaultAsync();
+
+            //userCollection.FindAsync<User>(r => r.Username.Contains(username, StringComparison.InvariantCultureIgnoreCase));
+
+            try
+            {
+                var filter = Builders<User>.Filter.Eq(r => r.Username, username);
+
+                var res = await userCollection.FindAsync(filter);
+
+                return await res.FirstOrDefaultAsync();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+
         }
 
 

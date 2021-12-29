@@ -66,14 +66,15 @@ public class AuthenticationApiService
 
     internal async Task<bool> IsValidCredentialsAsync(LoginViewModel model)
     {
-        var result = await httpClient.PostAsJsonAsync<LoginRequest>("/api/Authentication", new LoginRequest(model));
+        var result = await httpClient.PostAsJsonAsync<LoginRequest>("/api/UserAuthentication", new LoginRequest(model));
 
-        if (!result.IsSuccessStatusCode)
-        {
-            throw new Exception("Oh no! What now?");
-        }
+        return result.IsSuccessStatusCode;
 
-        return true;
+        //if (!result.IsSuccessStatusCode)
+        //{
+        //    throw new Exception("Oh no! What now?");
+        //}
+        //return true;
     }
 
     public async Task<PageData<UserAccount>?> GetUserListAsync(ushort pageNumber, ushort pageSize)
