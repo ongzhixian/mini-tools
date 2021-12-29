@@ -47,7 +47,7 @@ namespace MiniTools.Web.Api
         [HttpPost]
         public async Task<IActionResult> PostAsync([FromBody] AddUserRequest model)
         {
-            IActionResult result = null;
+            IActionResult result;
 
             if (!ModelState.IsValid)
             {
@@ -85,15 +85,15 @@ namespace MiniTools.Web.Api
         }
 
         // PUT api/<UserController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        //[HttpPut("{id}")]
+        //public void Put(int id, [FromBody] string value)
+        //{
+        //}
 
         // DELETE api/<UserController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        //[HttpDelete("{id}")]
+        //public void Delete(int id)
+        //{
+        //}
     }
 }

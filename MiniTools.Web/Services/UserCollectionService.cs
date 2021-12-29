@@ -35,19 +35,19 @@ namespace MiniTools.Web.Services
 
     public class UserCollectionService 
     {
-        private class On
+        private static class On
         {
-            internal static EventId NEW = new EventId(1, "New");
-            internal static EventId VIEW_HOME = new EventId(101, "View home");
+            internal static readonly EventId NEW = new EventId(1, "New");
+            internal static readonly EventId VIEW_HOME = new EventId(101, "View home");
 
-            internal static EventId SUCCESS = new EventId(200, "Success"); // Say no to generic success?
-            internal static EventId ADD_USER_ASYNC_SUCCESS = new EventId(201, "AddUserAsync Success");
+            internal static readonly EventId SUCCESS = new EventId(200, "Success"); // Say no to generic success?
+            internal static readonly EventId ADD_USER_ASYNC_SUCCESS = new EventId(201, "AddUserAsync Success");
 
 
-            internal static EventId ERROR = new EventId(500, "Error"); // Say no to generic errors?
-            internal static EventId ADD_USER_ASYNC_ERROR = new EventId(501, "AddUserAsync Error");
+            internal static readonly EventId ERROR = new EventId(500, "Error"); // Say no to generic errors?
+            internal static readonly EventId ADD_USER_ASYNC_ERROR = new EventId(501, "AddUserAsync Error");
 
-            internal static EventId GET_USER_ACCOUNT_LIST_ASYNC_ERROR = new EventId(501, "GetUserAccountListAsync Error");
+            internal static readonly EventId GET_USER_ACCOUNT_LIST_ASYNC_ERROR = new EventId(501, "GetUserAccountListAsync Error");
             
         }
 
@@ -145,7 +145,7 @@ namespace MiniTools.Web.Services
 
                 return result;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 //logger.LogError(On.GET_USER_ACCOUNT_LIST_ASYNC_ERROR, ex, "userDocument {@userDocument}", userDocument);
                 throw;

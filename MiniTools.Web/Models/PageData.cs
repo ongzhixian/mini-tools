@@ -7,7 +7,6 @@ public interface IPageData
     ushort PageSize { get; set; }
     ulong TotalRecordCount { get; set; }
     ulong TotalPages { get; }
-
     ulong PageRecordCount { get; }
     
 }
@@ -20,7 +19,7 @@ public class PageData<T> : IPageData where T : class
 
     public ulong TotalRecordCount { get; set; }
 
-    public IEnumerable<T> DataList { get; set; }
+    public IEnumerable<T>? DataList { get; set; }
 
     public ulong TotalPages
     {
@@ -38,6 +37,8 @@ public class PageData<T> : IPageData where T : class
     {
         get
         {
+            if (DataList == null)
+                return 0;
             return (ulong)DataList.Count();
         }
     }

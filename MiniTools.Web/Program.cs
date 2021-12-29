@@ -81,6 +81,8 @@ builder.Services.AddScoped<IMongoClient, MongoClient>();
 
 builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<UserCollectionService>();
+builder.Services.AddScoped<JwtService>();
+
 
 
 //builder.Services.AddHttpClient<AuthenticationService>();
@@ -180,6 +182,7 @@ builder.Services.Configure<MongoDbSettings>(
     );
 
 
+
 // Original ApiSettings use `Api` as property to hold Dictionary<string, string>
 // So using the following code does not work; cannot map `Api` directly to Dictionary<string, string> type
 // builder.Services.Configure<ApiSettings>(
@@ -223,6 +226,10 @@ builder.Services.Configure<ApiSettings>(
 //     builder.Configuration.GetSection("application")
 //     );
 
+builder.Services.Configure<JwtSettings>(
+    "jwt",
+    builder.Configuration.GetSection("Jwt")
+    );
 
 
 // ...End of adding your services here...

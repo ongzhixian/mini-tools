@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations;
 namespace MiniTools.Web.Options;
 
 public class MongoDbSettings
-{  
-   public string ConnectionString { get; set; }  
+{
+    public string ConnectionString { get; set; } = string.Empty;
 }  
 
 // public class MongoDbOptions

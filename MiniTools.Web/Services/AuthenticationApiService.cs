@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Options;
 using MiniTools.Web.Api.Requests;
-using MiniTools.Web.DataEntities;
+using MiniTools.Web.Api.Responses;
 using MiniTools.Web.Models;
 using MiniTools.Web.Options;
 
@@ -8,16 +8,25 @@ namespace MiniTools.Web.Services;
 
 public class AuthenticationApiService
 {
-    private const string _configurationKey = "Api:CommonApi:ServerUrl";
+    private static class On
+    {
+        internal static readonly EventId VALIDATE_FAIL = new EventId(1, "Credential validation failure.");
+
+        internal static readonly EventId VALIDATE_SUCCESS = new EventId(1, "Credential validation success");
+
+        internal static readonly EventId READ_FAIL = new EventId(1, "Cannot read credential validation result");
+
+        internal static readonly EventId EMPTY_RESPONSE_FAIL = new EventId(1, "credential validation result is empty");
+
+    }
+
+    private readonly ILogger<AuthenticationApiService> logger;
 
     private readonly HttpClient httpClient;
-    private readonly ILogger<AuthenticationApiService> logger;
-    //private readonly HttpContext httpContext;
 
     public AuthenticationApiService(
-        IConfiguration configuration, 
-        ILogger<AuthenticationApiService> logger, 
-        HttpClient httpClient, 
+        ILogger<AuthenticationApiService> logger,
+        HttpClient httpClient,
         IOptionsMonitor<ApiSettings> optionsMonitor,
         IHttpContextAccessor httpContextAccessor)
     {
@@ -48,49 +57,33 @@ public class AuthenticationApiService
         }
     }
 
-
-    public async Task AddUserAsync(AddUserViewModel model)
+    internal async Task<OperationResult<LoginResponse>> IsValidCredentialsAsync(LoginViewModel model)
     {
-        var result = await httpClient.PostAsJsonAsync<AddUserRequest>("/api/User", new AddUserRequest(model));
+        HttpResponseMessage? result = await httpClient.PostAsJsonAsync<LoginRequest>("/api/UserAuthentication", new LoginRequest(model));
 
         if (!result.IsSuccessStatusCode)
         {
-            throw new Exception("Oh no! What now?");
+            logger.LogInformation(On.VALIDATE_FAIL, "{@IsSuccessStatusCode}", result.IsSuccessStatusCode);
+            return OperationResult<LoginResponse>.Fail();
         }
 
-        // AddUserRequest postData = new AddUserRequest(model);
-        // // var result = await httpClient.PostAsJsonAsync<LoginRequest>("login", postData);
-        // this.httpClient.PostAsJsonAsync<AddUserRequest>("login", postData);
-    }
-
-
-    internal async Task<bool> IsValidCredentialsAsync(LoginViewModel model)
-    {
-        var result = await httpClient.PostAsJsonAsync<LoginRequest>("/api/UserAuthentication", new LoginRequest(model));
-
-        return result.IsSuccessStatusCode;
-
-        //if (!result.IsSuccessStatusCode)
-        //{
-        //    throw new Exception("Oh no! What now?");
-        //}
-        //return true;
-    }
-
-    public async Task<PageData<UserAccount>?> GetUserListAsync(ushort pageNumber, ushort pageSize)
-    {
-        string url = $"/api/User?page={pageNumber}&pageSize={pageSize}";
-
-        // httpClient.GetFromJsonAsync<> // <GetUserRequest>
-        var result = await httpClient.GetAsync(url);
-
-        var res = await result.Content.ReadFromJsonAsync<PageData<UserAccount>>();
-
-        if (!result.IsSuccessStatusCode)
+        try
         {
-            throw new Exception("Oh no! What now?");
-        }
+            LoginResponse? loginResponse = await result.Content.ReadFromJsonAsync<LoginResponse>();
+            
+            if (loginResponse != null)
+            {
+                logger.LogInformation(On.VALIDATE_SUCCESS, "{@IsSuccessStatusCode} {@response}", result.IsSuccessStatusCode);
+                return OperationResult<LoginResponse>.Ok(On.VALIDATE_SUCCESS, loginResponse);
+            }
 
-        return res;
+            logger.LogInformation(On.EMPTY_RESPONSE_FAIL, "{@IsSuccessStatusCode} {@response}", result.IsSuccessStatusCode);
+            return OperationResult<LoginResponse>.Fail(On.EMPTY_RESPONSE_FAIL);
+        }
+        catch (Exception ex)
+        {
+            logger.LogError(On.READ_FAIL, ex, "{@IsSuccessStatusCode} {@response}", result.IsSuccessStatusCode);
+            return OperationResult<LoginResponse>.Fail(On.READ_FAIL);
+        }
     }
 }

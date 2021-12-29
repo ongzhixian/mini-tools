@@ -1,43 +1,45 @@
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace MiniTools.Web.Controllers;
-
-public class LogoutController : Controller
+namespace MiniTools.Web.Controllers
+{
+    public enum AccessPrivilege
     {
-        // GET: LogoutController
-        [AllowAnonymous]
-        public async Task<ActionResult> IndexAsync()
+        ADMINISTRATOR,
+        DESIGNER,
+        DEVELOPER,
+        END_USER
+    }
+
+    public class RoleController : Controller
+    {
+        // GET: RoleController
+        public ActionResult Index()
         {
-            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
-            TempData["SignoutFooter"] = $"You have signed out at {DateTime.Now}";
-
-            return RedirectToAction("Index", "Home");
+            return View();
         }
 
-        // GET: LogoutController/Details/5
+        // GET: RoleController/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: LogoutController/Create
+        // GET: RoleController/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: LogoutController/Create
+        // POST: RoleController/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create(IFormCollection collection)
         {
             try
             {
-                return RedirectToAction(nameof(IndexAsync));
+                return RedirectToAction(nameof(Index));
             }
             catch
             {
@@ -45,20 +47,20 @@ public class LogoutController : Controller
             }
         }
 
-        // GET: LogoutController/Edit/5
+        // GET: RoleController/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: LogoutController/Edit/5
+        // POST: RoleController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, IFormCollection collection)
         {
             try
             {
-                return RedirectToAction(nameof(IndexAsync));
+                return RedirectToAction(nameof(Index));
             }
             catch
             {
@@ -66,20 +68,20 @@ public class LogoutController : Controller
             }
         }
 
-        // GET: LogoutController/Delete/5
+        // GET: RoleController/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: LogoutController/Delete/5
+        // POST: RoleController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, IFormCollection collection)
         {
             try
             {
-                return RedirectToAction(nameof(IndexAsync));
+                return RedirectToAction(nameof(Index));
             }
             catch
             {
@@ -87,3 +89,4 @@ public class LogoutController : Controller
             }
         }
     }
+}

@@ -4,6 +4,7 @@ using System.Text;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MiniTools.Web.Api.Requests;
+using MiniTools.Web.Api.Responses;
 using MiniTools.Web.DataEntities;
 using MiniTools.Web.Models;
 using MiniTools.Web.Services;
@@ -19,14 +20,17 @@ public class UserAuthenticationController : ControllerBase
     private readonly ILogger<UserAuthenticationController> _logger;
     private readonly IConfiguration _configuration;
     private readonly AuthenticationService authenticationService;
-
+    private readonly JwtService jwtService;
+    
     public UserAuthenticationController(ILogger<UserAuthenticationController> logger, IConfiguration configuration
         , AuthenticationService authenticationService
+        , JwtService jwtService
         )
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         _configuration = configuration ?? throw new ArgumentNullException(nameof(configuration));
         this.authenticationService = authenticationService ?? throw new ArgumentNullException(nameof(authenticationService));
+        this.jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
     }
 
     [HttpPost]
@@ -41,44 +45,42 @@ public class UserAuthenticationController : ControllerBase
         if (!op.Success)
             return Unauthorized();
 
-        //UserAccount userAccount = op.Payload;
+        if (op.Payload == null)
+            return Unauthorized(); //TODO: Fix this misnomer
 
-        // var userRoles = await userManager.GetRolesAsync(user);
+        // TODO: Create RoleService to get roles
+        string[] userRoles = GetRoles(op.Payload.Username);
 
-        // var authClaims = new List<Claim>
-        //     {
-        //         new Claim(ClaimTypes.Name, user.UserName),
-        //         new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-        //     };
+        // Setup claims
 
-        // foreach (var userRole in userRoles)
-        // {
-        //     authClaims.Add(new Claim(ClaimTypes.Role, userRole));
-        // }
-
-        //ClaimTypes.NameIdentifier
         var authClaims = new List<Claim>();
+        
+        authClaims.Add(new Claim(ClaimTypes.Name, op.Payload.Username));
+        //authClaims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 
-        authClaims.Add(new Claim(ClaimTypes.Name, model.Username));
+        foreach (var userRole in userRoles)
+            authClaims.Add(new Claim(ClaimTypes.Role, userRole));
 
-        string jwtSecret = _configuration["JWT:SecretKey"];
-        string jwtValidIssuer = _configuration["JWT:ValidIssuer"];
-        string jwtValidAudience = _configuration["JWT:ValidAudience"];
+        JwtSecurityToken token = jwtService.CreateToken(authClaims);
 
-        var authSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtSecret));
-
-        var token = new JwtSecurityToken(
-            issuer: jwtValidIssuer,
-            audience: jwtValidAudience,
-            expires: DateTime.Now.AddHours(3),
-            claims: authClaims,
-            signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
-            );
-
-        return Ok(new
+        return Ok(new LoginResponse
         {
-            token = new JwtSecurityTokenHandler().WriteToken(token),
-            expiration = token.ValidTo
+            Jwt = jwtService.ToCompactSerializationFormat(token),
+            ExpiryDateTime = token.ValidTo
         });
+    }
+
+    public string[] GetRoles(string username)
+    {
+        if (username == "dev")
+            return new string[] {
+                "Administrator",
+                "Developer",
+                "MyProfile"
+            };
+
+        return new string[] {
+                "MyProfile"
+            };
     }
 }
