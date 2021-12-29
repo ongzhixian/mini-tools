@@ -23,6 +23,15 @@ AppStartup.AddAppSettings(builder.Configuration, builder.Environment);
 
 AppStartup.SetupLogging(builder.Host);
 
+builder.Logging.Configure(options =>
+{
+    options.ActivityTrackingOptions = ActivityTrackingOptions.SpanId
+                                              | ActivityTrackingOptions.TraceId
+                                              | ActivityTrackingOptions.ParentId
+                                              | ActivityTrackingOptions.Baggage
+                                              | ActivityTrackingOptions.Tags;
+});
+
 AppStartup.SetupHttpLogging(builder.Configuration, builder.Services);
 
 AppStartup.SetupAuthentication(builder.Configuration, builder.Services);

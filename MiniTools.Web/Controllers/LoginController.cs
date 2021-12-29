@@ -57,13 +57,15 @@ public class LoginController : Controller
 
             if (!result.Success)
             {
-                // TODO: Return invalid credentials message
+                ViewBag.Alert = $"Invalid user credentials provided. {HttpContext.TraceIdentifier}";
+                logger.LogMvcView(ControllerContext, model);
                 return View(model);
             }
 
             if ((result.Payload == null) || string.IsNullOrWhiteSpace(result.Payload.Jwt))
             {
-                // TODO: Return invalid response
+                ViewBag.Alert = "Invalid user credentials provided.";
+                logger.LogMvcView(ControllerContext, model);
                 return View(model);
             }
 
@@ -106,8 +108,9 @@ public class LoginController : Controller
         }
         catch (Exception ex)
         {
-            logger.LogError(ex, string.Empty);
-            throw;
+            ViewBag.Alert = $"Application error. Please contact system administrator with {HttpContext.TraceIdentifier}.";
+            logger.LogMvcView(ControllerContext, model);
+            return View(model);
         }
     }
 }
