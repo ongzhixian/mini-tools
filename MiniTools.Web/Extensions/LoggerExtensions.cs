@@ -22,4 +22,5 @@ public static class LoggerExtensions
             context.ActionDescriptor.ControllerName,
             context.ActionDescriptor.ActionName);
     }
+
 }
