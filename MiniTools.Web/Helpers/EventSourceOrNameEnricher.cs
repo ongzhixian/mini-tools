@@ -4,6 +4,10 @@ using Serilog.Events;
 namespace MiniTools.Web.Helpers;
 
 // For console we want minimal but succinct output; we also don't want empty all the empty square brackets []
+
+// Someone else propose doing DelimitedEnricher
+// See: https://stackoverflow.com/questions/49090613/c-sharp-serilog-enrichers-leaving-blank-entries
+
 //[15:10:08 WRN] [Microsoft.AspNetCore.Server.Kestrel] [] Overriding address(es) 'https://localhost:7026, http://localhost:5256'. Binding to endpoints defined via IConfiguration and/or UseKestrel() instead. []
 //[15:10:08 INF] [Microsoft.Hosting.Lifetime][{ Id: 14, Name: "ListeningOnAddress" }] Now listening on: http://localhost:7000 []
 //[15:10:08 INF] [Microsoft.Hosting.Lifetime] [{ Id: 14, Name: "ListeningOnAddress" }] Now listening on: https://localhost:7001 []
