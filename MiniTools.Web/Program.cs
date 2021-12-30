@@ -16,23 +16,15 @@ using MiniTools.Web.MongoEntities;
 using MiniTools.Web.DataEntities;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
-
+using MiniTools.Web.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// TODO: Move configuration stuff here
+
 AppStartup.AddAppSettings(builder.Configuration, builder.Environment);
 
-AppStartup.SetupLogging(builder.Configuration, builder.Host);
-
-//builder.Logging.Configure(options =>
-//{
-    
-//    options.ActivityTrackingOptions = ActivityTrackingOptions.SpanId
-//                                              | ActivityTrackingOptions.TraceId
-//                                              | ActivityTrackingOptions.ParentId
-//                                              | ActivityTrackingOptions.Baggage
-//                                              | ActivityTrackingOptions.Tags;
-//});
+AppStartup.SetupLogging(builder.Configuration, builder.Logging, builder.Host);
 
 AppStartup.SetupHttpLogging(builder.Configuration, builder.Services);
 
@@ -64,7 +56,8 @@ builder.Services.AddDistributedMemoryCache();
 
 builder.Services.AddControllersWithViews();
 
-builder.Services.AddControllersWithViews(options => {
+builder.Services.AddControllersWithViews(options =>
+{
     // Add the filters that you want to apply globally here
     //options.Filters.Add(new LogActionFilterAttribute());
 
@@ -94,11 +87,18 @@ builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<UserCollectionService>();
 builder.Services.AddScoped<JwtService>();
 
+//builder.Services.AddTransient<MiniTools.Web.Helpers.ActivityEnricher>(sp =>
+//{
+//    var httpAccessor = sp.GetRequiredService<IHttpContextAccessor>();
+//    return new MiniTools.Web.Helpers.ActivityEnricher(httpAccessor);
+//});
+
 
 
 //builder.Services.AddHttpClient<AuthenticationService>();
 builder.Services.AddHttpClient<UserApiService>();
 builder.Services.AddHttpClient<AuthenticationApiService>();
+
 
 // builder.Services.AddOptions<MongoDbOptions>("ass");
 
@@ -188,7 +188,7 @@ builder.Services.AddSingleton<ApplicationSettings>(sp => new ApplicationSettings
 // builder.Services.Configure<MongoDbSettings>(options => builder.Configuration.GetSection("mongodb:minitools").Bind(options));
 
 builder.Services.Configure<MongoDbSettings>(
-    "mongodb:minitools", 
+    "mongodb:minitools",
     builder.Configuration.GetSection("mongodb:minitools")
     );
 
@@ -259,6 +259,23 @@ if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue<bool>(
 var app = builder.Build();
 
 
+
+// KIV: Don't see value for this vs custom HTTP logging
+// See: https://github.com/serilog/serilog-aspnetcore
+//app.UseSerilogRequestLogging(options =>
+//{
+//    // Customize the message template
+//    options.MessageTemplate = "Handled {RequestPath}";
+//    // Emit debug-level events instead of the defaults
+//    options.GetLevel = (httpContext, elapsed, ex) => Serilog.Events.LogEventLevel.Debug;
+//    // Attach additional properties to the request completion event
+//    options.EnrichDiagnosticContext = (diagnosticContext, httpContext) =>
+//    {
+//        diagnosticContext.Set("RequestHost", httpContext.Request.Host.Value);
+//        diagnosticContext.Set("RequestScheme", httpContext.Request.Scheme);
+//    };
+//});
+
 // Configure the HTTP request pipeline.
 // The correct middleware order should follow:
 // ExceptionHandler
@@ -289,7 +306,6 @@ if (app.Environment.IsDevelopment())
     //    c.SwaggerEndpoint("/swagger/v1/swagger.json", $"{openApiInfo.Title}; {openApiInfo.Version}");
     //});
 }
-
 
 if (app.Environment.IsDevelopment())
 {
@@ -344,6 +360,8 @@ app.UseSession();
 // Map Endpoints
 
 app.MapHealthChecks("/health").AllowAnonymous();
+
+app.UseRequestHeaderLogging();
 
 app.MapControllerRoute(
     name: "default",

@@ -9,6 +9,7 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using MiniTools.Web.Helpers.HttpMessageLogging;
 using Serilog;
+using MiniTools.Web.Helpers;
 
 namespace MiniTools.Web.Services;
 
@@ -20,14 +21,34 @@ public static class AppSettingsKey
 
 public static class AppStartupService
 {
-    internal static void SetupLogging(ConfigurationManager configuration, ConfigureHostBuilder host)
+    internal static void SetupLogging(ConfigurationManager configuration, ILoggingBuilder logging, ConfigureHostBuilder host)
     {
-        // EnableHttpLogging
+        // KIV: Setting ActivityTrackingOptions have no impact on Serilog. (booo!)
+        // Probably because Serilog does not use LoggerExternalScopeProvider
+        // (and hence not be able to get the values from the logging scope automatically)
+        // See: https://github.com/serilog/serilog-aspnetcore/issues/207
+        // Nlog initially seems to have the same issue, but they have since fixed it.
+        // See: https://issueexplorer.com/issue/NLog/NLog.Extensions.Logging/445
+
+        //logging.Configure(options =>
+        //{
+        //    //  flags to indicate which trace context parts should be included with the logging scopes.
+        //    options.ActivityTrackingOptions =
+        //        ActivityTrackingOptions.SpanId
+        //        | ActivityTrackingOptions.TraceId
+        //        | ActivityTrackingOptions.ParentId
+        //        | ActivityTrackingOptions.TraceState
+        //        | ActivityTrackingOptions.TraceFlags
+        //        | ActivityTrackingOptions.Tags
+        //        | ActivityTrackingOptions.Baggage;
+        //});
+
         if (configuration.GetValue<bool>(AppSettingsKey.APPLICATION_USE_SERILOG))
         {
             host.UseSerilog((hostBuilderContext, loggerConfiguration) =>
             {
                 loggerConfiguration.ReadFrom.Configuration(hostBuilderContext.Configuration);
+                //loggerConfiguration.Enrich.With<ActivityEnricher>();
             });
         }
     }

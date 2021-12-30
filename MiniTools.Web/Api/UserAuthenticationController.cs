@@ -42,10 +42,11 @@ public class UserAuthenticationController : ControllerBase
 
         OperationResult<UserAccount> op = await authenticationService.GetValidUserAsync(model);
 
-        _logger.LogInformation(new EventId(234, "AuthAsync"), "{@res}", System.Diagnostics.Activity.Current);
+        _logger.LogInformation(new EventId(234, "AuthAsync"), "{@res}", 12345 // System.Diagnostics.Activity.Current
+            );
 
-        
 
+       
         if (!op.Success)
             return Unauthorized();
 

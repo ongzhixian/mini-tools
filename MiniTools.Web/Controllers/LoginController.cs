@@ -51,6 +51,8 @@ public class LoginController : Controller
         if (!ModelState.IsValid)
             return BadRequest(model);
 
+        logger.LogInformation(new EventId(123, "IndexAsync"), "{asd}", 1111);
+
         try
         {
             OperationResult<LoginResponse> result = await authenticationApiService.IsValidCredentialsAsync(model);
