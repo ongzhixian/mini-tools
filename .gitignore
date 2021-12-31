@@ -354,3 +354,5 @@ ignore/
 ako.ps1
 *secrets.json
 *Production.json
+**/deploy.zip
+.azure
