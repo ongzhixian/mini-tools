@@ -16,11 +16,12 @@ $b = [System.Security.Cryptography.SHA1CryptoServiceProvider]::new().ComputeHash
 
 $ans = 0
 for ($i = 0; $i -lt $b.Length; $i++) {
-    Write-Host $($b[$i] * ($i + 1))
+    # Write-Host $($b[$i] * ($i + 1))
     $ans = $ans + $($b[$i] * ($i + 1))
 }
 
-Write-Host "Final" $ans
+"$ans$($ans % 11)" | Set-Clipboard
+Write-Host "Final: $ans$($ans % 11)" 
 
 # [Numerics.BigInteger]::new([Text.Encoding]::UTF8.GetBytes("MiniTools.Web.Controllers.LoginController"))
 
