@@ -111,6 +111,7 @@ public class LoginController : Controller
         catch (Exception ex)
         {
             ViewBag.Alert = $"Application error. Please contact system administrator with {HttpContext.TraceIdentifier}.";
+            logger.LogError(new EventId(3923, "Error"), ex, "Error");
             logger.LogMvcView(ControllerContext, model);
             return View(model);
         }

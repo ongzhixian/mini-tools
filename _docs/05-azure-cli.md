@@ -23,7 +23,7 @@ Compress-Archive -Path D:\src\github\mini-tools\MiniTools.Web\bin\Release\net6.0
 
 
 Works!
-PS> az webapp deploy --name mini-tools-app --resource-group telera-resource-group --src-path deploy.zip --type zip
+PS> az webapp deploy --name mini-tools --resource-group telera-resource-group --src-path deploy.zip --type zip
 This command is in preview and under development. Reference and support levels: https://aka.ms/CLI_refstatus
 
 
@@ -41,4 +41,47 @@ PS> az webapp up --sku F1 --name mini-tools-app --os-type Windows --runtime "DOT
 ```
 {"Message":"An error has occurred.","ExceptionMessage":"No log found for 'latest'.","ExceptionType":"System.IO.FileNotFoundException","StackTrace":"   at Kudu.Core.Deployment.DeploymentManager.GetLogEntries(String id) in C:\\Kudu Files\\Private\\src\\master\\Kudu.Core\\Deployment\\DeploymentManager.cs:line 98
    at Kudu.Services.Deployment.DeploymentController.GetLogEntry(String id) in C:\\Kudu Files\\Private\\src\\master\\Kudu.Services\\Deployment\\DeploymentController.cs:line 376"}
+```
+
+
+## Publish script
+```
+dotnet publish .\MiniTools.Web\ --configuration=Release
+Compress-Archive -Path D:\src\github\mini-tools\MiniTools.Web\bin\Release\net6.0\publish\* deploy.zip -Force
+az webapp deploy --name mini-tools --resource-group telera-resource-group --src-path deploy.zip --type zip
+```
+
+```
+Write-Host "Publishing project..."
+dotnet publish .\MiniTools.Web\ --configuration=Release
+
+if ($LASTEXITCODE)
+{
+    Write-Host "Publish failed"
+    exit 1
+}
+
+Write-Host "Project published."
+Write-Host "Zipping output to 'deploy.zip'..."
+
+Compress-Archive -Path D:\src\github\mini-tools\MiniTools.Web\bin\Release\net6.0\publish\* deploy.zip -Force
+
+if ($LASTEXITCODE)
+{
+    Write-Host "Making  zip file ('deploy.zip') failed."
+    exit 1
+}
+
+Write-Host "Zip file 'deploy.zip' created."
+Write-Host "Deploying to Azure..."
+
+az webapp deploy --name mini-tools --resource-group telera-resource-group --src-path deploy.zip --type zip
+
+if ($LASTEXITCODE)
+{
+    Write-Host "Failed to deploy to Azure."
+    exit 1
+}
+
+Write-Host "Deployment completed."
 ```
