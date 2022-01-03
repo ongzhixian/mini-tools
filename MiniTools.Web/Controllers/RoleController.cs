@@ -16,7 +16,6 @@ namespace MiniTools.Web.Controllers
         // GET: RoleController
         public ActionResult Index()
         {
-
             return View();
         }
 

@@ -72,5 +72,4 @@ public class DemoController : Controller
 
         logger.LogInformation(eventId, "ex1 [{eventSrc}] - {onEvent} [{requestId}]", eventSrc, eventId, requestId);
     }
-
 }

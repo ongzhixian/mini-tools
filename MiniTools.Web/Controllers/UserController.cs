@@ -25,7 +25,7 @@ public class UserController : Controller
     public async Task<ActionResult> IndexAsync(ushort page, ushort pageSize)
     {
         // https://localhost:7001/User?page=1&pageSize=25
-        
+
         page = (page <= 0) ? (ushort)1 : page;
         pageSize = (pageSize <= 0) ? (ushort)15 : pageSize;
 
@@ -57,7 +57,6 @@ public class UserController : Controller
             //FirstName = "SomeFirstName",
             //LastName = "SomeLastName",
             //Email = "SomeUsername@local.local"
-            
         });
     }
 

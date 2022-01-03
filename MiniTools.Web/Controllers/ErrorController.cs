@@ -66,6 +66,4 @@ public class ErrorController : Controller
 
     //     return View();
     // }
-
-
 }

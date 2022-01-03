@@ -19,11 +19,13 @@ public class LoginController : Controller
 
     private readonly JwtService jwtService;
 
-    public LoginController(ILogger<LoginController> logger, AuthenticationApiService authenticationApiService, JwtService jwtService)
+    public LoginController(ILogger<LoginController> logger, AuthenticationApiService authenticationApiService,
+        JwtService jwtService)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
-        
-        this.authenticationApiService = authenticationApiService ?? throw new ArgumentNullException(nameof(authenticationApiService));
+
+        this.authenticationApiService = authenticationApiService ??
+                                        throw new ArgumentNullException(nameof(authenticationApiService));
 
         this.jwtService = jwtService ?? throw new ArgumentNullException(nameof(jwtService));
     }
@@ -110,7 +112,8 @@ public class LoginController : Controller
         }
         catch (Exception ex)
         {
-            ViewBag.Alert = $"Application error. Please contact system administrator with {HttpContext.TraceIdentifier}.";
+            ViewBag.Alert =
+                $"Application error. Please contact system administrator with {HttpContext.TraceIdentifier}.";
             logger.LogError(new EventId(3923, "Error"), ex, "Error");
             logger.LogMvcView(ControllerContext, model);
             return View(model);

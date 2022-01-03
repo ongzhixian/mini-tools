@@ -15,6 +15,7 @@ public class HomeController : Controller
         internal static EventId VIEW_HOME = new EventId(101, "View home");
         internal static EventId VIEW_PRIVACY = new EventId(102, "View privacy");
     }
+
     private readonly ILogger<HomeController> logger;
 
     public HomeController(ILogger<HomeController> logger)
@@ -26,14 +27,16 @@ public class HomeController : Controller
 
     public IActionResult Index()
     {
-        logger.LogInformation(On.VIEW_HOME, "{onEvent} - Controller [{controllerName}]", On.VIEW_HOME, nameof(HomeController));
+        logger.LogInformation(On.VIEW_HOME, "{onEvent} - Controller [{controllerName}]", On.VIEW_HOME,
+            nameof(HomeController));
 
         return View();
     }
 
     public IActionResult Privacy()
     {
-        logger.LogInformation(On.VIEW_PRIVACY, "{onEvent} - Controller [{controllerName}]", On.VIEW_PRIVACY, nameof(HomeController));
+        logger.LogInformation(On.VIEW_PRIVACY, "{onEvent} - Controller [{controllerName}]", On.VIEW_PRIVACY,
+            nameof(HomeController));
 
         return View();
     }

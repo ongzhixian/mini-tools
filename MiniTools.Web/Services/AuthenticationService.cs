@@ -33,12 +33,12 @@ public class AuthenticationService
 
     internal async Task<bool> ValidCredentialsAsync(LoginRequest model)
     {
-        if (model == null || model.Username == null || model.Password == null)
+        if (model.Username == null || model.Password == null)
             return false;
 
         // Get UserAccount
 
-        var user = await userCollectionService.FindUserByUsernameAsync(model.Username);
+        User user = await userCollectionService.FindUserByUsernameAsync(model.Username);
 
         if (user == null)
             return false;

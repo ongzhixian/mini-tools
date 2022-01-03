@@ -35,3 +35,7 @@ body {
 .current {
     font-weight: bold;
 }
+
+.interactive {
+    cursor:pointer;
+}
