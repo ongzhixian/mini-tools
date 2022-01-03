@@ -63,7 +63,7 @@ public class UserApiService
             // logger.LogInformation("apiSettings", apiSettings.Api["CommonApi"]);
             // logger.LogInformation("mongoDbSettings connectionString: {connectionString}", mongoDbSettings.ConnectionString);
 
-            if (apiSettings.ContainsKey("CommonApi"))
+            if ((apiSettings != null) && (apiSettings.ContainsKey("CommonApi")))
             {
                 string serverUrl = apiSettings["CommonApi"];
 
@@ -107,12 +107,12 @@ public class UserApiService
         // httpClient.GetFromJsonAsync<> // <GetUserRequest>
         var result = await httpClient.GetAsync(url);
 
-        var res = await result.Content.ReadFromJsonAsync<PageData<UserAccount>>();
-
         if (!result.IsSuccessStatusCode)
         {
             throw new Exception("Oh no! What now?");
         }
+
+        PageData<UserAccount>? res = await result.Content.ReadFromJsonAsync<PageData<UserAccount>>();
 
         return res;
     }

@@ -4,9 +4,17 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 @{
-    uint row = ((uint)(Model.Page - 1) * (uint)(Model.PageSize)) + 1;
-    uint recordStart = row;
-    uint recordEnd = row + (uint)Model.DataList.Count() - 1;
+    uint row = 0;
+    uint recordStart = 0;
+    uint recordEnd = 0;
+
+    if (Model == null)
+        return;
+
+    row = ((uint)(Model.Page - 1) * (uint)(Model.PageSize)) + 1;
+    recordStart = row;
+    if (Model.DataList != null)
+        recordEnd = row + (uint)Model.DataList.Count() - 1;
 
     //ulong fullPagesCount = Model.RecordCount / Model.PageSize;
     //ulong partialPageCount = (ulong)((Model.RecordCount % Model.PageSize > 0) ? 1 : 0);
@@ -130,16 +138,20 @@
             <td>Suspend</td>
             <td></td>
             </tr>*@
-        @foreach (var item in Model.DataList)
+        @if (Model.DataList != null)
         {
-            <tr>
-                <th scope="row">@(row++)</th>
-                <td colspan="2">@item.Username</td>
-                <td>Suspend</td>
-                <td></td>
-            </tr>
+            foreach (var item in Model.DataList)
+            {
+                <tr>
+                    <th scope="row">@(row++)</th>
+                    <td colspan="2">@item.Username</td>
+                    <td>Suspend</td>
+                    <td></td>
+                </tr>
 
+            }    
         }
+        
     </tbody>
 </table>
 

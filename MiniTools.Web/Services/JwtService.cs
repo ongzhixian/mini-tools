@@ -9,7 +9,7 @@ namespace MiniTools.Web.Services
 {
     public class JwtService
     {
-        private readonly IConfiguration _configuration;
+        //private readonly IConfiguration _configuration;
 
         private readonly JwtSecurityTokenHandler jwtSecurityTokenHandler;
 

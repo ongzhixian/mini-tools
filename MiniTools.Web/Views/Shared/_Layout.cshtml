@@ -33,7 +33,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-                        @if (User.Identity.IsAuthenticated)
+                        @if ((User.Identity != null) && (User.Identity.IsAuthenticated))
                         {
                             <li class="nav-item">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Logout" asp-action="Index">Log out</a>
@@ -81,7 +81,11 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2021 - @applicationSettings.Name v@(applicationSettings.Version) - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> (@User.Identity.IsAuthenticated)
+            &copy; 2021 - @applicationSettings.Name v@(applicationSettings.Version) - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            @if (User.Identity != null)
+            {
+                <text>(@User.Identity.IsAuthenticated)</text>
+            }
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

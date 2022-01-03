@@ -31,6 +31,9 @@ public class UserController : Controller
 
         PageData<UserAccount>? userList = await userApi.GetUserListAsync(page, pageSize);
 
+        if (userList == null)
+            userList = new PageData<UserAccount>();
+
         PageDataViewModel<UserAccount> result = new PageDataViewModel<UserAccount>(userList);
 
         return View(result);
