@@ -132,3 +132,19 @@ jb inspectcode --build --output=inspectcode-result.html --format=Html .\MiniTool
 dotnet dotcover test  --dcReportType=HTML --dcOutput=dotcover.html  .\Dn6Poc.DocuMgmtPortal.Tests\
 
 dotnet watch dotcover test  --dcReportType=HTML --dcOutput=dotcover.html  --project .\Dn6Poc.DocuMgmtPortal.Tests\
+
+
+# Testing
+
+Unit tests          -- test discrete unit of code
+Functional tests    -- test a story (feature)
+End-to-end tests    -- test a UI step
+
+dotnet new mstest -n MiniTools.Web.UnitTests
+
+mkdir MiniTools.Web.FunctionTests
+dotnet new specflowproject -n MiniTools.Web.FunctionTests
+
+dotnet new mstest -n MiniTools.Web.E2eTests
+dotnet add .\MiniTools.Web.E2eTests\ package Microsoft.Playwright
+
