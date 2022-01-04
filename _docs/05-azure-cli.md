@@ -11,6 +11,24 @@ az account list-locations | convertfrom-json | select name
 
 os-type == Windows | Linux
 
+
+## Creation
+
+`az group create --name mini-tools-rg --location southeastasia --tags project=mini-tools`
+
+`az appservice plan create --name mini-tools-appservice-plan --resource-group mini-tools-rg --location southeastasia --sku FREE --tags project=mini-tools`
+
+`az storage account create --name minitools --resource-group mini-tools-rg --location southeastasia --sku Standard_LRS --tags project=mini-tools`
+
+`az webapp create --name mini-tools --plan mini-tools-appservice-plan --resource-group mini-tools-rg --runtime DOTNET:6.0`
+
+--DEPLOYMENT
+
+`dotnet publish .\MiniTools.Web\ --configuration=Release`
+`Compress-Archive -Path C:\src\github.com\ongzhixian\mini-tools\MiniTools.Web\bin\Release\net6.0\publish\* deploy.zip -Force`
+`az webapp deploy --name mini-tools --resource-group mini-tools-rg --src-path deploy.zip --type zip`
+
+
 ## Zip
 
 Compress-Archive -Path D:\src\github\mini-tools\MiniTools.Web\bin\Release\net6.0\publish\* deploy.zip -Force
