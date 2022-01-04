@@ -7,7 +7,12 @@ using MiniTools.Web.Options;
 
 namespace MiniTools.Web.Services;
 
-public class AuthenticationApiService
+public interface IAuthenticationApiService
+{
+    Task<OperationResult<LoginResponse>> IsValidCredentialsAsync(LoginViewModel model);
+}
+
+public class AuthenticationApiService : IAuthenticationApiService
 {
     private static class On
     {
@@ -24,6 +29,11 @@ public class AuthenticationApiService
     private readonly ILogger<AuthenticationApiService> logger;
 
     private readonly HttpClient httpClient;
+
+    public AuthenticationApiService()
+    {
+
+    }
 
     public AuthenticationApiService(
         ILogger<AuthenticationApiService> logger,
@@ -76,7 +86,7 @@ public class AuthenticationApiService
         }
     }
 
-    internal async Task<OperationResult<LoginResponse>> IsValidCredentialsAsync(LoginViewModel model)
+    public async Task<OperationResult<LoginResponse>> IsValidCredentialsAsync(LoginViewModel model)
     {
         HttpResponseMessage? result = await httpClient.PostAsJsonAsync<LoginRequest>("/api/UserAuthentication", new LoginRequest(model));
 
@@ -89,7 +99,7 @@ public class AuthenticationApiService
         try
         {
             LoginResponse? loginResponse = await result.Content.ReadFromJsonAsync<LoginResponse>();
-            
+
             if (loginResponse != null)
             {
                 logger.LogInformation(On.VALIDATE_SUCCESS, "{@IsSuccessStatusCode} {@response}", result.IsSuccessStatusCode);

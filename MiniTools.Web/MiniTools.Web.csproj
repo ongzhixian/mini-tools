@@ -27,4 +27,8 @@
     <Folder Include="Areas\ExamArea\Views\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Include="..\.editorconfig" Link=".editorconfig" />
+  </ItemGroup>
+
 </Project>

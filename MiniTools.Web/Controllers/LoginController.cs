@@ -15,12 +15,12 @@ public class LoginController : Controller
 {
     private readonly ILogger<LoginController> logger;
 
-    private readonly AuthenticationApiService authenticationApiService;
+    private readonly IAuthenticationApiService authenticationApiService;
 
-    private readonly JwtService jwtService;
+    private readonly IJwtService jwtService;
 
-    public LoginController(ILogger<LoginController> logger, AuthenticationApiService authenticationApiService,
-        JwtService jwtService)
+    public LoginController(ILogger<LoginController> logger, IAuthenticationApiService authenticationApiService,
+        IJwtService jwtService)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
 
@@ -101,10 +101,13 @@ public class LoginController : Controller
                 // redirect response value.
             };
 
-            await HttpContext.SignInAsync(
+            if (HttpContext != null)
+            {
+                await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
                 authProperties);
+            }
 
             return RedirectToAction(nameof(Index));
 
@@ -113,7 +116,7 @@ public class LoginController : Controller
         catch (Exception ex)
         {
             ViewBag.Alert =
-                $"Application error. Please contact system administrator with {HttpContext.TraceIdentifier}.";
+                $"Application error. Please contact system administrator with {HttpContext?.TraceIdentifier}.";
             logger.LogError(new EventId(3923, "Error"), ex, "Error");
             logger.LogMvcView(ControllerContext, model);
             return View(model);

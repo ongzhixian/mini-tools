@@ -141,6 +141,9 @@ Functional tests    -- test a story (feature)
 End-to-end tests    -- test a UI step
 
 dotnet new mstest -n MiniTools.Web.UnitTests
+dotnet add .\MiniTools.Web.UnitTests\MiniTools.Web.UnitTests.csproj package Moq --version 4.16.1
+
+dotnet add package Moq --version 4.16.1
 
 mkdir MiniTools.Web.FunctionTests
 dotnet new specflowproject -n MiniTools.Web.FunctionTests --framework net6.0 --unittestprovider mstest

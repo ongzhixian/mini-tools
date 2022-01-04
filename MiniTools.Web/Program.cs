@@ -85,7 +85,7 @@ builder.Services.AddScoped<IMongoClient, MongoClient>();
 
 builder.Services.AddScoped<AuthenticationService>();
 builder.Services.AddScoped<UserCollectionService>();
-builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<IJwtService, JwtService>();
 
 //builder.Services.AddTransient<MiniTools.Web.Helpers.ActivityEnricher>(sp =>
 //{
@@ -97,7 +97,8 @@ builder.Services.AddScoped<JwtService>();
 
 //builder.Services.AddHttpClient<AuthenticationService>();
 builder.Services.AddHttpClient<UserApiService>();
-builder.Services.AddHttpClient<AuthenticationApiService>();
+builder.Services.AddHttpClient<IAuthenticationApiService, AuthenticationApiService>();
+
 
 
 // builder.Services.AddOptions<MongoDbOptions>("ass");

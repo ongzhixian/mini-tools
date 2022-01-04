@@ -12,15 +12,15 @@ public static class LoggerExtensions
     public static void LogMvcView(this ILogger logger, ControllerContext context, object data)
     {
         logger.LogInformation(On.MVC_VIEW, "{@controllerName}-{@actionName} {@data}",
-            context.ActionDescriptor.ControllerName,
-            context.ActionDescriptor.ActionName, data);
+            context.ActionDescriptor?.ControllerName,
+            context.ActionDescriptor?.ActionName, data);
     }
 
     public static void LogMvcView(this ILogger logger, EventId eventId, ControllerContext context)
     {
         logger.LogInformation(eventId, "{@controllerName}-{@actionName}",
-            context.ActionDescriptor.ControllerName,
-            context.ActionDescriptor.ActionName);
+            context.ActionDescriptor?.ControllerName,
+            context.ActionDescriptor?.ActionName);
     }
 
 }
