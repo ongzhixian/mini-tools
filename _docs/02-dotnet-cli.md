@@ -166,6 +166,8 @@ playwright install chrome
 playwright codegen --channel msedge https://localhost:7241/
 playwright codegen http://localhost
 
+playwright codegen https://localhost:7001/Login
+
 dotnet test .\MiniTools.Web.E2eTests\
 
 dotnet test --filter TestCategory!=e2e
