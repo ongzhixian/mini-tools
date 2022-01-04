@@ -20,11 +20,11 @@ public class UserAuthenticationController : ControllerBase
     private readonly ILogger<UserAuthenticationController> _logger;
     private readonly IConfiguration _configuration;
     private readonly AuthenticationService authenticationService;
-    private readonly JwtService jwtService;
+    private readonly IJwtService jwtService;
     
     public UserAuthenticationController(ILogger<UserAuthenticationController> logger, IConfiguration configuration
         , AuthenticationService authenticationService
-        , JwtService jwtService
+        , IJwtService jwtService
         )
     {
         _logger = logger ?? throw new ArgumentNullException(nameof(logger));

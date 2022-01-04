@@ -9,6 +9,9 @@ namespace MiniTools.Web.Services;
 
 public interface IJwtService
 {
+    JwtSecurityToken CreateToken(List<Claim> authClaims);
+
+    string ToCompactSerializationFormat(JwtSecurityToken token);
     IEnumerable<Claim> GetClaims(string jwt);
 }
 
@@ -35,7 +38,7 @@ public class JwtService : IJwtService
         jwtSecurityTokenHandler = new JwtSecurityTokenHandler();
     }
 
-    internal JwtSecurityToken CreateToken(List<Claim> authClaims)
+    public JwtSecurityToken CreateToken(List<Claim> authClaims)
     {
         //string jwtSecret = _configuration["JWT:SecretKey"];
         //string jwtValidIssuer = _configuration["JWT:ValidIssuer"];
@@ -58,7 +61,7 @@ public class JwtService : IJwtService
         return token;
     }
 
-    internal string ToCompactSerializationFormat(JwtSecurityToken token)
+    public string ToCompactSerializationFormat(JwtSecurityToken token)
     {
         return jwtSecurityTokenHandler.WriteToken(token);
     }
