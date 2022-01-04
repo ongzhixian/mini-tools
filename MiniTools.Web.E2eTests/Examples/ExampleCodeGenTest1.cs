@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 
 namespace MiniTools.Web.E2eTests;
 
+[TestCategory("e2e")]
 [TestClass]
 public class ExampleCodeGenTest1
 {

@@ -143,7 +143,10 @@ End-to-end tests    -- test a UI step
 dotnet new mstest -n MiniTools.Web.UnitTests
 
 mkdir MiniTools.Web.FunctionTests
-dotnet new specflowproject -n MiniTools.Web.FunctionTests
+dotnet new specflowproject -n MiniTools.Web.FunctionTests --framework net6.0 --unittestprovider mstest
+--Yeah, its weird, but not sure why specflowproject does not include MSTest.TestFramework
+dotnet add .\MiniTools.Web.FunctionTests package MSTest.TestFramework
+
 
 ## E2E using Playwright
 
@@ -161,6 +164,25 @@ playwright codegen --channel msedge https://localhost:7241/
 playwright codegen http://localhost
 
 dotnet test .\MiniTools.Web.E2eTests\
+
+dotnet test --filter TestCategory!=e2e
+
+dotnet test --filter FullyQualifiedName!~E2eTests
+
+dotnet test --filter FullyQualifiedName!~IntegrationTests
+
+Operators:
+=   exact match
+!=  not exact match
+~   contains
+!~  doesn't contain
+
+Properties:
+FullyQualifiedName
+Name
+ClassName
+Priority
+TestCategory
 
 
 Available browsers: chromium, chrome, chrome-beta, msedge, msedge-beta, msedge-dev, firefox, webkit
