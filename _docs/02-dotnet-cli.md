@@ -145,6 +145,54 @@ dotnet new mstest -n MiniTools.Web.UnitTests
 mkdir MiniTools.Web.FunctionTests
 dotnet new specflowproject -n MiniTools.Web.FunctionTests
 
+## E2E using Playwright
+
+-- Installation
 dotnet new mstest -n MiniTools.Web.E2eTests
 dotnet add .\MiniTools.Web.E2eTests\ package Microsoft.Playwright
+dotnet add .\MiniTools.Web.E2eTests\ package Microsoft.Playwright.MSTest
+dotnet build .\MiniTools.Web.E2eTests\
+playwright install chromium
+playwright install msedge
+playwright install chrome
 
+-- Create tests
+playwright codegen --channel msedge https://localhost:7241/
+playwright codegen http://localhost
+
+dotnet test .\MiniTools.Web.E2eTests\
+
+
+Available browsers: chromium, chrome, chrome-beta, msedge, msedge-beta, msedge-dev, firefox, webkit
+Note: Its probably a good idea to install the browser manually before `playwright install <browser>`
+Note: The default use "chromium"; to use another browser as default, we can set a environment variable `BROWSER`.
+      But it does not seems to work well with `msedge`
+      See: https://playwright.dev/dotnet/docs/test-runners
+      See: https://playwright.dev/dotnet/docs/browsers#when-to-use-google-chrome--microsoft-edge-and-when-not-to
+
+```Does not work for now; 
+$env:BROWSER="msedge"
+dotnet test .\MiniTools.Web.E2eTests\
+```
+
+[assembly: Parallelize(Workers = 4, Scope = ExecutionScope.ClassLevel)]
+[DoNotParallelize()]
+
+```xml:Sample `test.runsettings` file
+<?xml version="1.0" encoding="utf-8"?>
+<RunSettings>
+    <!-- MSTest adapter -->
+    <MSTest>
+        <Parallelize>
+            <Workers>4</Workers>
+            <Scope>ClassLevel</Scope>
+        </Parallelize>
+    </MSTest>
+</RunSettings>
+```
+
+Alternatives:
+https://docs.microsoft.com/en-us/microsoft-edge/test-and-automation/devtools-protocol
+https://docs.microsoft.com/en-us/microsoft-edge/puppeteer/
+https://docs.microsoft.com/en-us/microsoft-edge/webdriver-chromium/?tabs=c-sharp
+https://webhint.io/
