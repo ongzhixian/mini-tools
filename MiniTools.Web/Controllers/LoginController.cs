@@ -61,7 +61,7 @@ public class LoginController : Controller
 
             if (!result.Success)
             {
-                ViewBag.Alert = $"Invalid user credentials provided. {HttpContext.TraceIdentifier}";
+                ViewBag.Alert = $"Invalid user credentials provided. {HttpContext?.TraceIdentifier}";
                 logger.LogMvcView(ControllerContext, model);
                 return View(model);
             }
