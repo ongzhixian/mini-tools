@@ -202,6 +202,17 @@ $env:BROWSER="msedge"
 dotnet test .\MiniTools.Web.E2eTests\
 ```
 
+`playwright codegen https://localhost:7001/Login`
+
+To codegen with authentication:
+
+1.  Perform authentication and exit; auth.json will contain the storage state.  
+`playwright codegen --save-storage=auth.json https://localhost:7001/Login`
+2.  Load the storage state from the file and open web site in code gen mode.
+`playwright codegen --load-storage=auth.json https://localhost:7001/Login`
+--OR (without not using codegen)--
+`playwright open --load-storage=auth.json https://localhost:7001/Login`
+
 [assembly: Parallelize(Workers = 4, Scope = ExecutionScope.ClassLevel)]
 [DoNotParallelize()]
 
