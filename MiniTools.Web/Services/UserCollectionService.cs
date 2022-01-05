@@ -145,6 +145,14 @@ namespace MiniTools.Web.Services
                 else
                     dataSort = Builders<User>.Sort.Descending(sortField);
 
+                IFindFluent<User, User>? result2 = userCollection
+                    .Find(Builders<User>.Filter.Empty)
+                    .Sort(dataSort)
+                    .Skip(page * pageSize)
+                    .Limit(pageSize);
+
+                var listres = result2.ToList();
+
                 var result = await userCollection
                     .Find(Builders<User>.Filter.Empty)
                     .Sort(dataSort)

@@ -2,139 +2,133 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MiniTools.Web.Api.Requests;
 using MiniTools.Web.MongoEntities;
-using MiniTools.Web.Services;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace MiniTools.Web.Services.Tests
+namespace MiniTools.Web.Services.Tests;
+
+[TestClass()]
+public class AuthenticationServiceTests
 {
-    [TestClass()]
-    public class AuthenticationServiceTests
+    Mock<ILogger<AuthenticationService>> mockLogger = new Mock<ILogger<AuthenticationService>>();
+    Mock<IUserCollectionService> mockUserCollectionService = new Mock<IUserCollectionService>();
+
+    [TestInitialize]
+    public void BeforeTest()
     {
-        Mock<ILogger<AuthenticationService>> mockLogger = new Mock<ILogger<AuthenticationService>>();
-        Mock<IUserCollectionService> mockUserCollectionService = new Mock<IUserCollectionService>();
+        mockLogger = new Mock<ILogger<AuthenticationService>>();
+        mockUserCollectionService = new Mock<IUserCollectionService>();
+    }
 
-        [TestInitialize]
-        public void BeforeTest()
+    [TestMethod()]
+    public void AuthenticationServiceTest()
+    {
+        AuthenticationService service = new AuthenticationService(
+            mockLogger.Object,
+            mockUserCollectionService.Object
+            );
+
+        Assert.IsNotNull(service);
+    }
+
+    [TestMethod()]
+    public async Task GetValidUserAsyncTestAsync()
+    {
+        LoginRequest model = new LoginRequest()
         {
-            mockLogger = new Mock<ILogger<AuthenticationService>>();
-            mockUserCollectionService = new Mock<IUserCollectionService>();
-        }
+            Username = "someUsername",
+            Password = "somePassword"
+        };
 
-        [TestMethod()]
-        public void AuthenticationServiceTest()
+        mockUserCollectionService.Setup(m => m.FindUserByUsernameAsync(It.IsAny<string>())).ReturnsAsync(new User
         {
-            AuthenticationService service = new AuthenticationService(
-                mockLogger.Object,
-                mockUserCollectionService.Object
-                );
+            Username = "someUsername",
+            Password = "somePassword"
+        });
 
-            Assert.IsNotNull(service);
-        }
+        AuthenticationService service = new AuthenticationService(
+            mockLogger.Object,
+            mockUserCollectionService.Object
+            );
 
-        [TestMethod()]
-        public async Task GetValidUserAsyncTestAsync()
+        var result = await service.GetValidUserAsync(model);
+
+        Assert.IsNotNull(result);
+        Assert.IsInstanceOfType(result, typeof(Models.OperationResult<DataEntities.UserAccount>));
+        Assert.IsTrue(result.Success);
+    }
+
+    [TestMethod()]
+    public async Task GetValidUserAsyncEmptyModelTestAsync()
+    {
+        LoginRequest model = new LoginRequest();
+
+        mockUserCollectionService.Setup(m => m.FindUserByUsernameAsync(It.IsAny<string>())).ReturnsAsync(new User
         {
-            LoginRequest model = new LoginRequest()
-            {
-                Username = "someUsername",
-                Password = "somePassword"
-            };
+            Username = "someUsername",
+            Password = "somePassword"
+        });
 
-            mockUserCollectionService.Setup(m => m.FindUserByUsernameAsync(It.IsAny<string>())).ReturnsAsync(new User 
-            {
-                Username = "someUsername",
-                Password = "somePassword"
-            });
+        AuthenticationService service = new AuthenticationService(
+            mockLogger.Object,
+            mockUserCollectionService.Object
+            );
 
-            AuthenticationService service = new AuthenticationService(
-                mockLogger.Object,
-                mockUserCollectionService.Object
-                );
+        var result = await service.GetValidUserAsync(model);
 
-            var result = await service.GetValidUserAsync(model);
+        Assert.IsNotNull(result);
+        Assert.IsInstanceOfType(result, typeof(Models.OperationResult<DataEntities.UserAccount>));
+        Assert.IsFalse(result.Success);
+    }
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(Models.OperationResult<DataEntities.UserAccount>));
-            Assert.IsTrue(result.Success);
-        }
 
-        [TestMethod()]
-        public async Task GetValidUserAsyncEmptyModelTestAsync()
+    [TestMethod()]
+    public async Task GetValidUserAsyncNoRecordTestAsync()
+    {
+        LoginRequest model = new LoginRequest()
         {
-            LoginRequest model = new LoginRequest();
+            Username = "someUsername",
+            Password = "somePassword"
+        };
 
-            mockUserCollectionService.Setup(m => m.FindUserByUsernameAsync(It.IsAny<string>())).ReturnsAsync(new User
-            {
-                Username = "someUsername",
-                Password = "somePassword"
-            });
+        mockUserCollectionService.Setup(m => m.FindUserByUsernameAsync(It.IsAny<string>())).ReturnsAsync((User)null);
 
-            AuthenticationService service = new AuthenticationService(
-                mockLogger.Object,
-                mockUserCollectionService.Object
-                );
+        AuthenticationService service = new AuthenticationService(
+            mockLogger.Object,
+            mockUserCollectionService.Object
+            );
 
-            var result = await service.GetValidUserAsync(model);
+        var result = await service.GetValidUserAsync(model);
 
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(Models.OperationResult<DataEntities.UserAccount>));
-            Assert.IsFalse(result.Success);
-        }
+        Assert.IsNotNull(result);
+        Assert.IsInstanceOfType(result, typeof(Models.OperationResult<DataEntities.UserAccount>));
+        Assert.IsFalse(result.Success);
+    }
 
-
-        [TestMethod()]
-        public async Task GetValidUserAsyncNoRecordTestAsync()
+    [TestMethod()]
+    public async Task GetValidUserAsyncInvalidPasswordTestAsync()
+    {
+        LoginRequest model = new LoginRequest()
         {
-            LoginRequest model = new LoginRequest()
-            {
-                Username = "someUsername",
-                Password = "somePassword"
-            };
+            Username = "someUsername",
+            Password = "somePassword"
+        };
 
-            mockUserCollectionService.Setup(m => m.FindUserByUsernameAsync(It.IsAny<string>())).ReturnsAsync((User)null);
-
-            AuthenticationService service = new AuthenticationService(
-                mockLogger.Object,
-                mockUserCollectionService.Object
-                );
-
-            var result = await service.GetValidUserAsync(model);
-
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(Models.OperationResult<DataEntities.UserAccount>));
-            Assert.IsFalse(result.Success);
-        }
-
-        [TestMethod()]
-        public async Task GetValidUserAsyncInvalidPasswordTestAsync()
+        mockUserCollectionService.Setup(m => m.FindUserByUsernameAsync(It.IsAny<string>())).ReturnsAsync(new User
         {
-            LoginRequest model = new LoginRequest()
-            {
-                Username = "someUsername",
-                Password = "somePassword"
-            };
+            Username = "someUsername",
+            Password = "somePasswordX"
+        });
 
-            mockUserCollectionService.Setup(m => m.FindUserByUsernameAsync(It.IsAny<string>())).ReturnsAsync(new User
-            {
-                Username = "someUsername",
-                Password = "somePasswordX"
-            });
+        AuthenticationService service = new AuthenticationService(
+            mockLogger.Object,
+            mockUserCollectionService.Object
+            );
 
-            AuthenticationService service = new AuthenticationService(
-                mockLogger.Object,
-                mockUserCollectionService.Object
-                );
+        var result = await service.GetValidUserAsync(model);
 
-            var result = await service.GetValidUserAsync(model);
-
-            Assert.IsNotNull(result);
-            Assert.IsInstanceOfType(result, typeof(Models.OperationResult<DataEntities.UserAccount>));
-            Assert.IsFalse(result.Success);
-        }
+        Assert.IsNotNull(result);
+        Assert.IsInstanceOfType(result, typeof(Models.OperationResult<DataEntities.UserAccount>));
+        Assert.IsFalse(result.Success);
     }
 }
