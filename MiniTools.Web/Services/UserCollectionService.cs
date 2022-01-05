@@ -25,6 +25,15 @@ namespace MiniTools.Web.Services
         void GetUserAccountList(uint pageSize, uint page);
     }
 
+    public interface IUserCollectionService
+    {
+        Task<UserAccount> AddUserAsync(UserAccount userDocument);
+        Task<User> FindUserByUsernameAsync(string username);
+        Task<List<User>> GetUserAccountListAsync(int page = 0, int pageSize = 10, MongoDB.Driver.SortDirection sortDirection = MongoDB.Driver.SortDirection.Ascending, string sortField = "Username");
+        Task<PageData<UserAccount>> GetUserAccountListAsync(DataPageOption option);
+        Task<User> GetUserAsync(string id);
+    }
+
     //public interface IUserCollectionService
     //{
     //    Task<User> AddUserAsync(UserAccount userDocument);
@@ -33,7 +42,7 @@ namespace MiniTools.Web.Services
     //    Task<UpdateResult> UpdateUserAsync(string id);
     //}
 
-    public class UserCollectionService 
+    public class UserCollectionService : IUserCollectionService
     {
         private static class On
         {
@@ -48,7 +57,7 @@ namespace MiniTools.Web.Services
             internal static readonly EventId ADD_USER_ASYNC_ERROR = new EventId(501, "AddUserAsync Error");
 
             internal static readonly EventId GET_USER_ACCOUNT_LIST_ASYNC_ERROR = new EventId(501, "GetUserAccountListAsync Error");
-            
+
         }
 
         readonly ILogger<UserCollectionService> logger;
@@ -135,6 +144,14 @@ namespace MiniTools.Web.Services
                     dataSort = Builders<User>.Sort.Ascending(sortField);
                 else
                     dataSort = Builders<User>.Sort.Descending(sortField);
+
+                IFindFluent<User, User>? result2 = userCollection
+                    .Find(Builders<User>.Filter.Empty)
+                    .Sort(dataSort)
+                    .Skip(page * pageSize)
+                    .Limit(pageSize);
+
+                var listres = result2.ToList();
 
                 var result = await userCollection
                     .Find(Builders<User>.Filter.Empty)

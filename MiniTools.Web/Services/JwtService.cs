@@ -82,11 +82,9 @@ public class JwtService : IJwtService
                 ValidateIssuer = true,
                 ValidateAudience = true,
                 ValidIssuer = jwtSettings.ValidIssuer,
-                ValidAudience = jwtSettings.ValidIssuer,
+                ValidAudience = jwtSettings.ValidAudience,
                 IssuerSigningKey = authSigningKey
             }, out _);
-
-
 
         return claimPrincipal.Claims;
     }

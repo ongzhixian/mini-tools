@@ -129,9 +129,9 @@ jb inspectcode --build --output=inspectcode-result.html --format=Html .\MiniTool
 
 # test coverage
 
-dotnet dotcover test  --dcReportType=HTML --dcOutput=dotcover.html  .\Dn6Poc.DocuMgmtPortal.Tests\
+dotnet dotcover test  --dcReportType=HTML --dcOutput=dotcover.html .\MiniTools.Web.UnitTests\
 
-dotnet watch dotcover test  --dcReportType=HTML --dcOutput=dotcover.html  --project .\Dn6Poc.DocuMgmtPortal.Tests\
+dotnet watch dotcover test  --dcReportType=HTML --dcOutput=dotcover.html  --project .\MiniTools.Web.UnitTests\
 
 
 # Testing
@@ -180,7 +180,11 @@ dotnet test --filter TestCategory!=e2e
 
 dotnet test --filter FullyQualifiedName!~E2eTests
 
-dotnet test --filter FullyQualifiedName!~IntegrationTests
+dotnet test --filter FullyQualifiedName!~AspNetCoreGeneratedDocument.*
+
+dotnet dotcover test  --dcReportType=HTML --dcOutput=ignore/dotcover.html .\MiniTools.Web.UnitTests\
+
+dotnet dotcover test --dcFilters=-:type=AspNetCoreGeneratedDocument.* --dcReportType=HTML --dcOutput=ignore/dotcover.html .\MiniTools.Web.UnitTests\
 
 Operators:
 =   exact match
@@ -207,6 +211,17 @@ Note: The default use "chromium"; to use another browser as default, we can set 
 $env:BROWSER="msedge"
 dotnet test .\MiniTools.Web.E2eTests\
 ```
+
+`playwright codegen https://localhost:7001/Login`
+
+To codegen with authentication:
+
+1.  Perform authentication and exit; auth.json will contain the storage state.  
+`playwright codegen --save-storage=auth.json https://localhost:7001/Login`
+2.  Load the storage state from the file and open web site in code gen mode.
+`playwright codegen --load-storage=auth.json https://localhost:7001/Login`
+--OR (without not using codegen)--
+`playwright open --load-storage=auth.json https://localhost:7001/Login`
 
 [assembly: Parallelize(Workers = 4, Scope = ExecutionScope.ClassLevel)]
 [DoNotParallelize()]
