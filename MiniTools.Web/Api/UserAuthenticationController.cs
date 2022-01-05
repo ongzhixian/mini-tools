@@ -19,11 +19,11 @@ public class UserAuthenticationController : ControllerBase
 {
     private readonly ILogger<UserAuthenticationController> _logger;
     private readonly IConfiguration _configuration;
-    private readonly AuthenticationService authenticationService;
+    private readonly IAuthenticationService authenticationService;
     private readonly IJwtService jwtService;
-    
+
     public UserAuthenticationController(ILogger<UserAuthenticationController> logger, IConfiguration configuration
-        , AuthenticationService authenticationService
+        , IAuthenticationService authenticationService
         , IJwtService jwtService
         )
     {
@@ -45,8 +45,6 @@ public class UserAuthenticationController : ControllerBase
         _logger.LogInformation(new EventId(234, "AuthAsync"), "{@res}", 12345 // System.Diagnostics.Activity.Current
             );
 
-
-       
         if (!op.Success)
             return Unauthorized();
 
@@ -59,7 +57,7 @@ public class UserAuthenticationController : ControllerBase
         // Setup claims
 
         var authClaims = new List<Claim>();
-        
+
         authClaims.Add(new Claim(ClaimTypes.Name, op.Payload.Username));
         //authClaims.Add(new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()));
 

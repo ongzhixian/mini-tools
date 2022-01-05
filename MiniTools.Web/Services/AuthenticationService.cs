@@ -8,17 +8,22 @@ using MongoDB.Driver;
 
 namespace MiniTools.Web.Services;
 
-public class AuthenticationService
+public interface IAuthenticationService
 {
-    private static class On
+    Task<OperationResult<UserAccount>> GetValidUserAsync(LoginRequest model);
+}
+
+public class AuthenticationService : IAuthenticationService
+{
+    public static class On
     {
         internal static readonly EventId NEW = new EventId(1, "New");
         internal static readonly EventId VIEW_HOME = new EventId(101, "View home");
 
-        internal static readonly EventId RECORD_FOUND = new EventId(201, "Record found");
+        public static readonly EventId RECORD_FOUND = new EventId(201, "Record found");
 
         internal static readonly EventId INVALID_MODEL = new EventId(501, "Invalid model");
-        internal static readonly EventId RECORD_NOT_FOUND = new EventId(502, "Record not found");
+        public static readonly EventId RECORD_NOT_FOUND = new EventId(502, "Record not found");
         internal static readonly EventId INVALID_CREDENTIAL = new EventId(503, "Invalid credential");
     }
 

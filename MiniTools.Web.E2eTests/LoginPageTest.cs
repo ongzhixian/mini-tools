@@ -38,4 +38,43 @@ public class LoginPageTest : PageTest
         Assert.IsNotNull(authCookie);
         Assert.AreEqual(1, queryResults.Count);
     }
+
+    [TestMethod]
+    public async Task LoginAndLogout()
+    {
+        if (Context == null)
+            return;
+
+        var page = await Context.NewPageAsync();
+        await page.GotoAsync("https://localhost:7001/Login");
+
+        await page.ClickAsync("input[name=\"Username\"]");
+        await page.FillAsync("input[name=\"Username\"]", "dev");
+        await page.PressAsync("input[name=\"Username\"]", "Tab");
+        await page.FillAsync("input[name=\"Password\"]", "dev");
+        await page.ClickAsync("button:has-text(\"Log in\")");
+
+        // Grab all cookies
+        var allCookies = await Context.CookiesAsync();
+
+        // i should have authentication cookie ("Cookie2")
+        var authCookie = allCookies.FirstOrDefault(r => r.Name == "Cookie2");
+
+        // i should have an a.nav-link with text "Log out"
+        IReadOnlyList<IElementHandle>? queryResults = await page.QuerySelectorAllAsync("a.nav-link:text(\"Log out\")");
+
+        Assert.IsNotNull(authCookie);
+        Assert.AreEqual(1, queryResults.Count);
+
+        // Then click on "Log out" link
+        await page.ClickAsync("text=Log out");
+
+        // Grab all cookies
+        allCookies = await Context.CookiesAsync();
+
+        // i should not have authentication cookie ("Cookie2")
+        authCookie = allCookies.FirstOrDefault(r => r.Name == "Cookie2");
+        
+        Assert.IsNull(authCookie);
+    }
 }
