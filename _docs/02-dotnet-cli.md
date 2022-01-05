@@ -129,9 +129,9 @@ jb inspectcode --build --output=inspectcode-result.html --format=Html .\MiniTool
 
 # test coverage
 
-dotnet dotcover test  --dcReportType=HTML --dcOutput=dotcover.html  .\Dn6Poc.DocuMgmtPortal.Tests\
+dotnet dotcover test  --dcReportType=HTML --dcOutput=dotcover.html .\MiniTools.Web.UnitTests\
 
-dotnet watch dotcover test  --dcReportType=HTML --dcOutput=dotcover.html  --project .\Dn6Poc.DocuMgmtPortal.Tests\
+dotnet watch dotcover test  --dcReportType=HTML --dcOutput=dotcover.html  --project .\MiniTools.Web.UnitTests\
 
 
 # Testing
