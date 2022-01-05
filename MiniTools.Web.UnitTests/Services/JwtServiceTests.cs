@@ -27,7 +27,6 @@ namespace MiniTools.Web.Services.Tests
             mockOptionsMonitor = new Mock<IOptionsMonitor<JwtSettings>>();
             mockOptionsMonitor.Setup(m => m.Get("jwt")).Returns(new JwtSettings
             {
-                //           0123456789123456
                 SecretKey = "someSecretKey123",
                 ValidAudience = "someValidAudience",
                 ValidIssuer = "someValidIssuer"
@@ -89,6 +88,15 @@ namespace MiniTools.Web.Services.Tests
             var result = jwtService.GetClaims(jwt);
 
             Assert.IsNotNull(result);
+        }
+
+        [TestMethod()]
+        public void GetClaimsMalFormJwtTest()
+        {
+            JwtService jwtService = new JwtService(mockConfiguration.Object, mockOptionsMonitor.Object);
+            Assert.ThrowsException<ArgumentException>(() =>
+               jwtService.GetClaims("someMalformJwt")
+            );
         }
     }
 }

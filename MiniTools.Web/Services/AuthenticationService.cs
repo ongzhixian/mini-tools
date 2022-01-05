@@ -28,30 +28,30 @@ public class AuthenticationService : IAuthenticationService
     }
 
     private readonly ILogger<AuthenticationService> logger;
-    private readonly UserCollectionService userCollectionService;
+    private readonly IUserCollectionService userCollectionService;
 
-    public AuthenticationService(ILogger<AuthenticationService> logger, UserCollectionService userCollectionService)
+    public AuthenticationService(ILogger<AuthenticationService> logger, IUserCollectionService userCollectionService)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
         this.userCollectionService = userCollectionService ?? throw new ArgumentNullException(nameof(userCollectionService));
     }
 
-    internal async Task<bool> ValidCredentialsAsync(LoginRequest model)
-    {
-        if (model.Username == null || model.Password == null)
-            return false;
+    //internal async Task<bool> ValidCredentialsAsync(LoginRequest model)
+    //{
+    //    if (model.Username == null || model.Password == null)
+    //        return false;
 
-        // Get UserAccount
+    //    // Get UserAccount
 
-        User user = await userCollectionService.FindUserByUsernameAsync(model.Username);
+    //    User user = await userCollectionService.FindUserByUsernameAsync(model.Username);
 
-        if (user == null)
-            return false;
+    //    if (user == null)
+    //        return false;
 
-        // Check password
+    //    // Check password
 
-        return user.Password == model.Password;
-    }
+    //    return user.Password == model.Password;
+    //}
 
     public async Task<OperationResult<UserAccount>> GetValidUserAsync(LoginRequest model)
     {

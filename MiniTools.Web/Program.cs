@@ -84,7 +84,7 @@ builder.Services.AddScoped<IMongoClient, MongoClient>();
 // builder.Services.AddScoped<ILoginService, LoginService>();
 
 builder.Services.AddScoped<AuthenticationService>();
-builder.Services.AddScoped<UserCollectionService>();
+builder.Services.AddScoped<IUserCollectionService, UserCollectionService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
 //builder.Services.AddTransient<MiniTools.Web.Helpers.ActivityEnricher>(sp =>
