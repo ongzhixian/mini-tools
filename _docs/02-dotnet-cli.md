@@ -174,7 +174,11 @@ dotnet test --filter TestCategory!=e2e
 
 dotnet test --filter FullyQualifiedName!~E2eTests
 
-dotnet test --filter FullyQualifiedName!~IntegrationTests
+dotnet test --filter FullyQualifiedName!~AspNetCoreGeneratedDocument.*
+
+dotnet dotcover test  --dcReportType=HTML --dcOutput=ignore/dotcover.html .\MiniTools.Web.UnitTests\
+
+dotnet dotcover test --dcFilters=-:type=AspNetCoreGeneratedDocument.* --dcReportType=HTML --dcOutput=ignore/dotcover.html .\MiniTools.Web.UnitTests\
 
 Operators:
 =   exact match
