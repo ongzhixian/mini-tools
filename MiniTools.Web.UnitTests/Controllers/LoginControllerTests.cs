@@ -12,6 +12,7 @@ using MiniTools.Web.Api.Responses;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc.Routing;
+using MiniTools.Web.UnitTests.Helpers;
 
 namespace MiniTools.Web.Controllers.Tests
 {
@@ -196,7 +197,7 @@ namespace MiniTools.Web.Controllers.Tests
 
             LoginController loginController = GetValidLoginController();
 
-            loginController.ControllerContext.HttpContext = MakeHttpContext();
+            loginController.ControllerContext.HttpContext = MockHelper.MakeHttpContext();
 
             IActionResult? result = await loginController.IndexAsync(new LoginViewModel());
 
@@ -212,39 +213,12 @@ namespace MiniTools.Web.Controllers.Tests
                 mockAuthenticationApiService.Object,
                 mockJwtService.Object
                 );
+
             return loginController;
         }
 
         // Test helpers (drivers)
 
-        DefaultHttpContext MakeHttpContext()
-        {
-            // Need mock of IAuthenticationService to handle HttpContext.SignIn
-            var mockAuthenticationService = new Mock<IAuthenticationService>();
 
-            mockAuthenticationService
-                .Setup(_ => _.SignInAsync(It.IsAny<HttpContext>(), It.IsAny<string>(), It.IsAny<ClaimsPrincipal>(), It.IsAny<AuthenticationProperties>()))
-                .Returns(Task.CompletedTask);
-
-            // Need mock of IUrlHelperFactory to properly handle RedirectToAction
-            var mockUrlHelperFactory = new Mock<IUrlHelperFactory>();
-
-            // Setup mock service provider
-
-            var serviceProviderMock = new Mock<IServiceProvider>();
-
-            serviceProviderMock
-                .Setup(_ => _.GetService(typeof(IAuthenticationService)))
-                .Returns(mockAuthenticationService.Object);
-
-            serviceProviderMock
-                .Setup(_ => _.GetService(typeof(IUrlHelperFactory)))
-                .Returns(mockUrlHelperFactory.Object);
-
-            return new DefaultHttpContext()
-            {
-                RequestServices = serviceProviderMock.Object
-            };
-        }
     }
 }
