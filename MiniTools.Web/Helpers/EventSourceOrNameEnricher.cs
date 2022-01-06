@@ -1,5 +1,6 @@
 ﻿using Serilog.Core;
 using Serilog.Events;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MiniTools.Web.Helpers;
 
@@ -19,6 +20,7 @@ namespace MiniTools.Web.Helpers;
 //[15:17:10 INF] [MiniTools.Web.Api.UserAuthenticationController] [{ Id: 234, Name: "AuthAsync" }] 12345[0HMEBCHHOS1UR: 0000000F, 0HMEBCHHOS1US: 00000002]
 //[15:17:10 INF][MiniTools.Web.Services.AuthenticationApiService][{ Id: 1, Name: "Credential validation failure." }] False[0HMEBCHHOS1UR: 0000000F]
 //[15:17:10 INF][MiniTools.Web.Controllers.LoginController][{ Id: 1, Name: "MVC View" }] Login - Index { "Username": "dev", "Password": "asd", "$type": "LoginViewModel"} [0HMEBCHHOS1UR:0000000F]
+[ExcludeFromCodeCoverage(Justification = "Triggered from Serilog 'Enrich' configuration")]
 public class EventSourceOrNameEnricher : ILogEventEnricher
 {
     public void Enrich(LogEvent logEvent, ILogEventPropertyFactory propertyFactory)

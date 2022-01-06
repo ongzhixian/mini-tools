@@ -1,8 +1,10 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MiniTools.Web.Health;
 
+[ExcludeFromCodeCoverage]
 [AllowAnonymous]
 public class SampleHealthCheck : IHealthCheck
 {
@@ -25,7 +27,7 @@ public class SampleHealthCheck : IHealthCheck
     }
 }
 
-
+[ExcludeFromCodeCoverage]
 public class SampleHealthCheck2 : IHealthCheck
 {
     public Task<HealthCheckResult> CheckHealthAsync(

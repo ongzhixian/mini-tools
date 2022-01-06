@@ -10,6 +10,7 @@ using Microsoft.OpenApi.Models;
 using MiniTools.Web.Helpers.HttpMessageLogging;
 using Serilog;
 using MiniTools.Web.Helpers;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MiniTools.Web.Services;
 
@@ -19,6 +20,7 @@ public static class AppSettingsKey
     public const string APPLICATION_USE_SERILOG = "Application:UseSerilog";
 }
 
+[ExcludeFromCodeCoverage]
 public static class AppStartupService
 {
     internal static void SetupLogging(ConfigurationManager configuration, ILoggingBuilder logging, ConfigureHostBuilder host)

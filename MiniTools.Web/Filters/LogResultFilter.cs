@@ -1,7 +1,9 @@
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MiniTools.Web.Filters;
 
+[ExcludeFromCodeCoverage]
 public class LogResultFilterService : IResultFilter
 {
     private readonly ILogger<LogResultFilterService> logger;

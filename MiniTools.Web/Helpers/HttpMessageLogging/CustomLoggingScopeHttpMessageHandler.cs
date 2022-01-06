@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
@@ -10,6 +11,7 @@ using Microsoft.Extensions.Logging;
 namespace MiniTools.Web.Helpers.HttpMessageLogging
 {
     // From: https://github.com/dotnet/extensions/blob/release/3.1/src/HttpClientFactory/Http/src/Logging/LoggingScopeHttpMessageHandler.cs
+    [ExcludeFromCodeCoverage]
     public class CustomLoggingScopeHttpMessageHandler : DelegatingHandler
     {
         private readonly ILogger _logger;

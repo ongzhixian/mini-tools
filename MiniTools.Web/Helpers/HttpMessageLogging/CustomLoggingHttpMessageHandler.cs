@@ -1,8 +1,11 @@
-﻿using System.Net;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net;
 
 namespace MiniTools.Web.Helpers.HttpMessageLogging
 {
     // From: https://github.com/dotnet/extensions/blob/release/3.1/src/HttpClientFactory/Http/src/Logging/LoggingHttpMessageHandler.cs
+    
+    [ExcludeFromCodeCoverage]
     public class CustomLoggingHttpMessageHandler : DelegatingHandler
     {
         private readonly ILogger _logger;

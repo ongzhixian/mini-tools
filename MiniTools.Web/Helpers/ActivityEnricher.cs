@@ -1,6 +1,7 @@
 ﻿using Serilog.Core;
 using Serilog.Events;
 using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MiniTools.Web.Helpers
 {
@@ -10,6 +11,8 @@ namespace MiniTools.Web.Helpers
     /// So we ended update writing an Activity enricher instead.
     /// For the problem of logging certain headers, we use a middleware instead.
     /// </summary>
+    /// 
+    [ExcludeFromCodeCoverage(Justification = "Triggered from Serilog 'Enrich' configuration")]
     public class ActivityEnricher : ILogEventEnricher
     {
         // Note: Annoyingly, we cannot use DI

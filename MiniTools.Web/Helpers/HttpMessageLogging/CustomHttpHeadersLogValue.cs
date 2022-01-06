@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
 using System.Text;
 
@@ -8,6 +9,8 @@ namespace MiniTools.Web.Helpers.HttpMessageLogging
 {
 
     // From: https://github.com/aspnet/HttpClientFactory/blob/master/src/Microsoft.Extensions.Http/Logging/HttpHeadersLogValue.cs
+
+    [ExcludeFromCodeCoverage]
     internal class CustomHttpHeadersLogValue : IReadOnlyList<KeyValuePair<string, object>>
     {
         private readonly Kind _kind;

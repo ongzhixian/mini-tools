@@ -1,6 +1,7 @@
 ﻿using MiniTools.Web.Helpers;
 using Serilog;
 using Serilog.Configuration;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MiniTools.Web.Extensions
 {
@@ -9,6 +10,8 @@ namespace MiniTools.Web.Extensions
     /// If configuring using code, we do not need this.
     /// We add it here for completeness.
     /// </summary>
+    /// 
+    [ExcludeFromCodeCoverage(Justification = "Triggered from Serilog 'Enrich' configuration")]
     public static class LoggerEnrichmentConfigurationExtensions
     {
         public static LoggerConfiguration WithActivity(this LoggerEnrichmentConfiguration enrichmentConfiguration)
