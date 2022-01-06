@@ -151,6 +151,12 @@ dotnet new specflowproject -n MiniTools.Web.FunctionTests --framework net6.0 --u
 dotnet add .\MiniTools.Web.FunctionTests package MSTest.TestFramework
 
 
+## Specflow livingdoc
+
+C:\src\github.com\ongzhixian\mini-tools\MiniTools.Web.FunctionTests\bin\Debug\net6.0\MiniTools.Web.FunctionTests.dll
+
+livingdoc test-assembly C:\src\github.com\ongzhixian\mini-tools\MiniTools.Web.FunctionTests\bin\Debug\net6.0\MiniTools.Web.FunctionTests.dll -t C:\src\github.com\ongzhixian\mini-tools\MiniTools.Web.FunctionTests\bin\Debug\net6.0\TestExecution.json 
+
 ## E2E using Playwright
 
 -- Installation
@@ -248,3 +254,4 @@ https://docs.microsoft.com/en-us/microsoft-edge/test-and-automation/devtools-pro
 https://docs.microsoft.com/en-us/microsoft-edge/puppeteer/
 https://docs.microsoft.com/en-us/microsoft-edge/webdriver-chromium/?tabs=c-sharp
 https://webhint.io/
+

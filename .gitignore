@@ -356,3 +356,4 @@ ako.ps1
 *Production.json
 **/deploy.zip
 .azure
+**/LivingDoc.html
