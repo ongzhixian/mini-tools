@@ -83,7 +83,7 @@ builder.Services.AddScoped<MiniTools.Web.Filters.LogActionFilterService>();
 builder.Services.AddScoped<IMongoClient, MongoClient>();
 // builder.Services.AddScoped<ILoginService, LoginService>();
 
-builder.Services.AddScoped<AuthenticationService>();
+builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserCollectionService, UserCollectionService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 

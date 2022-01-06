@@ -178,7 +178,17 @@ dotnet test --filter FullyQualifiedName!~AspNetCoreGeneratedDocument.*
 
 dotnet dotcover test  --dcReportType=HTML --dcOutput=ignore/dotcover.html .\MiniTools.Web.UnitTests\
 
-dotnet dotcover test --dcFilters=-:type=AspNetCoreGeneratedDocument.* --dcReportType=HTML --dcOutput=ignore/dotcover.html .\MiniTools.Web.UnitTests\
+dotnet dotcover test --dcAttributeFilters=System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute --dcFilters="-:type=AspNetCoreGeneratedDocument.*;-:type=Program" --dcReportType=HTML --dcOutput=ignore/dotcover.html .\MiniTools.Web.UnitTests\
+
+
+-- Using XML config file systax; not working; need to investigate
+-- Problem: When using XML config file, dotcover will ignore the `.\MiniTools.Web.UnitTests\` parameters 
+   and cover whatever it can find in the current directory.
+   A less than ideal workaround is to navigate to the directory where the tests are located and run dotcover.
+
+dotnet dotcover test --dcXml=dotcover.xml  .\MiniTools.Web.UnitTests\
+dotnet dotcover test --help 
+
 
 Operators:
 =   exact match

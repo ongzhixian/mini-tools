@@ -15,9 +15,9 @@ namespace MiniTools.Web.Api
     {
         private readonly ILogger<UserController> logger;
 
-        private readonly UserCollectionService userCollectionService;
+        private readonly IUserCollectionService userCollectionService;
 
-        public UserController(ILogger<UserController> logger, UserCollectionService userCollectionService)
+        public UserController(ILogger<UserController> logger, IUserCollectionService userCollectionService)
         {
             this.logger = logger;
             this.userCollectionService = userCollectionService;
@@ -37,11 +37,11 @@ namespace MiniTools.Web.Api
         }
 
         // GET api/<UserController>/5
-        [HttpGet("{id}", Name ="apiUserGet")]
-        public string Get(int id)
-        {
-            return "value";
-        }
+        //[HttpGet("{id}", Name ="apiUserGet")]
+        //public string Get(int id)
+        //{
+        //    return "value";
+        //}
 
         // POST api/<UserController>
         [HttpPost]
@@ -76,7 +76,7 @@ namespace MiniTools.Web.Api
                 logger.LogError(ex, "model {@model}", model);
                 return Problem(
                     detail: ex.Message, 
-                    instance: Request.Path, 
+                    instance: Request?.Path, 
                     statusCode: StatusCodes.Status500InternalServerError,
                     title: $"Cannot add user", 
                     type: nameof(PostAsync)

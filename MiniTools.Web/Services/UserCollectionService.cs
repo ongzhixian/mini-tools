@@ -3,36 +3,28 @@ using MiniTools.Web.Models;
 using MiniTools.Web.MongoEntities;
 using MiniTools.Web.Options;
 using MongoDB.Driver;
+using System.Diagnostics.CodeAnalysis;
 
 namespace MiniTools.Web.Services
 {
-    public interface IUserAccountService
-    {
-        void AddUserAccount(UserAccount userAccount);
+    //public interface IUserAccountService
+    //{
+    //    void AddUserAccount(UserAccount userAccount);
 
-        void RemoveUserAccount(string userAccountId);
+    //    void RemoveUserAccount(string userAccountId);
 
-        void UpdateUserAccount(UserAccount userAccount);
+    //    void UpdateUserAccount(UserAccount userAccount);
 
-        void FindUserAccount(string username);
-        
-        void FindUserAccount(string firstName, string lastName);
+    //    void FindUserAccount(string username);
 
-        void GetUserAccount(string userAccountId);
+    //    void FindUserAccount(string firstName, string lastName);
 
-        void GetUserAccountList();
+    //    void GetUserAccount(string userAccountId);
 
-        void GetUserAccountList(uint pageSize, uint page);
-    }
+    //    void GetUserAccountList();
 
-    public interface IUserCollectionService
-    {
-        Task<UserAccount> AddUserAsync(UserAccount userDocument);
-        Task<User> FindUserByUsernameAsync(string username);
-        Task<List<User>> GetUserAccountListAsync(int page = 0, int pageSize = 10, MongoDB.Driver.SortDirection sortDirection = MongoDB.Driver.SortDirection.Ascending, string sortField = "Username");
-        Task<PageData<UserAccount>> GetUserAccountListAsync(DataPageOption option);
-        Task<User> GetUserAsync(string id);
-    }
+    //    void GetUserAccountList(uint pageSize, uint page);
+    //}
 
     //public interface IUserCollectionService
     //{
@@ -42,6 +34,20 @@ namespace MiniTools.Web.Services
     //    Task<UpdateResult> UpdateUserAsync(string id);
     //}
 
+    // Maybe should rename this as repository as this is really a wrappr over MongoDB drivers classes; KIV
+
+    public interface IUserCollectionService
+    {
+        Task<UserAccount> AddUserAsync(UserAccount userDocument);
+        Task<User> FindUserByUsernameAsync(string username);
+        Task<List<User>> GetUserAccountListAsync(int page = 0, int pageSize = 10, MongoDB.Driver.SortDirection sortDirection = MongoDB.Driver.SortDirection.Ascending, string sortField = "Username");
+        Task<PageData<UserAccount>> GetUserAccountListAsync(DataPageOption option);
+        Task<User> GetUserAsync(string id);
+
+        //List<User>? TestMock();
+    }
+
+    [ExcludeFromCodeCoverage(Justification = "MongoDb driver wrapper")]
     public class UserCollectionService : IUserCollectionService
     {
         private static class On
@@ -63,6 +69,11 @@ namespace MiniTools.Web.Services
         readonly ILogger<UserCollectionService> logger;
 
         readonly IMongoCollection<User> userCollection;
+
+        public UserCollectionService()
+        {
+
+        }
 
         public UserCollectionService(ILogger<UserCollectionService> logger, IMongoCollection<User> userCollection)
         {
@@ -136,37 +147,21 @@ namespace MiniTools.Web.Services
         public async Task<List<User>> GetUserAccountListAsync(
             int page = 0, int pageSize = 10, MongoDB.Driver.SortDirection sortDirection = MongoDB.Driver.SortDirection.Ascending, string sortField = "Username")
         {
-            try
-            {
-                SortDefinition<User> dataSort;
+            SortDefinition<User> dataSort;
 
-                if (sortDirection == MongoDB.Driver.SortDirection.Ascending)
-                    dataSort = Builders<User>.Sort.Ascending(sortField);
-                else
-                    dataSort = Builders<User>.Sort.Descending(sortField);
+            if (sortDirection == MongoDB.Driver.SortDirection.Ascending)
+                dataSort = Builders<User>.Sort.Ascending(sortField);
+            else
+                dataSort = Builders<User>.Sort.Descending(sortField);
 
-                IFindFluent<User, User>? result2 = userCollection
-                    .Find(Builders<User>.Filter.Empty)
-                    .Sort(dataSort)
-                    .Skip(page * pageSize)
-                    .Limit(pageSize);
+            var result = await userCollection
+                .Find(Builders<User>.Filter.Empty)
+                .Sort(dataSort)
+                .Skip(page * pageSize)
+                .Limit(pageSize)
+                .ToListAsync();
 
-                var listres = result2.ToList();
-
-                var result = await userCollection
-                    .Find(Builders<User>.Filter.Empty)
-                    .Sort(dataSort)
-                    .Skip(page * pageSize)
-                    .Limit(pageSize)
-                    .ToListAsync();
-
-                return result;
-            }
-            catch (Exception)
-            {
-                //logger.LogError(On.GET_USER_ACCOUNT_LIST_ASYNC_ERROR, ex, "userDocument {@userDocument}", userDocument);
-                throw;
-            }
+            return result;
         }
 
 
@@ -183,20 +178,14 @@ namespace MiniTools.Web.Services
 
             //userCollection.FindAsync<User>(r => r.Username.Contains(username, StringComparison.InvariantCultureIgnoreCase));
 
-            try
-            {
-                var filter = Builders<User>.Filter.Eq(r => r.Username, username);
 
-                var res = await userCollection.FindAsync(filter);
+            var filter = Builders<User>.Filter.Eq(r => r.Username, username);
 
-                return await res.FirstOrDefaultAsync();
-            }
-            catch (Exception)
-            {
-                throw;
-            }
+            var res = await userCollection.FindAsync(filter);
 
+            return await res.FirstOrDefaultAsync();
         }
+
 
 
         //public async Task<List<UserAccount>> FindUserAsync(string searchClause)

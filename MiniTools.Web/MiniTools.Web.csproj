@@ -25,6 +25,7 @@
     <Folder Include="Areas\ExamArea\Data\" />
     <Folder Include="Areas\ExamArea\Models\" />
     <Folder Include="Areas\ExamArea\Views\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
   <ItemGroup>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<CoverageParams>
+    <Output>ignore/dotcover.html</Output>
+    <ReportType>HTML</ReportType>
+
+    <!-- Remove auto-implemented properties from report.
+    <HideAutoProperties>True</HideAutoProperties>
+    -->
+
+    <!-- Remove specified files from report. Ant-style patterns are supported here. -->
+    <ExcludeFileMasks>
+        <!-- <Mask>ProjectFolder/**/*.generated.cs</Mask>
+        <Mask>ProjectFolder/**/*.tmp.cs</Mask> -->
+        <Mask>MiniTools.Web.E2eTests</Mask>
+    </ExcludeFileMasks>
+    
+
+    <!-- Allows including not loaded assemblies in the specified scope into coverage results. Ant-style patterns are supported here.
+    <Scope>
+        <ScopeEntry>ProjectFolder/**/*.dll</ScopeEntry>
+        <ScopeEntry>ProjectFolder/**/*.exe</ScopeEntry>
+    </Scope>
+    -->
+
+    <!-- Coverage filters. It's possible to use asterisks as wildcard symbols. -->
+    <Filters>
+        <!--
+        <IncludeFilters>
+            <FilterEntry>
+                <ModuleMask> Module mask </ModuleMask>
+                <ClassMask> Class mask </ClassMask>
+                <FunctionMask> Function mask </FunctionMask>
+            </FilterEntry>
+        </IncludeFilters>
+        -->
+        <ExcludeFilters>
+            <FilterEntry>AspNetCoreGeneratedDocument.*</FilterEntry>
+            <FilterEntry>
+                <ModuleMask>MiniTools.Web.E2eTests</ModuleMask>
+            </FilterEntry>
+        </ExcludeFilters>
+    </Filters>
+    
+
+    <!-- Attribute filters. It's possible to use asterisks as wildcard symbols. -->
+    <AttributeFilters>
+        <AttributeFilterEntry>System.Diagnostics.CodeAnalysis.ExcludeFromCodeCoverageAttribute</AttributeFilterEntry>
+    </AttributeFilters>
+
+    <!-- Process Filters. It's possible to use asterisks as wildcard symbols.
+    <ProcessFilters>
+        <IncludeFilters>
+        <ProcessMask>SampleProcess*</ProcessMask>
+        </IncludeFilters>
+        <ExcludeFilters>
+        <ProcessMask>SampleProcess.exe</ProcessMask>
+        </ExcludeFilters>
+    </ProcessFilters>
+    -->
+</CoverageParams>

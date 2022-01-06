@@ -25,6 +25,9 @@ public class PageData<T> : IPageData where T : class
     {
         get
         {
+            if (PageSize == 0)
+                return 0;
+
             //ulong fullPagesCount = RecordCount / PageSize;
             //ulong partialPageCount = (ulong)((RecordCount % PageSize > 0) ? 1 : 0);
             //return fullPagesCount + partialPageCount;
