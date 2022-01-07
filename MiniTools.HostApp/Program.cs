@@ -18,11 +18,10 @@ builder.ConfigureServices((host, services) =>
 
     //services.AddHostedService<QueuePublisherService>();
     //services.AddHostedService<QueueConsumerService>();
-    
-    services.AddHostedService<PubSubConsumerService>();
+    //services.AddHostedService<PubSubConsumerService>();
+    //services.AddHostedService<PubSubPublisherService>();
 
-    services.AddHostedService<PubSubPublisherService>();
-
+    services.AddHostedService<StorageTableService>();
 });
 
 Console.WriteLine("Buiding application host...");
