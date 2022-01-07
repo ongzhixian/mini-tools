@@ -61,8 +61,13 @@ dotnet add .\Benchmarks\ package BenchmarkDotNet.Diagnostics.Windows
 -- For a host app, `Microsoft.Extensions.Hosting` will add the other packages (DI, Logging, Config, ..etc).
 
 dotnet add .\MiniTools.HostApp\ package Microsoft.Extensions.Hosting
+dotnet add .\MiniTools.HostApp\ package Azure.Storage.Queues
+dotnet add .\MiniTools.HostApp\ package Microsoft.Extensions.Configuration.UserSecrets
 
+dotnet add .\MiniTools.HostApp\ package Azure.Messaging.WebPubSub
 
+dotnet add package Websocket.Client 
+dotnet add package Azure.Messaging.WebPubSub
 
 ## Templates
 

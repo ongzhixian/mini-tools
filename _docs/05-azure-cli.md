@@ -20,6 +20,8 @@ os-type == Windows | Linux
 
 `az storage account create --name minitools --resource-group mini-tools-rg --location southeastasia --sku Standard_LRS --tags project=mini-tools`
 
+`az webpubsub create --name minitools-wps --resource-group mini-tools-rg --location southeastasia --sku Free_F1 --tags project=mini-tools`
+
 `az webapp create --name mini-tools --plan mini-tools-appservice-plan --resource-group mini-tools-rg --runtime DOTNET:6.0`
 
 --DEPLOYMENT

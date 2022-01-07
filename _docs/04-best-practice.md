@@ -50,6 +50,17 @@ https://docs.microsoft.com/en-us/dotnet/core/diagnostics/distributed-tracing
 To look into this! Metrics are a way to measure performance and health of an application.
 https://docs.microsoft.com/en-us/dotnet/core/diagnostics/metrics-instrumentation
 
+
+## Span / Memory
+
+Span<T> is a ref-like type as it contains a ref field, 
+and ref fields can refer not only to the beginning of objects like arrays, but also to the middle of them.
+
+https://docs.microsoft.com/en-us/dotnet/standard/memory-and-spans/
+
+https://docs.microsoft.com/en-us/archive/msdn-magazine/2018/january/csharp-all-about-span-exploring-a-new-net-mainstay
+
+
 # References
 
 ASP.NET Core Performance Best Practices

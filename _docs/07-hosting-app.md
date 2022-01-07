@@ -33,6 +33,7 @@ Microsoft.Extensions.Options
 
 # Other interesting package that you might want to add:
 
+Microsoft.Extensions.Configuration.UserSecrets
 Microsoft.Extensions.Configuration.Xml
 
 Microsoft.Extensions.Http 
@@ -45,4 +46,5 @@ System.Diagnostics.DiagnosticSource
 
 Microsoft.Extensions.Hosting.WindowsServices
 System.Windows.Extensions
+
 
