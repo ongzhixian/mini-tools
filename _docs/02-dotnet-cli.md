@@ -10,6 +10,12 @@ dotnet new mvc -n MiniTools.Web
 dotnet sln .\MiniTools.sln add .\MiniTools.Web\
 dotnet user-secrets init --project .\MiniTools.Web\
 
+dotnet new console -n MiniTools.HostApp
+dotnet sln .\MiniTools.sln add .\MiniTools.HostApp\
+dotnet user-secrets --project .\MiniTools.HostApp\ init
+
+
+
 ## User-Secrets
 
 The values are stored in a JSON file in the local machine's user profile folder:
@@ -50,6 +56,12 @@ dotnet add .\MiniTools.Web\ package MongoDB.Driver
 
 dotnet add .\Benchmarks\ package BenchmarkDotNet
 dotnet add .\Benchmarks\ package BenchmarkDotNet.Diagnostics.Windows
+
+
+-- For a host app, `Microsoft.Extensions.Hosting` will add the other packages (DI, Logging, Config, ..etc).
+
+dotnet add .\MiniTools.HostApp\ package Microsoft.Extensions.Hosting
+
 
 
 ## Templates

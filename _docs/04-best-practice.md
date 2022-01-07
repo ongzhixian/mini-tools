@@ -34,7 +34,21 @@ See: https://www.c-sharpcorner.com/article/global-error-handling-in-asp-net-core
 See: https://www.c-sharpcorner.com/article/exception-handling-3-in-asp-net-core-mvc/
 
 
+## Logging
 
+https://docs.microsoft.com/en-us/dotnet/core/diagnostics/logging-tracing
+
+EventPipe
+https://docs.microsoft.com/en-us/dotnet/core/diagnostics/eventpipe
+
+Distributed tracing (KIV)
+https://docs.microsoft.com/en-us/dotnet/core/diagnostics/distributed-tracing
+
+
+## Metrics
+
+To look into this! Metrics are a way to measure performance and health of an application.
+https://docs.microsoft.com/en-us/dotnet/core/diagnostics/metrics-instrumentation
 
 # References
 
