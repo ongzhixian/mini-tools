@@ -22,7 +22,11 @@ os-type == Windows | Linux
 
 `az webpubsub create --name minitools-wps --resource-group mini-tools-rg --location southeastasia --sku Free_F1 --tags project=mini-tools`
 
+`az storage table create --name minitools --account-name minitools`
+
 `az webapp create --name mini-tools --plan mini-tools-appservice-plan --resource-group mini-tools-rg --runtime DOTNET:6.0`
+
+
 
 --DEPLOYMENT
 
