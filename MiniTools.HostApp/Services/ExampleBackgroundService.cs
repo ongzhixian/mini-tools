@@ -6,10 +6,12 @@ namespace MiniTools.HostApp.Services;
 public class ExampleBackgroundService : BackgroundService
 {
     private readonly ILogger<ExampleBackgroundService> logger;
+    IChannelQueueService queueService;
 
-    public ExampleBackgroundService(ILogger<ExampleBackgroundService> logger)
+    public ExampleBackgroundService(ILogger<ExampleBackgroundService> logger, IChannelQueueService service)
     {
         this.logger = logger ?? throw new ArgumentNullException(nameof(logger));
+        queueService = service;
     }
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -37,7 +39,13 @@ public class ExampleBackgroundService : BackgroundService
             var rts = Environment.GetEnvironmentVariable("RUNTIME_SERVICE");
             logger.LogInformation("rts is {rts}", rts);
 
-            
+            await queueService.EnqueueAsync(stopToken =>
+            {
+                return new ValueTask(Task.Run(() =>
+                {
+                    Console.WriteLine("DO SOMETING");
+                }));
+            });
 
 
             using (System.IO.StreamWriter sw = new System.IO.StreamWriter("/data/DUMMY.log"))
