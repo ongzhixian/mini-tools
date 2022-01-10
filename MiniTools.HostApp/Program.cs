@@ -14,7 +14,9 @@ builder.ConfigureServices((host, services) =>
     services.Configure<AzureStorageSetting>(host.Configuration.GetSection("Azure:Storage:minitools"));
     services.Configure<AzureWebPubSubSetting>(host.Configuration.GetSection("Azure:WebPubSub:minitools"));
 
-    services.AddHostedService<ExampleBackgroundService>();
+#pragma warning disable S125 // Sections of code should not be commented out
+
+    //services.AddHostedService<ExampleBackgroundService>();
 
     //services.AddHostedService<QueuePublisherService>();
     //services.AddHostedService<QueueConsumerService>();
@@ -22,6 +24,21 @@ builder.ConfigureServices((host, services) =>
     //services.AddHostedService<PubSubPublisherService>();
 
     //services.AddHostedService<StorageTableService>();
+
+#pragma warning restore S125 // Sections of code should not be commented out
+
+
+    // Sets runtime of hosted service via `RUNTIME_SERVICE` environment variable.
+
+    string runtimeService = Environment.GetEnvironmentVariable("RUNTIME_SERVICE") ?? "MiniTools.HostApp.Services.ExampleBackgroundService";
+
+    services.AddSingleton<IHostedService>(sp =>
+    {
+        Type runtimeServiceType = Type.GetType(runtimeService) ?? throw new InvalidOperationException($"runtimeServiceType [{runtimeService}] not found.");
+
+        return (IHostedService)ActivatorUtilities.CreateInstance(sp, runtimeServiceType);
+    });
+
 });
 
 Console.WriteLine("Buiding application host...");

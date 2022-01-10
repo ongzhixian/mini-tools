@@ -7,12 +7,15 @@ services:
     build: 
       context: MiniTools.HostApp
       dockerfile: Dockerfile
-    environment: 
+    environment:
       - backendUrl=http://backend
     ports: 
       - "5900:80"
     volumes:
        - todo-mysql-data:/data
+       - type: bind
+         source: ./applocal
+         target: /data
 
 volumes:
   todo-mysql-data:

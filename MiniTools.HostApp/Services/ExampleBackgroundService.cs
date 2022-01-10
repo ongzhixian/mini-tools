@@ -31,13 +31,22 @@ public class ExampleBackgroundService : BackgroundService
                 Directory.CreateDirectory(fullPath);
             }
 
+            var res = Environment.GetEnvironmentVariable("backendUrl");
+            logger.LogInformation("res is {res}", res);
+
+            var rts = Environment.GetEnvironmentVariable("RUNTIME_SERVICE");
+            logger.LogInformation("rts is {rts}", rts);
+
+            
+
+
             using (System.IO.StreamWriter sw = new System.IO.StreamWriter("/data/DUMMY.log"))
             {
                 sw.AutoFlush = true;
                 sw.WriteLine("it s a small world");
             }
 
-            await Task.Delay(1000, stoppingToken);
+            await Task.Delay(5000, stoppingToken);
         }
     }
 }
