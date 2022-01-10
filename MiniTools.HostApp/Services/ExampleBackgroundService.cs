@@ -22,6 +22,21 @@ public class ExampleBackgroundService : BackgroundService
 
             // CheckConfirmedGracePeriodOrders();
 
+            string fullPath = System.IO.Path.GetFullPath("/data");
+
+            logger.LogInformation(fullPath);
+
+            if (!Directory.Exists(fullPath))
+            {
+                Directory.CreateDirectory(fullPath);
+            }
+
+            using (System.IO.StreamWriter sw = new System.IO.StreamWriter("/data/DUMMY.log"))
+            {
+                sw.AutoFlush = true;
+                sw.WriteLine("it s a small world");
+            }
+
             await Task.Delay(1000, stoppingToken);
         }
     }

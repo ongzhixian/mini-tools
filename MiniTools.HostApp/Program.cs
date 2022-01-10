@@ -14,14 +14,14 @@ builder.ConfigureServices((host, services) =>
     services.Configure<AzureStorageSetting>(host.Configuration.GetSection("Azure:Storage:minitools"));
     services.Configure<AzureWebPubSubSetting>(host.Configuration.GetSection("Azure:WebPubSub:minitools"));
 
-    // services.AddHostedService<ExampleBackgroundService>();
+    services.AddHostedService<ExampleBackgroundService>();
 
     //services.AddHostedService<QueuePublisherService>();
     //services.AddHostedService<QueueConsumerService>();
     //services.AddHostedService<PubSubConsumerService>();
     //services.AddHostedService<PubSubPublisherService>();
 
-    services.AddHostedService<StorageTableService>();
+    //services.AddHostedService<StorageTableService>();
 });
 
 Console.WriteLine("Buiding application host...");
