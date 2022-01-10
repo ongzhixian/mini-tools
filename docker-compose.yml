@@ -1,0 +1,18 @@
+version: '3.4'
+
+services: 
+
+  testApp:
+    image: testapp
+    build: 
+      context: MiniTools.HostApp
+      dockerfile: Dockerfile
+    environment: 
+      - backendUrl=http://backend
+    ports: 
+      - "5900:80"
+    volumes:
+       - todo-mysql-data:/data
+
+volumes:
+  todo-mysql-data:
