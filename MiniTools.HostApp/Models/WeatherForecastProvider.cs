@@ -1,24 +1,7 @@
-﻿namespace MiniTools.HostApp.Models
+﻿using System.Text.Json;
+
+namespace MiniTools.HostApp.Models
 {
-    // Observation (data) object
-    public struct WeatherForecast
-    {
-        public DateTime Date { get; set; }
-
-        public int TemperatureC { get; set; }
-
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-
-        public string? Summary { get; set; }
-    }
-
-    public interface IStructDataPublisher<T> where T : struct
-    {
-        void PublishData();
-    }
-
-    // Provider
-
     public class WeatherForecastProvider : IStructDataPublisher<WeatherForecast>
     {
         private readonly DataSubscription<WeatherForecast> subscription;
@@ -33,31 +16,34 @@
             "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
         };
 
-        public void PublishData()
+        public async Task PublishDataAsync(CancellationToken stopToken)
         {
-            var mockWeatherForecastList = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+            while (!stopToken.IsCancellationRequested)
             {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = Random.Shared.Next(-20, 55),
-                Summary = Summaries[Random.Shared.Next(Summaries.Length)]
-            }).ToArray();
+                await Task.Delay(5000, stopToken);
 
-            foreach (var weatherForecast in mockWeatherForecastList)
-            {
-                Thread.Sleep(2500);
+                var mockWeatherForecastList = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+                {
+                    Date = DateTime.Now.AddDays(index),
+                    TemperatureC = Random.Shared.Next(-20, 55),
+                    Summary = Summaries[Random.Shared.Next(Summaries.Length)]
+                }).ToArray();
 
-                Console.WriteLine(weatherForecast.Summary);
+                foreach (var weatherForecast in mockWeatherForecastList)
+                {
+                    Thread.Sleep(2500);
 
-                foreach (var observer in subscription.Observers)
-                    observer.OnNext(weatherForecast);
+                    Console.WriteLine(weatherForecast.Summary);
+
+                    foreach (var observer in subscription.Observers)
+                        observer.OnNext(weatherForecast);
+                }
             }
 
-            //
-            //foreach (var observer in observers.ToArray())
-            //    observer?.OnCompleted();
-            //observers.Clear();
+            foreach (var observer in subscription.Observers.ToArray())
+                observer?.OnCompleted();
+            subscription.Observers.Clear();
         }
-
     }
 
 }
