@@ -1,17 +1,5 @@
 ﻿namespace MiniTools.HostApp.Models;
 
-public interface IDataSubscriber<in T> where T : class
-{
-    void Subscribe(IObservable<T> provider);
-    void Unsubscribe();
-}
-
-public interface IStructDataSubscriber<in T> : IObserver<T> where T : struct
-{
-    void Subscribe(IObservable<T> provider);
-
-    void Unsubscribe();
-}
 
 /// <summary>
 /// Dumb subscriber that prints received values; better example should do some work value.
