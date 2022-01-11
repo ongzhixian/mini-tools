@@ -19,15 +19,16 @@ public class ExampleStructDataGeneratorService : BackgroundService
 
     protected override async Task ExecuteAsync(CancellationToken stoppingToken)
     {
-        logger.LogInformation("{0} is starting.", nameof(ExampleStructDataGeneratorService));
+        logger.LogInformation("{taskName} is starting.", nameof(ExampleStructDataGeneratorService));
 
         while (!stoppingToken.IsCancellationRequested)
         {
-            logger.LogInformation("{0} publishing data.", nameof(ExampleStructDataGeneratorService));
+            logger.LogInformation("{taskName} publishing data.", nameof(ExampleStructDataGeneratorService));
 
-            dataProvider.PublishData();
+            await dataProvider.PublishDataAsync(stoppingToken);
 
             await Task.Delay(5000, stoppingToken);
         }
     }
+
 }
