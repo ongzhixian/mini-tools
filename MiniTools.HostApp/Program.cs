@@ -27,10 +27,26 @@ builder.ConfigureServices((host, services) =>
 
 #pragma warning restore S125 // Sections of code should not be commented out
 
+    //services.AddSingleton<IChannelQueueService, ChannelQueueService>();
+    //services.AddHostedService<ChannelQueueWorkerService>();
+    //services.AddHostedService<ExampleBackgroundService>();
 
-    services.AddSingleton<IChannelQueueService, ChannelQueueService>();
-    services.AddHostedService<ChannelQueueWorkerService>();
-    services.AddHostedService<ExampleBackgroundService>();
+    // Segregating subscription
+    // We have a single subscription object
+    // Subscribers subscribes to subscription
+    // Providers provide data to subscribers on subscription.
+    services.AddSingleton<DataSubscription<WeatherForecast>>();
+    services.AddSingleton<IStructDataPublisher<WeatherForecast>, WeatherForecastProvider>();
+
+    // Observer - Observee
+    // Observers (subscribers) should always be placed before observees (data providers)
+    // (to prevent data from being sent out before subscriptions are in place)
+    services.AddHostedService<ExampleStructDataObserver>();
+    services.AddHostedService<ExampleStructDataGeneratorService>();
+
+
+
+
 
     //services.AddSingleton<IChannelQueueService>(_ =>
     //{
@@ -63,14 +79,14 @@ var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
 logger.LogInformation("Running application...");
 
-var queue = host.Services.GetRequiredService<IChannelQueueService>();
-queue.EnqueueAsync(stopToken =>
-{
-    return new ValueTask(Task.Run(() =>
-    {
-        Console.WriteLine("DO SOMETING");
-    }));
-});
+//var queue = host.Services.GetRequiredService<IChannelQueueService>();
+//queue.EnqueueAsync(stopToken =>
+//{
+//    return new ValueTask(Task.Run(() =>
+//    {
+//        Console.WriteLine("DO SOMETING");
+//    }));
+//});
 
 
 host.Run();
