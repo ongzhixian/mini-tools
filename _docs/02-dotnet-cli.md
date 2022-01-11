@@ -53,6 +53,7 @@ dotnet add .\MiniTools.Web\ package Serilog.Sinks.File
 dotnet add .\MiniTools.Web\ package Swashbuckle.AspNetCore
 dotnet add .\MiniTools.Web\ package MongoDB.Driver
 
+dotnet add .\MiniTools.Web\ package Grpc.AspNetCore
 
 dotnet add .\Benchmarks\ package BenchmarkDotNet
 dotnet add .\Benchmarks\ package BenchmarkDotNet.Diagnostics.Windows
@@ -73,6 +74,10 @@ Azure.Storage.Blobs
 Microsoft.Data.Analysis
 Microsoft.ML
 Infer.net
+
+dotnet add .\MiniTools.HostApp\ package Grpc.Net.Client
+dotnet add .\MiniTools.HostApp\ package Google.Protobuf
+dotnet add .\MiniTools.HostApp\ package Grpc.Tools
 
 
 ## Templates

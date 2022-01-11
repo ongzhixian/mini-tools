@@ -16,7 +16,7 @@ public class StorageTableService : BackgroundService
 {
     private readonly ILogger<StorageTableService> logger;
     private readonly IOptions<AzureStorageSetting> options;
-    private WebPubSubServiceClient serviceClient;
+    private readonly WebPubSubServiceClient serviceClient;
     private TableClient tableClient;
 
     public StorageTableService(ILogger<StorageTableService> logger, IOptions<AzureStorageSetting> options)

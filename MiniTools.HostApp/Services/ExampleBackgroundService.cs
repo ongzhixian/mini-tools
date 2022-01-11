@@ -6,7 +6,7 @@ namespace MiniTools.HostApp.Services;
 public class ExampleBackgroundService : BackgroundService
 {
     private readonly ILogger<ExampleBackgroundService> logger;
-    IChannelQueueService queueService;
+    readonly IChannelQueueService queueService;
 
     public ExampleBackgroundService(ILogger<ExampleBackgroundService> logger, IChannelQueueService service)
     {
@@ -22,11 +22,11 @@ public class ExampleBackgroundService : BackgroundService
         {
             logger.LogInformation($"ExampleBackgroundService task doing background work.");
 
-            // CheckConfirmedGracePeriodOrders();
+            // Do some work here
 
             string fullPath = System.IO.Path.GetFullPath("/data");
 
-            logger.LogInformation(fullPath);
+            logger.LogInformation("{dataPath}", fullPath);
 
             if (!Directory.Exists(fullPath))
             {
@@ -44,7 +44,7 @@ public class ExampleBackgroundService : BackgroundService
                 return new ValueTask(Task.Run(() =>
                 {
                     Console.WriteLine("DO SOMETING");
-                }));
+                }, stoppingToken));
             });
 
 
