@@ -33,6 +33,8 @@ Microsoft.Extensions.Options
 
 # Other interesting package that you might want to add:
 
+Microsoft.Net.Http.Headers
+
 Microsoft.Extensions.Configuration.UserSecrets
 Microsoft.Extensions.Configuration.Xml
 
