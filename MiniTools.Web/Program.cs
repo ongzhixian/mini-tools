@@ -17,6 +17,7 @@ using MiniTools.Web.DataEntities;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MiniTools.Web.Extensions;
+using MiniTools.GrpcServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,8 @@ AppStartup.SetupCors(builder.Services);
 AppStartup.SetupSwagger(builder.Configuration, builder.Services);
 
 // Add services to the container.
+
+builder.Services.AddGrpc();
 
 //builder.Services.AddHealthChecks();
 
@@ -257,6 +260,8 @@ if (builder.Environment.IsDevelopment() && builder.Configuration.GetValue<bool>(
 }
 
 
+
+
 var app = builder.Build();
 
 
@@ -373,6 +378,11 @@ app.MapControllerRoute(
     pattern: "api/{controller=Home}/{action=Index}/{id?}");
 
 // app.MapRazorPages();
+
+app.MapGrpcService<Greeter>();
+
+//app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+
 
 // Debugging routes
 if (builder.Configuration.GetValue<bool>("Application:Startup:DumpRoutes"))

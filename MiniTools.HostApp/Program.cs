@@ -1,6 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Grpc.Net.Client;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using MiniTools.GrpcServices;
 using MiniTools.HostApp.Models;
 using MiniTools.HostApp.Services;
 
@@ -72,7 +74,7 @@ builder.ConfigureServices((host, services) =>
     //services.AddHostedService<ExampleStructDataGeneratorService>()
 
     services.AddHostedService<ExampleAirTemperatureObserver>();
-    services.AddHostedService<ExampleAirTemperatureService>();
+    //services.AddHostedService<ExampleAirTemperatureService>();
     
 
     // Sets runtime of hosted service via `RUNTIME_SERVICE` environment variable.
@@ -93,7 +95,10 @@ var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
 logger.LogInformation("Running application...");
 
+using var channel = GrpcChannel.ForAddress("https://localhost:7001");
+var client = new GreetService.GreetServiceClient(channel);
+var reply = await client.SayHelloAsync(new HelloRequest { Name = "GreeterClient" });
 
-
+Console.WriteLine(reply);
 
 host.Run();

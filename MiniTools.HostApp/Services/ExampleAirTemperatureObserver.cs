@@ -17,7 +17,6 @@ public class ExampleAirTemperatureObserver : BackgroundService
         this.dataSubscription = dataSubscription;
 
         // Subscriber should be a class that acts on the data received through the subscription
-        // In this example, WeatherForecastSubscriber simply prints the values to console.
         dataSubscriber = new AirTemperatureInfoSubscriber();
     }
 

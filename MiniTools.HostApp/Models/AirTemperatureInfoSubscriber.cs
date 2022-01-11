@@ -30,5 +30,6 @@ public class AirTemperatureInfoSubscriber : IDataSubscriber<AirTemperatureInfo>
     public void OnNext(AirTemperatureInfo value)
     {
         Console.WriteLine("{0} stations.", value?.MetaData?.Stations.Count());
+
     }
 }
