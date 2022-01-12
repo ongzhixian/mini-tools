@@ -88,7 +88,7 @@ dotnet tool install --global Microsoft.Playwright.CLI
 dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
 dotnet tool install JetBrains.dotCover.GlobalTool -g
 dotnet tool install -g JetBrains.ReSharper.GlobalTools
-
+dotnet tool install -g dotnet-grpc
 
 ### cleanupcode
 

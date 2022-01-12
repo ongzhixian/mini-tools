@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+// Disagree with this; `package` works the same.
+option csharp_namespace = "MiniTools.Services";
+
+// What I really want is customised the awful names
+// class Greeter : GreetService.GreetServiceBase
+
+//package MiniTools.Services;
+import "ProtoBuf/Messages/Requests/hello_request.proto";
+import "ProtoBuf/Messages/Responses/hello_response.proto";
+
+// The greeting service definition.
+
+service GreetService {
+    // Sends a greeting
+    rpc SayHello (MiniTools.Messages.Requests.HelloRequest) returns (MiniTools.Messages.Responses.HelloResponse);
+
+    // Client stream
+    rpc StreamingFromClient (stream MiniTools.Messages.Requests.HelloRequest) returns (MiniTools.Messages.Responses.HelloResponse);
+}

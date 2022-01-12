@@ -1,29 +1,26 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
-
-  <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net6.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
-    <Nullable>enable</Nullable>
-    <UserSecretsId>d25aea9c-fde8-4743-a892-2b674488c656</UserSecretsId>
-  </PropertyGroup>
-
-  <ItemGroup>
-    <PackageReference Include="Azure.Data.Tables" Version="12.3.0" />
-    <PackageReference Include="Azure.Messaging.WebPubSub" Version="1.0.0" />
-    <PackageReference Include="Azure.Storage.Queues" Version="12.8.0" />
-    <PackageReference Include="Google.Protobuf" Version="3.19.2" />
-    <PackageReference Include="Grpc.Net.Client" Version="2.41.0" />
-    <PackageReference Include="Grpc.Tools" Version="2.43.0">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-      <PrivateAssets>all</PrivateAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Protobuf Include="Protos\greet.proto" GrpcServices="Client" />
-  </ItemGroup>
-
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+		<UserSecretsId>d25aea9c-fde8-4743-a892-2b674488c656</UserSecretsId>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Azure.Data.Tables" Version="12.3.0" />
+		<PackageReference Include="Azure.Messaging.WebPubSub" Version="1.0.0" />
+		<PackageReference Include="Azure.Storage.Queues" Version="12.8.0" />
+		<PackageReference Include="Google.Protobuf" Version="3.19.2" />
+		<PackageReference Include="Grpc.Net.Client" Version="2.41.0" />
+		<PackageReference Include="Grpc.Net.ClientFactory" Version="2.32.0" />
+		<PackageReference Include="Grpc.Tools" Version="2.43.0">
+			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+			<PrivateAssets>all</PrivateAssets>
+		</PackageReference>
+		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<Protobuf Include="../ProtoBuf/**/*.proto" ProtoRoot=".." Link="ProtoBuf/%(RecursiveDir)%(FileName)%(Extension)" GrpcServices="Client" />
+	</ItemGroup>
 </Project>

@@ -17,7 +17,6 @@ using MiniTools.Web.DataEntities;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MiniTools.Web.Extensions;
-using MiniTools.GrpcServices;
 
 var builder = WebApplication.CreateBuilder(args);
 

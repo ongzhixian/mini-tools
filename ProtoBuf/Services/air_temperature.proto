@@ -1,0 +1,7 @@
+syntax = "proto3";
+
+option csharp_namespace = "MiniTools.GrpcServices";
+
+//service AirTemperatureService {
+//    rpc StreamingFromClient (stream AirTemperature) returns (DataReceipt);
+//}

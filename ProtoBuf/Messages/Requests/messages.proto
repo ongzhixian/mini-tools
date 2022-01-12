@@ -1,0 +1,13 @@
+syntax = "proto3";
+
+option csharp_namespace = "MiniTools.GrpcServices";
+
+package MiniTools;
+
+message AirTemperature {
+    string name = 1;
+}
+
+message DataReceipt {
+    string message = 1;
+}
