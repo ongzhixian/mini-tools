@@ -176,7 +176,7 @@ public static class AppStartupService
                 ValidateIssuerSigningKey = true,
                 ValidIssuer = configuration["Jwt:ValidIssuer"],
                 ValidAudience = configuration["Jwt:ValidIssuer"],
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:Secret"]))
+                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]))
             };
         });
 
@@ -196,7 +196,7 @@ public static class AppStartupService
 
     internal static void SetupAuthorization(IServiceCollection services)
     {
-        //builder.Services.AddAuthorization();
+        //builder.Services.AddAuthorization();  
         services.AddAuthorization(options =>
         {
             options.FallbackPolicy = new AuthorizationPolicyBuilder()
@@ -211,6 +211,17 @@ public static class AppStartupService
         {
             options.AddPolicy("RequireAdministratorRole",
                  policy => policy.RequireRole("Administrator"));
+
+            options.AddPolicy("AuthorizedSignalR", policy =>
+            {
+                policy.AddAuthenticationSchemes(new string[]
+                {
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    JwtBearerDefaults.AuthenticationScheme
+                });
+                policy.RequireAuthenticatedUser();
+            });
+
         });
 
         //builder.Services.AddAuthorization(options =>

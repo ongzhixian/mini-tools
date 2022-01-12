@@ -18,6 +18,7 @@ using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MiniTools.Web.Extensions;
 using MiniTools.Web.Hubs;
+using Microsoft.AspNetCore.DataProtection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -46,6 +47,11 @@ AppStartup.SetupCors(builder.Services);
 AppStartup.SetupSwagger(builder.Configuration, builder.Services);
 
 // Add services to the container.
+
+builder.Services.AddDataProtection()
+                //.PersistKeysToDbContext<ApplicationDbContext>()
+                .SetApplicationName("YourAppName")
+                .SetDefaultKeyLifetime(TimeSpan.FromDays(180));
 
 builder.Services.AddSignalR();
 
@@ -359,7 +365,7 @@ app.UseCors("DebugAllowAll");
 
 app.UseAuthentication();
 
-// app.UseAuthorization();
+app.UseAuthorization();
 
 app.UseSession();
 

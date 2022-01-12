@@ -4,6 +4,7 @@ using MiniTools.Web.Api.Requests;
 using MiniTools.Web.Api.Responses;
 using MiniTools.Web.Models;
 using MiniTools.Web.Options;
+using System.Net.Mime;
 
 namespace MiniTools.Web.Services;
 
@@ -90,7 +91,9 @@ public class AuthenticationApiService : IAuthenticationApiService
     {
         HttpResponseMessage? result = await httpClient.PostAsJsonAsync<LoginRequest>("/api/UserAuthentication", new LoginRequest(model));
 
-        if (!result.IsSuccessStatusCode)
+         //== MediaTypeNames.Text.Html
+
+        if ((!result.IsSuccessStatusCode) || (MediaTypeNames.Application.Json != result.Content.Headers.ContentType?.MediaType))
         {
             logger.LogInformation(On.VALIDATE_FAIL, "{@IsSuccessStatusCode}", result.IsSuccessStatusCode);
             return OperationResult<LoginResponse>.Fail();

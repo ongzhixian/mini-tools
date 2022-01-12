@@ -1,6 +1,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using MiniTools.Web.Api.Requests;
@@ -12,6 +13,7 @@ using MiniTools.Web.Services;
 namespace MiniTools.Web.Api;
 
 
+[AllowAnonymous]
 [ApiController]
 [Route("api/[controller]")]
 

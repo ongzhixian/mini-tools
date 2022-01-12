@@ -30,7 +30,10 @@ document.getElementById("sendButton").addEventListener("click", function (event)
     event.preventDefault();
 });
 
-var connection2 = new signalR.HubConnectionBuilder().withUrl("/hubs/clock", { accessTokenFactory: () => this.loginToken }).build();
+var connection2 = new signalR.HubConnectionBuilder().withUrl("/hubs/clock", {
+    skipNegotiation: true,
+    transport: signalR.HttpTransportType.WebSockets
+}).build();
 
 connection2.on("ShowTime", function (message) {
     console.log("in ShowTime");
