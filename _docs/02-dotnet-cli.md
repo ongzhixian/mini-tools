@@ -71,6 +71,9 @@ dotnet add .\MiniTools.HostApp\ package Azure.Messaging.WebPubSub
 dotnet add .\MiniTools.HostApp\ package Azure.Data.Tables
 Azure.Storage.Blobs
 
+Microsoft.Data.Analysis
+Microsoft.ML
+Infer.net
 
 dotnet add .\MiniTools.HostApp\ package Grpc.Net.Client
 dotnet add .\MiniTools.HostApp\ package Google.Protobuf
@@ -90,6 +93,7 @@ dotnet tool install JetBrains.dotCover.GlobalTool -g
 dotnet tool install -g JetBrains.ReSharper.GlobalTools
 dotnet tool install -g dotnet-grpc
 dotnet tool install -g Microsoft.Web.LibraryManager.Cli
+dotnet tool install -g mlnet
 
 ### cleanupcode
 
@@ -106,6 +110,8 @@ jb cleanupcode --profile="Built-in: Reformat Code" --include=DemoController.cs .
 jb cleanupcode YourSolution.sln
 
 jb cleanupcode --help 
+
+jb cleanupcode --config-create=cleanupcode.xml
 ```
 
 Note: Use --include/--exclude to filter files. 
@@ -126,6 +132,8 @@ jb inspectcode --build --output=inspectcode-result.html --format=Html --include=
 jb inspectcode --build --output=inspectcode-result.html --format=Html .\MiniTools.Web\MiniTools.Web.csproj
 
 jb inspectcode --help
+
+jb inspectcode --config-create=inspectcode.xml
 ```
 
 ## dotcover
