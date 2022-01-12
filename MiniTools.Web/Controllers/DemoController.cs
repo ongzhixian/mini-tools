@@ -38,14 +38,9 @@ public class DemoController : Controller
         return View();
     }
 
-    [HttpPost]
+    
     public IActionResult Test1()
     {
-        // logger.LogInformation(On.VIEW_HOME, "{onEvent} - Controller [{controllerName}]", On.VIEW_HOME, nameof(HomeController));
-        Log(On.VIEW);
-
-        // 
-
         return View();
     }
 

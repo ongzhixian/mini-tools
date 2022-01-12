@@ -17,6 +17,7 @@ using MiniTools.Web.DataEntities;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Conventions;
 using MiniTools.Web.Extensions;
+using MiniTools.Web.Hubs;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -45,6 +46,8 @@ AppStartup.SetupCors(builder.Services);
 AppStartup.SetupSwagger(builder.Configuration, builder.Services);
 
 // Add services to the container.
+
+builder.Services.AddSignalR();
 
 builder.Services.AddGrpc();
 
@@ -100,6 +103,8 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 //builder.Services.AddHttpClient<AuthenticationService>();
 builder.Services.AddHttpClient<UserApiService>();
 builder.Services.AddHttpClient<IAuthenticationApiService, AuthenticationApiService>();
+
+builder.Services.AddHostedService<ClockBackgroundService>();
 
 
 
@@ -362,6 +367,8 @@ app.UseSession();
 
 // app.UseResponseCaching();
 
+//app.UseWebSockets();
+
 // Map Endpoints
 
 app.MapHealthChecks("/health").AllowAnonymous();
@@ -381,6 +388,10 @@ app.MapControllerRoute(
 app.MapGrpcService<Greeter>();
 
 //app.MapGet("/", () => "Communication with gRPC endpoints must be made through a gRPC client. To learn how to create a client, visit: https://go.microsoft.com/fwlink/?linkid=2086909");
+
+app.MapHub<ChatHub>("/chatHub");
+app.MapHub<ClockHub>("/hubs/clock");
+
 
 
 // Debugging routes
