@@ -89,6 +89,7 @@ dotnet tool install --global SpecFlow.Plus.LivingDoc.CLI
 dotnet tool install JetBrains.dotCover.GlobalTool -g
 dotnet tool install -g JetBrains.ReSharper.GlobalTools
 dotnet tool install -g dotnet-grpc
+dotnet tool install -g Microsoft.Web.LibraryManager.Cli
 
 ### cleanupcode
 

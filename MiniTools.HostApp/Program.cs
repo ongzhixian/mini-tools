@@ -75,7 +75,7 @@ builder.ConfigureServices((host, services) =>
 
     services.AddHostedService<ExampleAirTemperatureObserver>();
     //services.AddHostedService<ExampleAirTemperatureService>();
-    
+
 
     // Sets runtime of hosted service via `RUNTIME_SERVICE` environment variable.
     //string runtimeService = Environment.GetEnvironmentVariable("RUNTIME_SERVICE") ?? "MiniTools.HostApp.Services.ExampleBackgroundService";
@@ -84,6 +84,13 @@ builder.ConfigureServices((host, services) =>
     //    Type runtimeServiceType = Type.GetType(runtimeService) ?? throw new InvalidOperationException($"runtimeServiceType [{runtimeService}] not found.");
     //    return (IHostedService)ActivatorUtilities.CreateInstance(sp, runtimeServiceType);
     //});
+
+    
+    services.AddHostedService<ExampleGrpcService>();
+    services.AddGrpcClient<GreetService.GreetServiceClient>("greetService", options =>
+    {
+        options.Address = new Uri("https://localhost:7001");
+    });
 
 });
 
@@ -95,27 +102,23 @@ var logger = host.Services.GetRequiredService<ILogger<Program>>();
 
 logger.LogInformation("Running application...");
 
-using var channel = GrpcChannel.ForAddress("https://localhost:7001");
+//using var channel = GrpcChannel.ForAddress("https://localhost:7001");
+//var client = new GreetService.GreetServiceClient(channel);
+//var reply = await client.SayHelloAsync(new HelloRequest { Name = "GreeterClient" });
+//Console.WriteLine(reply);
 
-var client = new GreetService.GreetServiceClient(channel);
-var reply = await client.SayHelloAsync(new HelloRequest { Name = "GreeterClient" });
-Console.WriteLine(reply);
-
-using (var call = client.StreamingFromClient())
-{
-    for (int i = 0; i < 5; i++)
-    {
-        await call.RequestStream.WriteAsync(new HelloRequest
-        {
-            Name = "Message i " + i.ToString()
-        });
-    }
-
-    await call.RequestStream.CompleteAsync();
-
-    var summary = await call.ResponseAsync;
-
-    Console.WriteLine(summary);
-}
+//using (var call = client.StreamingFromClient())
+//{
+//    for (int i = 0; i < 5; i++)
+//    {
+//        await call.RequestStream.WriteAsync(new HelloRequest
+//        {
+//            Name = "Message i " + i.ToString()
+//        });
+//    }
+//    await call.RequestStream.CompleteAsync();
+//    var summary = await call.ResponseAsync;
+//    Console.WriteLine(summary);
+//}
 
 host.Run();
