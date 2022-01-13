@@ -8,7 +8,9 @@ public interface IClock
     Task ShowTime(string currentTime);
 }
 
-[Authorize("AuthorizedSignalR")]
+//[Authorize("AuthorizedSignalR")]
+//[AllowAnonymous]
+[Authorize(AuthenticationSchemes ="Cookies,Bearer")]
 public class ClockHub : Hub<IClock>
 {
     //public async Task SendTimeToClients(DateTime dateTime)

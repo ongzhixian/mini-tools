@@ -1,10 +1,13 @@
 ﻿using Grpc.Core;
+using Microsoft.AspNetCore.Authorization;
 using MiniTools.Messages.Requests;
 using MiniTools.Messages.Responses;
 using MiniTools.Services;
 
 namespace MiniTools.Web.Services;
 
+[Authorize(AuthenticationSchemes = "Cookies,Bearer")]
+//[AllowAnonymous]
 public class Greeter : GreetService.GreetServiceBase
 {
     private readonly ILogger<Greeter> _logger;

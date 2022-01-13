@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.SignalR;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.SignalR;
 
 namespace MiniTools.Web.Hubs;
 
@@ -7,6 +8,7 @@ public interface IChatClient
     Task ReceiveMessage(string user, string message);
 }
 
+[AllowAnonymous]
 public class ChatHub : Hub<IChatClient> // Hub
 {
     //public async Task SendMessage(string user, string message)

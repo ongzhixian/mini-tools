@@ -26,7 +26,7 @@ public class ClockBackgroundService : BackgroundService
         {
             _logger.LogInformation("Worker running at: {Time}", DateTime.Now);
 
-            await _clockHub.Clients.All.ShowTime("fake");
+            await _clockHub.Clients.All.ShowTime($"Send: {DateTime.Now}");
 
 
             //await _chatHub.Clients.All.ReceiveMessage("asd", DateTime.Now.ToString());

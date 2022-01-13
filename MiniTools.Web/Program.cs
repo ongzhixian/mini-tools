@@ -365,6 +365,7 @@ app.UseCors("DebugAllowAll");
 
 app.UseAuthentication();
 
+// To comment out to DEBUG authorization issues only
 app.UseAuthorization();
 
 app.UseSession();
