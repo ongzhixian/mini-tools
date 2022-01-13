@@ -1,4 +1,5 @@
-﻿using Grpc.Net.Client;
+﻿using Grpc.Core;
+using Grpc.Net.Client;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -85,12 +86,34 @@ builder.ConfigureServices((host, services) =>
     //    return (IHostedService)ActivatorUtilities.CreateInstance(sp, runtimeServiceType);
     //});
 
-    
+    services.AddHttpClient<UserAuthenticationApiService>();
+
     services.AddHostedService<ExampleGrpcService>();
+    //services.AddHostedService<ExampleSignalRService>();
+    //services.AddHostedService<ExampleBearerService>();
+
     services.AddGrpcClient<GreetService.GreetServiceClient>("greetService", options =>
     {
         options.Address = new Uri("https://localhost:7001");
-    });
+    })
+    //.ConfigureChannel(o =>
+    //{
+    //    string _token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZGV2IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluaXN0cmF0b3IiLCJEZXZlbG9wZXIiLCJNeVByb2ZpbGUiXSwiZXhwIjoxNjQyMDUwNTg4LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDAxLyIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMDEvIn0.R7EXROt638gOmLVfzxCiIvVUpHDGCvzC9p2IDlq4vPs";
+
+    //    var credentials = CallCredentials.FromInterceptor((context, metadata) =>
+    //    {
+    //        if (!string.IsNullOrEmpty(_token))
+    //        {
+    //            metadata.Add("Authorization", $"Bearer {_token}");
+    //        }
+    //        return Task.CompletedTask;
+    //    });
+
+    //    o.Credentials = ChannelCredentials.Create(new SslCredentials(), credentials);
+    //})
+    ;
+
+    
 
 });
 
