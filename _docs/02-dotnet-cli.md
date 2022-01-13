@@ -55,6 +55,7 @@ dotnet add .\MiniTools.Web\ package MongoDB.Driver
 
 dotnet add .\MiniTools.Web\ package Grpc.AspNetCore
 
+
 dotnet add .\Benchmarks\ package BenchmarkDotNet
 dotnet add .\Benchmarks\ package BenchmarkDotNet.Diagnostics.Windows
 
@@ -78,6 +79,7 @@ Infer.net
 dotnet add .\MiniTools.HostApp\ package Grpc.Net.Client
 dotnet add .\MiniTools.HostApp\ package Google.Protobuf
 dotnet add .\MiniTools.HostApp\ package Grpc.Tools
+dotnet add .\MiniTools.HostApp\ package Microsoft.AspNetCore.SignalR.Client
 
 
 ## Templates
