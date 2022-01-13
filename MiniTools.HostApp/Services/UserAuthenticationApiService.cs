@@ -5,6 +5,11 @@ using System.Net.Mime;
 
 namespace MiniTools.HostApp.Services;
 
+public struct Jwt
+{
+    public string? Token { get; set; }
+}
+
 public class UserAuthenticationApiService
 {
     private readonly ILogger<UserAuthenticationApiService> logger;
@@ -36,6 +41,25 @@ public class UserAuthenticationApiService
         LoginResponse? loginResponse = await responseMessage.Content.ReadFromJsonAsync<LoginResponse>();
 
         Console.WriteLine("Got response");
+
+        //EventBus<string>.Instance.NewData += (sender, e) =>
+        //{
+        //    Console.Write("SO");
+        //}; 
+
+        //EventBus.Instance.NewMessage += async (sender, e) =>
+        //{
+        //    await Task.Delay(1000);
+        //};
+
+        //EventBus.Instance.NewMessage += Instance_NewMessageAsync;
+
+        if (loginResponse != null)
+            MessageBus<string>.Instance.Send(loginResponse.Jwt);
+
+        MessageBus<Jwt>.Instance.Send(new Jwt { Token = loginResponse?.Jwt });
+
+        EventBus<Jwt>.Instance.Send(this, new Jwt { Token = loginResponse?.Jwt });
     }
 
     private sealed class LoginRequest

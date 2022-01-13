@@ -11,7 +11,7 @@ public class ExampleGrpcService : BackgroundService
 {
     private readonly ILogger<ExampleGrpcService> logger;
     private readonly GreetService.GreetServiceClient client;
-    private Metadata headers;
+    private readonly Metadata headers;
 
     public ExampleGrpcService(ILogger<ExampleGrpcService> logger, GrpcClientFactory grpcClientFactory)
     {

@@ -82,6 +82,11 @@ dotnet add .\MiniTools.HostApp\ package Grpc.Tools
 dotnet add .\MiniTools.HostApp\ package Microsoft.AspNetCore.SignalR.Client
 
 
+// Add to HostApp and WebApp if we want to use MessagePack
+Microsoft.AspNetCore.SignalR.Protocols.MessagePack
+See: https://docs.microsoft.com/en-us/aspnet/core/signalr/messagepackhubprotocol?view=aspnetcore-6.0
+
+
 ## Templates
 
 dotnet new -i SpecFlow.Templates.DotNet

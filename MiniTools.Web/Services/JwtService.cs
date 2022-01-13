@@ -3,6 +3,7 @@ using Microsoft.IdentityModel.Tokens;
 using MiniTools.Web.Options;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography.X509Certificates;
 using System.Text;
 
 namespace MiniTools.Web.Services;
@@ -112,4 +113,34 @@ public class JwtService : IJwtService
 
     //    return token;
     //}
+
+    private void mkJwe()
+    {
+        var handler = new JwtSecurityTokenHandler();
+
+        var tokenDescriptor = new SecurityTokenDescriptor
+        {
+            Audience = "you",
+            Issuer = "me",
+            Subject = new ClaimsIdentity(new List<Claim> { new Claim("sub", "scott") }),
+            EncryptingCredentials = new X509EncryptingCredentials(new X509Certificate2("key_public.cer"))
+        };
+
+        string token = handler.CreateEncodedJwt(tokenDescriptor);
+    }
+
+    private void readJwe(string token)
+    {
+        var handler = new JwtSecurityTokenHandler();
+        var claimsPrincipal = handler.ValidateToken(
+            token,
+            new TokenValidationParameters
+            {
+                ValidAudience = "you",
+                ValidIssuer = "me",
+                RequireSignedTokens = false,
+                TokenDecryptionKey = new X509SecurityKey(new X509Certificate2("key_private.pfx", "idsrv3test"))
+            },
+            out SecurityToken securityToken);
+    }
 }

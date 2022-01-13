@@ -7,6 +7,7 @@ using MiniTools.HostApp.Models;
 using MiniTools.HostApp.Services;
 using MiniTools.Messages.Requests;
 using MiniTools.Services;
+using System.Security.Cryptography.X509Certificates;
 
 var builder = Host.CreateDefaultBuilder(args);
 
@@ -86,11 +87,13 @@ builder.ConfigureServices((host, services) =>
     //    return (IHostedService)ActivatorUtilities.CreateInstance(sp, runtimeServiceType);
     //});
 
+    
+
     services.AddHttpClient<UserAuthenticationApiService>();
 
-    services.AddHostedService<ExampleGrpcService>();
-    //services.AddHostedService<ExampleSignalRService>();
-    //services.AddHostedService<ExampleBearerService>();
+    //services.AddHostedService<ExampleGrpcService>()
+    services.AddHostedService<ExampleSignalRService>();
+    services.AddHostedService<ExampleBearerService>();
 
     services.AddGrpcClient<GreetService.GreetServiceClient>("greetService", options =>
     {
@@ -143,5 +146,8 @@ logger.LogInformation("Running application...");
 //    var summary = await call.ResponseAsync;
 //    Console.WriteLine(summary);
 //}
+
+var cert2 = X509Certificate2.CreateFromCertFile(@"D:\src\github\mini-tools\test-cert.cer");
+cert2.GetRawCertData();
 
 host.Run();
