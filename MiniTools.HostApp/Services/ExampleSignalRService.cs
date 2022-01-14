@@ -19,29 +19,37 @@ public class ExampleSignalRService : BackgroundService
         EventBus<Jwt>.Instance.NewData += Instance_NewData;
 
         //var subscriber = new MessageBusSubscriber<Jwt>(MessageBus<Jwt>.Instance);
-
         //subscriber.NewValueAction = (jwt) =>
         //{
         //    Console.WriteLine("Message bus received " + jwt.Token);
         //};
-
         //MessageBus<Jwt>.Instance.Subscribe(subscriber);
 
 
-        jwt = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiZGV2IiwiaHR0cDovL3NjaGVtYXMubWljcm9zb2Z0LmNvbS93cy8yMDA4LzA2L2lkZW50aXR5L2NsYWltcy9yb2xlIjpbIkFkbWluaXN0cmF0b3IiLCJEZXZlbG9wZXIiLCJNeVByb2ZpbGUiXSwiZXhwIjoxNjQyMDY4NTk3LCJpc3MiOiJodHRwczovL2xvY2FsaG9zdDo3MDAxLyIsImF1ZCI6Imh0dHBzOi8vbG9jYWxob3N0OjcwMDEvIn0.8Fh75PHw_5pLsImZBNGCB2WvFIDHx5egvFLBDsEzPqA";
-        InitializeHubConnection();
+        //var subscription = MessageBus22Draft.Instance.Subscribe<Jwt>();
+        //subscription.OnNewData = (jwt) =>
+        //{
+        //    Console.WriteLine("Bus22 received " + jwt.Token);
+        //};
+        //subscription.OnNewData = OnNew;
+
+
+        jwt = "eyjhbgcioijiuzi1niisinr5cci6ikpxvcj9.eyjodhrwoi8vc2nozw1hcy54bwxzb2fwlm9yzy93cy8ymda1lza1l2lkzw50axr5l2nsywltcy9uyw1lijoizgv2iiwiahr0cdovl3njagvtyxmubwljcm9zb2z0lmnvbs93cy8ymda4lza2l2lkzw50axr5l2nsywltcy9yb2xlijpbikfkbwluaxn0cmf0b3iilcjezxzlbg9wzxiilcjnevbyb2zpbguixswizxhwijoxnjqymtq4mjg3lcjpc3mioijodhrwczovl2xvy2fsag9zddo3mdaxlyisimf1zci6imh0dhbzoi8vbg9jywxob3n0ojcwmdevin0.5cet5sdy5-kexnlmposiugteljuxi0rogqhnxxlo7i0";
+        initializehubconnection();
+    }
+
+    private void OnNew(Jwt jwt)
+    {
+        Console.WriteLine("Bus22 received " + jwt.Token);
     }
 
     private void Instance_NewData(object? sender, Jwt e)
     {
-        //JwtSecurityTokenHandler a = new JwtSecurityTokenHandler();
-
-        //JwtSecurityTokenHandler
         Console.WriteLine("SignalR received " + e.Token);
 
         jwt = e.Token;
 
-        if (!string.IsNullOrEmpty(jwt))
+        if ((!string.IsNullOrEmpty(jwt)) && (!completedInitialization))
         {
             InitializeHubConnection();
         }
@@ -49,9 +57,6 @@ public class ExampleSignalRService : BackgroundService
 
     private void InitializeHubConnection()
     {
-        if (completedInitialization)
-            return;
-
         InitializeChatHubConnection();
 
         InitializeClockHubConnection();
@@ -83,7 +88,7 @@ public class ExampleSignalRService : BackgroundService
 
         connection.On<string>("ShowTime", (message) =>
         {
-            
+
             logger.LogInformation("Server clock: {message}", message);
         });
 
@@ -150,9 +155,9 @@ public class ExampleSignalRService : BackgroundService
                 logger.LogInformation("chatHubConnection state is {state}", HubConnectionState.Connected);
 
                 // we need to if (chatHubConnection.State == HubConnectionState.Connected)
-                
+
                 await chatHubConnection.InvokeAsync("SendMessage", "some-user", "some message", cancellationToken: stoppingToken);
-                
+
             }
             catch (Exception ex)
             {

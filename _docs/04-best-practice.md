@@ -61,6 +61,12 @@ https://docs.microsoft.com/en-us/dotnet/standard/memory-and-spans/
 https://docs.microsoft.com/en-us/archive/msdn-magazine/2018/january/csharp-all-about-span-exploring-a-new-net-mainstay
 
 
+
+## Disposable
+
+https://stackoverflow.com/questions/43445925/false-positive-fix-this-implementation-of-idisposable-to-conform-to-the-dispose
+
+
 # References
 
 ASP.NET Core Performance Best Practices

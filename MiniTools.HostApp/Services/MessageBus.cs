@@ -20,6 +20,10 @@ internal sealed class Subscriber<T> : IDisposable
     }
 }
 
+/// <summary>
+/// This approach creates a bus for each event type.
+/// </summary>
+/// <typeparam name="T">T is some event type. (example: PriceUpdateEvent)</typeparam>
 public class MessageBus<T> where T : notnull
 {
     private readonly List<IObserver<T>> observers;

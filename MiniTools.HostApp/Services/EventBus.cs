@@ -1,5 +1,9 @@
 ﻿namespace MiniTools.HostApp.Services;
 
+/// <summary>
+/// This approach creates a bus for each event type.
+/// </summary>
+/// <typeparam name="T">T is some event type. (example: PriceUpdateEvent)</typeparam>
 public sealed class EventBus<T> where T : notnull
 {
     public event EventHandler<T>? NewData;

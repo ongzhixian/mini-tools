@@ -60,6 +60,9 @@ public class UserAuthenticationApiService
         MessageBus<Jwt>.Instance.Send(new Jwt { Token = loginResponse?.Jwt });
 
         EventBus<Jwt>.Instance.Send(this, new Jwt { Token = loginResponse?.Jwt });
+
+        MessageBus22Draft.Instance.Send<Jwt>(new Jwt { Token = loginResponse?.Jwt });
+
     }
 
     private sealed class LoginRequest
