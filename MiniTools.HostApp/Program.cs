@@ -87,13 +87,11 @@ builder.ConfigureServices((host, services) =>
     //    return (IHostedService)ActivatorUtilities.CreateInstance(sp, runtimeServiceType);
     //});
 
-    
-
     services.AddHttpClient<UserAuthenticationApiService>();
 
     //services.AddHostedService<ExampleGrpcService>()
-    services.AddHostedService<ExampleSignalRService>();
-    services.AddHostedService<ExampleBearerService>();
+    //services.AddHostedService<ExampleSignalRService>();
+    //services.AddHostedService<ExampleBearerService>();
 
     services.AddGrpcClient<GreetService.GreetServiceClient>("greetService", options =>
     {
@@ -147,7 +145,8 @@ logger.LogInformation("Running application...");
 //    Console.WriteLine(summary);
 //}
 
-var cert2 = X509Certificate2.CreateFromCertFile(@"D:\src\github\mini-tools\test-cert.cer");
-cert2.GetRawCertData();
+//OrToolService.Example();
+//OrToolService.ExampleKnapsack();
+//OrToolService.ExampleMultipleKnapsack();
 
 host.Run();

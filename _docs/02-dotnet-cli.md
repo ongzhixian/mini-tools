@@ -72,15 +72,19 @@ dotnet add .\MiniTools.HostApp\ package Azure.Messaging.WebPubSub
 dotnet add .\MiniTools.HostApp\ package Azure.Data.Tables
 Azure.Storage.Blobs
 
-Microsoft.Data.Analysis
-Microsoft.ML
-Infer.net
 
 dotnet add .\MiniTools.HostApp\ package Grpc.Net.Client
 dotnet add .\MiniTools.HostApp\ package Google.Protobuf
 dotnet add .\MiniTools.HostApp\ package Grpc.Tools
 dotnet add .\MiniTools.HostApp\ package Microsoft.AspNetCore.SignalR.Client
 
+dotnet add .\MiniTools.HostApp\ package Google.OrTools
+
+
+Microsoft.Data.Analysis
+Microsoft.ML
+Infer.net
+Microsoft.Z3
 
 // Add to HostApp and WebApp if we want to use MessagePack
 Microsoft.AspNetCore.SignalR.Protocols.MessagePack
