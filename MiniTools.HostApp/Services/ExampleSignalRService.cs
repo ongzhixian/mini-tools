@@ -35,7 +35,7 @@ public class ExampleSignalRService : BackgroundService
 
 
         jwt = "eyjhbgcioijiuzi1niisinr5cci6ikpxvcj9.eyjodhrwoi8vc2nozw1hcy54bwxzb2fwlm9yzy93cy8ymda1lza1l2lkzw50axr5l2nsywltcy9uyw1lijoizgv2iiwiahr0cdovl3njagvtyxmubwljcm9zb2z0lmnvbs93cy8ymda4lza2l2lkzw50axr5l2nsywltcy9yb2xlijpbikfkbwluaxn0cmf0b3iilcjezxzlbg9wzxiilcjnevbyb2zpbguixswizxhwijoxnjqymtq4mjg3lcjpc3mioijodhrwczovl2xvy2fsag9zddo3mdaxlyisimf1zci6imh0dhbzoi8vbg9jywxob3n0ojcwmdevin0.5cet5sdy5-kexnlmposiugteljuxi0rogqhnxxlo7i0";
-        initializehubconnection();
+        InitializeHubConnection();
     }
 
     private void OnNew(Jwt jwt)
