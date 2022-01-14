@@ -21,6 +21,9 @@
 		<PackageReference Include="Microsoft.AspNetCore.SignalR.Client" Version="6.0.1" />
 		<PackageReference Include="Microsoft.Extensions.Configuration.UserSecrets" Version="6.0.0" />
 		<PackageReference Include="Microsoft.Extensions.Hosting" Version="6.0.0" />
+		<PackageReference Include="Microsoft.ML.Probabilistic" Version="0.3.2102.1701" />
+		<PackageReference Include="Microsoft.ML.Probabilistic.Compiler" Version="0.3.2102.1701" />
+		<PackageReference Include="Microsoft.ML.Probabilistic.Learners" Version="0.3.2102.1701" />
 	</ItemGroup>
 	<ItemGroup>
 		<Protobuf Include="../ProtoBuf/**/*.proto" ProtoRoot=".." Link="ProtoBuf/%(RecursiveDir)%(FileName)%(Extension)" GrpcServices="Client" />

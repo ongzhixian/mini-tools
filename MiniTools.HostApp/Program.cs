@@ -149,4 +149,14 @@ logger.LogInformation("Running application...");
 //OrToolService.ExampleKnapsack();
 //OrToolService.ExampleMultipleKnapsack();
 
+//InferenceService.TrueSkillExample();
+//InferenceService.TwoCoinsExample();
+//InferenceService.GaussianExample();
+
+//InferenceService.StringExample();
+//InferenceService.GaussianArrayExample2();
+//InferenceService.BayesPointExample();
+
+InferenceService.BayesSelectionExample();
+
 host.Run();

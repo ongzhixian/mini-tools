@@ -79,11 +79,13 @@ dotnet add .\MiniTools.HostApp\ package Grpc.Tools
 dotnet add .\MiniTools.HostApp\ package Microsoft.AspNetCore.SignalR.Client
 
 dotnet add .\MiniTools.HostApp\ package Google.OrTools
-
+dotnet add .\MiniTools.HostApp\ package Microsoft.ML.Probabilistic
+dotnet add .\MiniTools.HostApp\ package Microsoft.ML.Probabilistic.Compiler
+dotnet add .\MiniTools.HostApp\ package Microsoft.ML.Probabilistic.Learners
 
 Microsoft.Data.Analysis
 Microsoft.ML
-Infer.net
+Microsoft.ML.Probabilistic (Infer.net)
 Microsoft.Z3
 
 // Add to HostApp and WebApp if we want to use MessagePack
