@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using MiniTools.Web.Api.Requests;
 using MiniTools.Web.DataEntities;
 using MiniTools.Web.MongoEntities;
@@ -9,6 +10,7 @@ using MiniTools.Web.Services;
 namespace MiniTools.Web.Api
 {
 
+    //[Authorize("AuthorizedBearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase

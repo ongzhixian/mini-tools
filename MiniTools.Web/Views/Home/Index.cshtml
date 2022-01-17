@@ -2,15 +2,13 @@
     ViewData["Title"] = "Home Page";
 }
 
+<h1>@ViewData["Title"]</h1>
+
 @if ((User.Identity != null) && (User.Identity.IsAuthenticated))
 {
-    <p>Your authenticated content here.</p>
-
+    <p>TODO: Add content here for authenticated users.</p>
 }
 else 
 {
-    <div class="text-center">
-        <h1 class="display-4">Welcome</h1>
-        <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-    </div>
+    <p>TODO: Content for unauthenticated users (guests).</p>
 }

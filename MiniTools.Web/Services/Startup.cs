@@ -196,17 +196,6 @@ public static class AppStartupService
 
     internal static void SetupAuthorization(IServiceCollection services)
     {
-        //builder.Services.AddAuthorization();  
-        services.AddAuthorization(options =>
-        {
-            options.FallbackPolicy = new AuthorizationPolicyBuilder()
-                .RequireAuthenticatedUser()
-                .Build();
-        });
-
-
-
-
         services.AddAuthorization(options =>
         {
             options.AddPolicy("RequireAdministratorRole",
@@ -221,6 +210,13 @@ public static class AppStartupService
                 });
                 policy.RequireAuthenticatedUser();
             });
+
+            options.FallbackPolicy = new AuthorizationPolicyBuilder()
+                .AddAuthenticationSchemes(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    JwtBearerDefaults.AuthenticationScheme)
+                .RequireAuthenticatedUser()
+                .Build();
 
         });
 

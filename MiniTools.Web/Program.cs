@@ -110,7 +110,7 @@ builder.Services.AddScoped<IJwtService, JwtService>();
 builder.Services.AddHttpClient<UserApiService>();
 builder.Services.AddHttpClient<IAuthenticationApiService, AuthenticationApiService>();
 
-builder.Services.AddHostedService<ClockBackgroundService>();
+//builder.Services.AddHostedService<ClockBackgroundService>();
 
 
 

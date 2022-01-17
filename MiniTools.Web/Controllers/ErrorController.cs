@@ -42,28 +42,45 @@ public class ErrorController : Controller
     }
 
 
-    // [Route("/http-status/{code:int}")]
-    // public IActionResult StatusCode(int code)
-    // {
-    //     // IExceptionHandlerFeature
-    //     // This feature contains information about error from the original request
-    //     // You examine the information in this feature to get original Exception, endpoint, path, routeValues
-    //     var lastRoute = HttpContext.Features.Get<IExceptionHandlerFeature>();
+    [Route("/http-status/{code:int}")]
+    public IActionResult StatusCode(int code)
+    {
+        // IExceptionHandlerFeature
+        // This feature contains information about error from the original request
+        // You examine the information in this feature to get original Exception, endpoint, path, routeValues
+        //var lastRoute = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
-    //     if (lastRoute != null)
-    //     {
-    //         if (lastRoute.Path != null)
-    //             _logger.LogInformation("Path:        {0}", lastRoute?.Path);
-    //         else
-    //             _logger.LogInformation("Path:        N/A");
+        //if (lastRoute != null)
+        //{
+        //    if (lastRoute.Path != null)
+        //        logger.LogInformation("Path:        {0}", lastRoute?.Path);
+        //    else
+        //        logger.LogInformation("Path:        N/A");
 
-    //         // _logger.LogInformation("RouteValues: {0}", lastRoute?.RouteValues);
-    //     }
-    //     else 
-    //     {
-    //         _logger.LogInformation("LastRoute is null");
-    //     }
+        //    // _logger.LogInformation("RouteValues: {0}", lastRoute?.RouteValues);
+        //}
+        //else
+        //{
+        //    logger.LogInformation("LastRoute is null");
+        //}
 
-    //     return View();
-    // }
+        // This is another feature that works the same way as IExceptionHandlerFeature
+        //var statusCodeReExecuteFeature = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+        //if (statusCodeReExecuteFeature is not null)
+        //{
+        //    OriginalPathAndQuery = string.Join(
+        //        statusCodeReExecuteFeature.OriginalPathBase,
+        //        statusCodeReExecuteFeature.OriginalPath,
+        //        statusCodeReExecuteFeature.OriginalQueryString);
+        //}
+
+        // If 401 and user is not authenticated, redirect user to login page
+        if ((code == StatusCodes.Status401Unauthorized) 
+            && (User.Identity != null) 
+            && (!User.Identity.IsAuthenticated))
+            return RedirectToAction("Index", "Login");
+
+        // Otherwise, display the plain HTTP status page.
+        return View(code);
+    }
 }

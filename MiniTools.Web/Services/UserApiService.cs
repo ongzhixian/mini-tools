@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.Extensions.Options;
 using Microsoft.Net.Http.Headers;
 using MiniTools.Web.Api.Requests;
 using MiniTools.Web.DataEntities;
@@ -6,6 +7,7 @@ using MiniTools.Web.Models;
 using MiniTools.Web.Options;
 
 namespace MiniTools.Web.Services;
+
 
 public class UserApiService
 {
@@ -112,9 +114,17 @@ public class UserApiService
             throw new Exception("Oh no! What now?");
         }
 
-        PageData<UserAccount>? res = await result.Content.ReadFromJsonAsync<PageData<UserAccount>>();
+        try
+        {
+            PageData<UserAccount>? res = await result.Content.ReadFromJsonAsync<PageData<UserAccount>>();
 
-        return res;
+            return res;
+        }
+        catch (Exception)
+        {
+            throw;
+        }
+
     }
 
 

@@ -1,5 +1,6 @@
-﻿@model ErrorViewModel
+﻿@model int
 @{
+    Layout = null;
     ViewData["Title"] = "Error";
 }
 
@@ -24,4 +25,21 @@
     and restarting the app.
 </p> *@
 
-statis code page
+<h1>HTTP @Model</h1>
+
+
+
+@if (Model == StatusCodes.Status401Unauthorized)
+{
+    if (User.Identity.IsAuthenticated)
+    {
+        <p>You are not authorized to access resource.</p>
+    }
+    else
+    {
+        <p>You have not identified yourself to the system.</p>
+        <p>
+            Please @Html.ActionLink("log in",  "Index", "Login") before attempting to access the resource.
+        </p>        
+    }
+}
