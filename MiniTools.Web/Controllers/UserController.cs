@@ -29,14 +29,28 @@ public class UserController : Controller
         page = (page <= 0) ? (ushort)1 : page;
         pageSize = (pageSize <= 0) ? (ushort)15 : pageSize;
 
-        PageData<UserAccount>? userList = await userApi.GetUserListAsync(page, pageSize);
+        try
+        {
+            PageData<UserAccount>? userList = await userApi.GetUserListAsync(page, pageSize);
 
-        if (userList == null)
-            userList = new PageData<UserAccount>();
+            if (userList == null)
+                userList = new PageData<UserAccount>();
 
-        PageDataViewModel<UserAccount> result = new PageDataViewModel<UserAccount>(userList);
+            PageDataViewModel<UserAccount> result = new PageDataViewModel<UserAccount>(userList);
 
-        return View(result);
+            return View(result);
+        }
+        catch (HttpRequestException ex)
+        {
+            if (ex.StatusCode.HasValue)
+            {
+                logger.LogError(new EventId(123), ex, "HTTP request status code");
+                return new StatusCodeResult((int)ex.StatusCode.Value);
+            }
+
+            logger.LogError(new EventId(123), ex, "HTTP error");
+            throw;
+        }
     }
 
     //[Route("Details")]
