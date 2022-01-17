@@ -103,6 +103,8 @@ public class LoginController : Controller
 
             if (HttpContext != null)
             {
+                HttpContext.Session.SetString("JWT", result.Payload.Jwt);
+
                 await HttpContext.SignInAsync(
                 CookieAuthenticationDefaults.AuthenticationScheme,
                 new ClaimsPrincipal(claimsIdentity),
