@@ -157,6 +157,9 @@ logger.LogInformation("Running application...");
 //InferenceService.GaussianArrayExample2();
 //InferenceService.BayesPointExample();
 
-InferenceService.BayesSelectionExample();
+//InferenceService.BayesSelectionExample();
+
+MiniTools.HostApp.Models.MonteCarlo.PokerDeck d = new MiniTools.HostApp.Models.MonteCarlo.PokerDeck();
+d.PrintCards();
 
 host.Run();
