@@ -48,7 +48,7 @@ public class ErrorController : Controller
         // IExceptionHandlerFeature
         // This feature contains information about error from the original request
         // You examine the information in this feature to get original Exception, endpoint, path, routeValues
-        //var lastRoute = HttpContext.Features.Get<IExceptionHandlerFeature>();
+        var lastRoute = HttpContext.Features.Get<IExceptionHandlerFeature>();
 
         //if (lastRoute != null)
         //{
@@ -64,19 +64,23 @@ public class ErrorController : Controller
         //    logger.LogInformation("LastRoute is null");
         //}
 
+
         // This is another feature that works the same way as IExceptionHandlerFeature
-        //var statusCodeReExecuteFeature = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
-        //if (statusCodeReExecuteFeature is not null)
-        //{
-        //    OriginalPathAndQuery = string.Join(
-        //        statusCodeReExecuteFeature.OriginalPathBase,
-        //        statusCodeReExecuteFeature.OriginalPath,
-        //        statusCodeReExecuteFeature.OriginalQueryString);
-        //}
+        var statusCodeReExecuteFeature = HttpContext.Features.Get<IStatusCodeReExecuteFeature>();
+        if (statusCodeReExecuteFeature is not null)
+        {
+            //string requestPath = string.Join(
+            //    statusCodeReExecuteFeature.OriginalPathBase,
+            //    statusCodeReExecuteFeature.OriginalPath,
+            //    statusCodeReExecuteFeature.OriginalQueryString);
+
+            if (statusCodeReExecuteFeature.OriginalPath.StartsWith("/api", StringComparison.OrdinalIgnoreCase))
+                return new StatusCodeResult(code);
+        }
 
         // If 401 and user is not authenticated, redirect user to login page
-        if ((code == StatusCodes.Status401Unauthorized) 
-            && (User.Identity != null) 
+        if ((code == StatusCodes.Status401Unauthorized)
+            && (User.Identity != null)
             && (!User.Identity.IsAuthenticated))
             return RedirectToAction("Index", "Login");
 

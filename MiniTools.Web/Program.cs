@@ -181,8 +181,6 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 });
 
 
-
-
 builder.Services.AddSingleton<IMongoCollection<User>>(sp => sp.GetRequiredService<IMongoDatabase>().GetCollection<User>("user"));
 
 // Configurations

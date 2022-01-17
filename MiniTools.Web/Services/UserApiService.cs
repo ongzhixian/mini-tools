@@ -5,6 +5,7 @@ using MiniTools.Web.Api.Requests;
 using MiniTools.Web.DataEntities;
 using MiniTools.Web.Models;
 using MiniTools.Web.Options;
+using System.Net;
 
 namespace MiniTools.Web.Services;
 
@@ -106,24 +107,44 @@ public class UserApiService
     {
         string url = $"/api/User?page={pageNumber}&pageSize={pageSize}";
 
-        // httpClient.GetFromJsonAsync<> // <GetUserRequest>
         var result = await httpClient.GetAsync(url);
 
-        if (!result.IsSuccessStatusCode)
-        {
-            throw new Exception("Oh no! What now?");
-        }
+        result.EnsureSuccessStatusCode();
 
-        try
-        {
-            PageData<UserAccount>? res = await result.Content.ReadFromJsonAsync<PageData<UserAccount>>();
+        PageData<UserAccount>? res = await result.Content.ReadFromJsonAsync<PageData<UserAccount>>();
 
-            return res;
-        }
-        catch (Exception)
-        {
-            throw;
-        }
+        return res;
+
+        //try
+        //{
+
+        //}
+        //catch (HttpRequestException ex)
+        //{
+        //    if (ex.StatusCode.HasValue && (ex.StatusCode.Value == HttpStatusCode.Unauthorized))
+        //        throw new UnauthorizedAccessException();
+
+        //    throw;
+        //}
+        //catch (Exception ex)
+        //{
+        //    logger.LogError(new EventId(123), ex, "Some exce");
+        //    throw;
+        //}
+
+        //if (!result.IsSuccessStatusCode)
+        //{
+        //    return new UnauthorizedAccessException();
+        //}
+
+        //try
+        //{
+
+        //}
+        //catch (Exception)
+        //{
+        //    throw;
+        //}
 
     }
 

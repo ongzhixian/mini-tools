@@ -11,6 +11,7 @@ namespace MiniTools.Web.Api
 {
 
     //[Authorize("AuthorizedBearer")]
+    [Authorize(AuthenticationSchemes = "Bearer")]
     [Route("api/[controller]")]
     [ApiController]
     public class UserController : ControllerBase

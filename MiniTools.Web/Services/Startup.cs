@@ -166,6 +166,17 @@ public static class AppStartupService
     {
         services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(options =>
         {
+            options.Events = new JwtBearerEvents
+            {
+                OnAuthenticationFailed = ctx =>
+                {
+                    ctx.NoResult();
+                    ctx.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return Task.CompletedTask;
+                }
+            };
+
+
             // options.Authority = "https://localhost:7241";
             // options.Audience = "weatherforecast";
             options.TokenValidationParameters = new()
@@ -183,6 +194,14 @@ public static class AppStartupService
         services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
             .AddCookie(options =>
             {
+                options.Events.OnRedirectToAccessDenied =
+                options.Events.OnRedirectToLogin = c =>
+                {
+                    c.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    //return Task.FromResult<object>(null);
+                    return Task.CompletedTask;
+                };
+
                 options.AccessDeniedPath = new PathString("/Account/AccessDenied");
                 options.Cookie.Name = "Cookie2";
                 options.Cookie.HttpOnly = true;
