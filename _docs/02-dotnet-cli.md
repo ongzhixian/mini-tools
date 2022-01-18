@@ -83,6 +83,14 @@ dotnet add .\MiniTools.HostApp\ package Microsoft.ML.Probabilistic
 dotnet add .\MiniTools.HostApp\ package Microsoft.ML.Probabilistic.Compiler
 dotnet add .\MiniTools.HostApp\ package Microsoft.ML.Probabilistic.Learners
 
+dotnet add .\MiniTools.HostApp\ package Microsoft.ML
+dotnet add .\MiniTools.HostApp\ package Microsoft.ML.TimeSeries
+dotnet add .\MiniTools.HostApp\ package Microsoft.ML.Recommender
+dotnet add .\MiniTools.HostApp\ package Microsoft.ML.AutoML
+
+Needed to save to Onnx format
+dotnet add .\MiniTools.HostApp\ package Microsoft.ML.OnnxConverter 
+
 Microsoft.Data.Analysis
 Microsoft.ML
 Microsoft.ML.Probabilistic (Infer.net)

@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using MiniTools.HostApp.Models;
+using MiniTools.HostApp.Models.Housing;
 using MiniTools.HostApp.Models.MonteCarlo;
 using MiniTools.HostApp.Services;
 using MiniTools.Messages.Requests;
@@ -160,5 +161,14 @@ logger.LogInformation("Running application...");
 
 //InferenceService.BayesSelectionExample();
 
+//RegressionMlExample regressionMlExample = new RegressionMlExample();
+//regressionMlExample.MakeModel();
+
+HousePricePredictor pred = new HousePricePredictor();
+//pred.DoWork();
+pred.LoadTrainingData();
+pred.TrainModel();
+var prediction = pred.Predict(new HouseData() { Size = 2.5F });
+Console.WriteLine(prediction);
 
 //host.Run();
