@@ -85,8 +85,12 @@ dotnet add .\MiniTools.HostApp\ package Microsoft.ML.Probabilistic.Learners
 
 Microsoft.Data.Analysis
 Microsoft.ML
+Microsoft.ML.OnnxRuntime
 Microsoft.ML.Probabilistic (Infer.net)
 Microsoft.Z3
+
+Yarp.ReverseProxy 
+ 
 
 // Add to HostApp and WebApp if we want to use MessagePack
 Microsoft.AspNetCore.SignalR.Protocols.MessagePack
