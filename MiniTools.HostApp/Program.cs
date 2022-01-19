@@ -166,9 +166,47 @@ logger.LogInformation("Running application...");
 
 HousePricePredictor pred = new HousePricePredictor();
 //pred.DoWork();
-pred.LoadTrainingData();
-pred.TrainModel();
-var prediction = pred.Predict(new HouseData() { Size = 2.5F });
-Console.WriteLine(prediction);
+//pred.LoadTrainingData();
+//pred.TrainModel();
+//var prediction = pred.Predict(new HouseData() { Size = 2.5F });
+//Console.WriteLine(prediction);
+
+
+//MlnetBinaryClassificationExample binaryClassificationExample = new MlnetBinaryClassificationExample();
+//binaryClassificationExample.DoWork();
+
+//MlnetMultiCategoryClassificationExample multiCategoryClassificationExample = new MlnetMultiCategoryClassificationExample();
+//multiCategoryClassificationExample.DoWork();
+
+//MlnetRegressionExample regressionExample = new MlnetRegressionExample();
+//regressionExample.DoWork();
+
+//MlnetKmeansClusteringExample kmeansClusteringExample = new MlnetKmeansClusteringExample();
+//kmeansClusteringExample.DoWork();
+
+//MlnetMatrixFactorizationExample mlnetMatrixFactorizationExample = new MlnetMatrixFactorizationExample();
+//mlnetMatrixFactorizationExample.DoWork();
+
+//MlnetTransferLearningExample mlnetTransferLearningExample = new MlnetTransferLearningExample();
+//mlnetTransferLearningExample.DoWork();
+
+//MlnetModelCompositionExample mlnetModelCompositionExample = new MlnetModelCompositionExample();
+//mlnetModelCompositionExample.DoWork();
+
+
+//MlnetTimeSeriesExample mlnetTimeSeriesExample = new MlnetTimeSeriesExample();
+//mlnetTimeSeriesExample.DoWork();
+
+//MlnetAnomalyDetectionExample mlnetAnomalyDetectionExample = new MlnetAnomalyDetectionExample();
+//mlnetAnomalyDetectionExample.DoWork();
+
+//MlnetAnomalyDetectionExample2 mlnetAnomalyDetectionExample2 = new MlnetAnomalyDetectionExample2();
+//mlnetAnomalyDetectionExample2.DoWork();
+
+//MlnetObjectDetectionExample mlnetObjectDetectionExample = new MlnetObjectDetectionExample();
+//mlnetObjectDetectionExample.DoWork();
+
+MlnetTextClassificationExample mlnetTextClassificationExample = new MlnetTextClassificationExample();
+mlnetTextClassificationExample.DoWork();
 
 //host.Run();

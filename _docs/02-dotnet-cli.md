@@ -88,12 +88,26 @@ dotnet add .\MiniTools.HostApp\ package Microsoft.ML.TimeSeries
 dotnet add .\MiniTools.HostApp\ package Microsoft.ML.Recommender
 dotnet add .\MiniTools.HostApp\ package Microsoft.ML.AutoML
 
+// Yes this got to be version 2.3.1; Latest version 2.7.0 will break :-(
+dotnet add .\MiniTools.HostApp\ package SciSharp.TensorFlow.Redist --version 2.3.1
+
+
+dotnet add .\MiniTools.HostApp\ package System.Data.SqlClient
+
+Microsoft.ML.FastTree
+Microsoft.ML.Vision
+Microsoft.ML.ImageAnalytics
+Microsoft.ML.SampleUtils
+
 Needed to save to Onnx format
 dotnet add .\MiniTools.HostApp\ package Microsoft.ML.OnnxConverter 
+dotnet add .\MiniTools.HostApp\ package Microsoft.ML.OnnxTransformer 
+dotnet add .\MiniTools.HostApp\ package Microsoft.ML.OnnxRuntime
 
 Microsoft.Data.Analysis
 Microsoft.ML
-Microsoft.ML.OnnxRuntime
+
+
 Microsoft.ML.Probabilistic (Infer.net)
 Microsoft.Z3
 
