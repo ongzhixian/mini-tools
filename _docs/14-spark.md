@@ -33,7 +33,45 @@ DOTNET_WORKER_DIR=C:\Apps\sparkWorker
 
 # Test
 
-spark-submit --version
+`spark-submit` requires JDK 1.8
+Attempting to use other JDK version will result in error.
+So if your default Windows environment variable set other JDK version,
+you have 2 ways of overcoming this:
+
+1.  Set JAVA_HOME before you run spark commands.
+2.  In Spark's `conf` folder, create/copy `spark-env.cmd` from `spark-env.sh.template`
+    Commands in this file is executed before spark commands are executed.
+    (On Linux, it would be `spark-env.sh`; but on Windows its a `cmd` file)
+3.  There's mention of using `--conf spark.executorEnv.JAVA_HOME=C:/Apps/Java/jdk`
+    But I couldn't get this working; so not sure if this is a valid option.
+
+
+`spark-submit --version`
+
+```output of spark-submit --version
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /___/ .__/\_,_/_/ /_/\_\   version 3.1.2
+      /_/
+
+Using Scala version 2.12.10, Java HotSpot(TM) 64-Bit Server VM, 1.8.0_311
+Branch HEAD
+Compiled by user centos on 2021-05-24T04:46:13Z
+Revision de351e30a90dd988b133b3d00fa6218bfcaba8b8
+Url https://github.com/apache/spark
+Type --help for more information.
+```
+
+About setting environment variables:
+
+```
+spark.executorEnv.[EnvironmentVariableName]
+
+spark-submit --conf spark.yarn.appMasterEnv.JAVA_HOME=C:/Apps/Java/jdk --version
+```
+
 
 Make sure you can run the following:
 dotnet, java, spark-shell
