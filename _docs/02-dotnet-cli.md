@@ -111,6 +111,9 @@ Microsoft.ML
 Microsoft.ML.Probabilistic (Infer.net)
 Microsoft.Z3
 
+dotnet add .\MiniTools.HostApp\ package Microsoft.Spark
+
+
 Yarp.ReverseProxy 
  
 

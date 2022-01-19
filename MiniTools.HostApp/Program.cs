@@ -206,7 +206,11 @@ HousePricePredictor pred = new HousePricePredictor();
 //MlnetObjectDetectionExample mlnetObjectDetectionExample = new MlnetObjectDetectionExample();
 //mlnetObjectDetectionExample.DoWork();
 
-MlnetTextClassificationExample mlnetTextClassificationExample = new MlnetTextClassificationExample();
-mlnetTextClassificationExample.DoWork();
+//MlnetTextClassificationExample mlnetTextClassificationExample = new MlnetTextClassificationExample();
+//mlnetTextClassificationExample.DoWork();
+
+
+SparkExample sparkExample = new SparkExample();
+sparkExample.DoWork(args);
 
 //host.Run();

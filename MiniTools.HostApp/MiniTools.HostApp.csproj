@@ -30,6 +30,7 @@
 		<PackageReference Include="Microsoft.ML.Probabilistic.Compiler" Version="0.3.2102.1701" />
 		<PackageReference Include="Microsoft.ML.Probabilistic.Learners" Version="0.3.2102.1701" />
 		<PackageReference Include="Microsoft.ML.TimeSeries" Version="1.7.0" />
+		<PackageReference Include="Microsoft.Spark" Version="2.0.0" />
 		<PackageReference Include="SciSharp.TensorFlow.Redist" Version="2.3.1" />
 		<PackageReference Include="System.Data.SqlClient" Version="4.8.3" />
 	</ItemGroup>
