@@ -103,3 +103,12 @@ It maybe better to clean the folder manually from time-to-time.
 
 Some ssuggest doing the following; does not work
 `winutils.exe chmod 777 D:\debug\temp`
+
+
+# Reference
+
+https://dotnet.microsoft.com/en-us/apps/data/spark
+
+
+https://issues.apache.org/jira/browse/SPARK-12216
+https://github.com/dotnet/spark/issues/49#issuecomment-486714091
