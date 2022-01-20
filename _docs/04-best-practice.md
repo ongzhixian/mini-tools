@@ -67,6 +67,24 @@ https://docs.microsoft.com/en-us/archive/msdn-magazine/2018/january/csharp-all-a
 https://stackoverflow.com/questions/43445925/false-positive-fix-this-implementation-of-idisposable-to-conform-to-the-dispose
 
 
+
+## Stack
+
+Learning
+  Mlnet
+  Infer
+
+ServiceBus
+  WebSockets
+  gRPC
+  Kafka
+  Azure PubSub
+  Channel/MessageBus/EventBus
+
+
+Process
+  Spark
+
 # References
 
 ASP.NET Core Performance Best Practices

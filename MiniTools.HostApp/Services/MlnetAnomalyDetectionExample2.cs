@@ -68,7 +68,11 @@ internal class MlnetAnomalyDetectionExample2
             confidence: 95, 
             pvalueHistoryLength: docSize / 4);
 
+        
+
         ITransformer iidSpikeTransform = iidSpikeEstimator.Fit(CreateEmptyDataView(mlContext));
+
+        
 
         IDataView transformedData = iidSpikeTransform.Transform(productSales);
 

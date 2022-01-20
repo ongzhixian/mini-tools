@@ -2,11 +2,11 @@
 using Microsoft.ML.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
-using static MiniTools.HostApp.Services.MlnetObjectDetectionExample;
+using static MiniTools.HostApp.Services.MlnetTFObjectDetectionExample;
 
 namespace MiniTools.HostApp.Services;
 
-internal class MlnetObjectDetectionExample
+internal class MlnetTFObjectDetectionExample
 {
     public class ImageNetData
     {

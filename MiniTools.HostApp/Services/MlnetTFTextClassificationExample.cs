@@ -5,7 +5,7 @@ using Microsoft.ML.Transforms;
 
 namespace MiniTools.HostApp.Services;
 
-internal class MlnetTextClassificationExample
+internal class MlnetTFTextClassificationExample
 {
     /// <summary>
     /// Class to hold original sentiment data.

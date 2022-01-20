@@ -152,6 +152,13 @@ Complex routing to consumers
 
 Applications that need a variety of publish/subscribe, point-to-point request/reply messaging capabilities.
 
+Zookeeper is a top-level software developed by Apache that acts as a centralized service and is used to maintain naming and configuration data and to provide flexible and robust synchronization within distributed systems. Zookeeper keeps track of status of the Kafka cluster nodes and it also keeps track of Kafka topics, partitions etc. 
+
+The metadata of Kafka cluster processes is stored in an independent system called Apache Zookeeper. Zookeeper helps Kafka perform several critical functions, such as electing a leader in case of node failure. It also maintains the list of consumers in a consumer group and manages the access control list of Kafka topics.
+
+https://thecloudblog.net/post/event-driven-architecture-with-apache-kafka-for-net-developers-part-1-event-producer/
+
+
 # Apache Geode
 
 https://gemfire.docs.pivotal.io/apidocs/tgfnc-dotnet-91/a00297.html
@@ -166,6 +173,34 @@ Apache Geode is a mature, robust technology originally developed by GemStone Sys
 Commercially available as GemFire™, it was first deployed in the financial sector as the transactional, low-latency data engine used in Wall Street trading platforms. 
 Today Apache Geode technology is used by hundreds of enterprise customers for high-scale business applications that must meet low latency and 24x7 availability requirements.
 
+# Apache Flume
+
+Flume is a distributed, reliable, and available service for efficiently collecting, aggregating, and moving large amounts of log data. It has a simple and flexible architecture based on streaming data flows. It is robust and fault tolerant with tunable reliability mechanisms and many failover and recovery mechanisms. It uses a simple extensible data model that allows for online analytic application.
+
+Flume (splunk?)
+
+# Apache Avro
+
+Avro is a row-oriented remote procedure call and data serialization framework developed within Apache's Hadoop project. It uses JSON for defining data types and protocols, and serializes data in a compact binary format.
+
+Microsoft.Hadoop.Avro2
+
+# Apache Airflow
+
+Apache Airflow is an open-source workflow management platform for data engineering pipelines. It started at Airbnb in October 2014 as a solution to manage the company's increasingly complex workflows
+
+https://azkaban.github.io/
+https://oozie.apache.org/
+
+
+# Apache Flink
+
+Apache Flink is an open-source, unified stream-processing and batch-processing framework developed by the Apache Software Foundation. The core of Apache Flink is a distributed streaming data-flow engine written in Java and Scala. Flink executes arbitrary dataflow programs in a data-parallel and pipelined manner
+
+
+# Apache Pulsar
+
+Apache Pulsar is a cloud-native, distributed messaging and streaming platform originally created at Yahoo! and now a top-level Apache Software Foundation 
 
 # Keycloak
 

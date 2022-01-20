@@ -3,7 +3,7 @@ using Microsoft.ML.Data;
 
 namespace MiniTools.HostApp.Services;
 
-internal class MlnetModelCompositionExample
+internal class MlnetTFModelCompositionExample
 {
     public class ImageData
     {

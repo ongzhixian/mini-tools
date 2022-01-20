@@ -210,7 +210,14 @@ HousePricePredictor pred = new HousePricePredictor();
 //mlnetTextClassificationExample.DoWork();
 
 
-SparkExample sparkExample = new SparkExample();
-sparkExample.DoWork(args);
+//SparkExample sparkExample = new SparkExample();
+//sparkExample.DoWork(args);
+
+//KafkaExample kafkaExample = new KafkaExample();
+//kafkaExample.DoWork();
+
+
+MlnetAnomalyDetectionExample3 mlnetAnomalyDetectionExample3 = new MlnetAnomalyDetectionExample3();
+mlnetAnomalyDetectionExample3.DoWork2();
 
 //host.Run();

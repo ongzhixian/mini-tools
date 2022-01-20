@@ -113,6 +113,7 @@ Microsoft.Z3
 
 dotnet add .\MiniTools.HostApp\ package Microsoft.Spark
 
+dotnet add .\MiniTools.HostApp\ package Confluent.Kafka
 
 Yarp.ReverseProxy 
  
@@ -136,6 +137,7 @@ dotnet tool install -g JetBrains.ReSharper.GlobalTools
 dotnet tool install -g dotnet-grpc
 dotnet tool install -g Microsoft.Web.LibraryManager.Cli
 dotnet tool install -g mlnet
+dotnet tool install --global Apache.Avro.Tools
 
 ### cleanupcode
 

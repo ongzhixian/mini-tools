@@ -1,5 +1,8 @@
 # Spark
 
+Apache Spark is a lightning-fast unified analytics engine for big data and machine learning.
+
+
 # Downloads
 
 Apache Spark 3.1.2 (for Hadoop 2.7)

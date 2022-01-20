@@ -1,5 +1,21 @@
 # ML.Net
 
+Binary classification                   Sentiment classification
+Multi-category classification           Issue classification
+Regression                              Taxi fair prediction
+K-means Clustering (unsuperivsed)       Flower data grouping
+Matrix Factorization (regression model) Movie rating prediction
+Time Series                             bike-demand forecast
+
+Anomaly Detection (time series)         
+Anomaly Detection 2 (non time-series)
+
+Transfer Learning   (w/TensorFlow)
+Transfer Learning   (image classification w/tensorflow)
+Model Composition   (image classification -- another example of transfer learning w/tensorflow (inception))
+Object detection    (note detection; not classification)
+Text Classification (w/TensorFlow)
+
 
 # mlnet CLI
 
@@ -21,6 +37,185 @@ classification  for the ML task of classification
 Analyze sentiment using the ML.NET CLI
 https://docs.microsoft.com/en-us/dotnet/machine-learning/tutorials/sentiment-analysis-cli
 https://archive.ics.uci.edu/ml/datasets/Sentiment+Labelled+Sentences
+
+
+
+# Structure for Anomaly Detection tasks
+
+Example 1
+1.  Load data
+2.  Detect period (seasonality)
+3.  Detection algorithm (SR-CNN)
+
+Example 2
+1.  Load data
+2.  Detect spike (iidSpikeEstimator)
+3.  Detect change points (iidChangePointEstimator)
+
+Example 3
+1.  Load data/model
+2.  Detect (SR-CNN)
+3.  Checkpoint (go to 1)
+
+
+# AutoML (aka. Experiments)
+
+Applies only to the following types of learning tasks:
+Binary Classification
+Multiclass Classification
+Regression
+Recommendation
+Ranking
+
+# Re-trainable Algos
+
+List of retrainable algorithms (by task, Onnx exportable)
+
+Trainer 	                                Task 	                    ONNX Exportable             Retrainable
+AveragedPerceptronTrainer 	                Binary classification 	    Yes (linear)                Yes
+LbfgsLogisticRegressionBinaryTrainer 	    Binary classification 	    Yes (linear)                Yes
+SymbolicSgdLogisticRegressionBinaryTrainer  Binary classification 	    Yes (linear)                Yes
+LinearSvmTrainer 	                        Binary classification 	    Yes (svm)                   Yes
+FieldAwareFactorizationMachineTrainer       Binary classification 	    No  (matrix factorization)  Yes
+LbfgsMaximumEntropyMulticlassTrainer 	    Multiclass classification 	Yes (linear)                Yes
+LbfgsPoissonRegressionTrainer 	            Regression 	                Yes (linear)                Yes
+OnlineGradientDescentTrainer 	            Regression 	                Yes (linear)                Yes
+SgdCalibratedTrainer                        Regression                  ?                           Yes
+SgdNonCalibratedTrainer                     Regression                  ?                           Yes
+
+
+# Algorithms summary
+
+Trainer 	                                Task 	                    ONNX Exportable             Retrainable
+AveragedPerceptronTrainer 	                Binary classification 	    Yes (linear)                Yes
+SdcaLogisticRegressionBinaryTrainer 	    Binary classification 	    Yes (linear)
+SdcaNonCalibratedBinaryTrainer 	            Binary classification 	    Yes (linear)
+SdcaMaximumEntropyMulticlassTrainer 	    Multiclass classification 	Yes (linear)
+SdcaNonCalibratedMulticlassTrainer 	        Multiclass classification 	Yes (linear)
+SdcaRegressionTrainer 	                    Regression 	                Yes (linear)
+LbfgsLogisticRegressionBinaryTrainer 	    Binary classification 	    Yes (linear)                Yes
+LbfgsMaximumEntropyMulticlassTrainer 	    Multiclass classification 	Yes (linear)                Yes
+LbfgsPoissonRegressionTrainer 	            Regression 	                Yes (linear)                Yes
+SymbolicSgdLogisticRegressionBinaryTrainer  Binary classification 	    Yes (linear)                Yes
+OnlineGradientDescentTrainer 	            Regression 	                Yes (linear)                Yes
+
+LightGbmBinaryTrainer 	                    Binary classification 	    Yes (decision tree)
+LightGbmMulticlassTrainer 	                Multiclass classification 	Yes (decision tree)
+LightGbmRegressionTrainer 	                Regression 	                Yes (decision tree)
+LightGbmRankingTrainer 	                    Ranking 	                No  (decision tree)
+FastTreeBinaryTrainer 	                    Binary classification 	    Yes (decision tree)
+FastTreeRegressionTrainer 	                Regression 	                Yes (decision tree)
+FastTreeTweedieTrainer 	                    Regression 	                Yes (decision tree)
+FastTreeRankingTrainer 	                    Ranking 	                No  (decision tree)
+
+FastForestBinaryTrainer 	                Binary classification 	    Yes (decision tree)
+FastForestRegressionTrainer                 Regression 	                Yes (decision tree)
+GamBinaryTrainer 	                        Binary classification 	    No  (decision tree)
+GamRegressionTrainer 	                    Regression 	                No  (decision tree)
+
+MatrixFactorizationTrainer 	                Recommendation 	            No  (matrix factorization)
+FieldAwareFactorizationMachineTrainer       Binary classification 	    No  (matrix factorization)  Yes
+
+OneVersusAllTrainer 	                    Multiclass classification 	Yes (meta)
+PairwiseCouplingTrainer 	                Multiclass classification 	No  (meta)
+KMeansTrainer 	                            Clustering 	                Yes (k-means)
+RandomizedPcaTrainer 	                    Anomaly detection 	        No  (pca)
+NaiveBayesMulticlassTrainer 	            Multiclass classification 	Yes (naives bayes)
+PriorTrainer 	                            Binary classification 	    Yes (prior)
+LinearSvmTrainer 	                        Binary classification 	    Yes (svm)                   Yes
+LdSvmTrainer 	                            Binary classification 	    Yes (svm)
+OlsTrainer 	                                Regression 	                Yes (ols)
+
+
+
+
+
+# Algos (https://docs.microsoft.com/en-us/dotnet/machine-learning/how-to-choose-an-ml-net-algorithm)
+
+
+Online gradient descent
+Trainer 	                            Task 	                    ONNX Exportable
+AveragedPerceptronTrainer 	            Binary classification 	    Yes
+SdcaLogisticRegressionBinaryTrainer 	Binary classification 	    Yes
+SdcaNonCalibratedBinaryTrainer 	        Binary classification 	    Yes
+SdcaMaximumEntropyMulticlassTrainer 	Multiclass classification 	Yes
+SdcaNonCalibratedMulticlassTrainer 	    Multiclass classification 	Yes
+SdcaRegressionTrainer 	                Regression 	                Yes
+
+LbfgsLogisticRegressionBinaryTrainer 	Binary classification 	    Yes
+LbfgsMaximumEntropyMulticlassTrainer 	Multiclass classification 	Yes
+LbfgsPoissonRegressionTrainer 	        Regression 	                Yes
+
+SymbolicSgdLogisticRegressionBinaryTrainer 	Binary classification 	Yes
+OnlineGradientDescentTrainer 	        Regression 	                Yes
+
+
+
+Light gradient boosted machine
+Light gradient boosted machine (Fastest and most accurate of the binary classification tree trainers. Highly tunable.)
+Trainer 	                            Task 	                    ONNX Exportable
+LightGbmBinaryTrainer 	                Binary classification 	    Yes
+LightGbmMulticlassTrainer 	            Multiclass classification 	Yes
+LightGbmRegressionTrainer 	            Regression 	                Yes
+LightGbmRankingTrainer 	                Ranking 	                No
+
+Fast tree (Use for featurized image data. Resilient to unbalanced data. Highly tunable)
+Trainer 	                            Task 	                    ONNX Exportable
+FastTreeBinaryTrainer 	                Binary classification 	    Yes
+FastTreeRegressionTrainer 	            Regression 	                Yes
+FastTreeTweedieTrainer 	                Regression 	                Yes
+FastTreeRankingTrainer 	                Ranking 	                No
+
+Fast forest (Works well with noisy data.)
+Trainer 	                            Task 	                    ONNX Exportable
+FastForestBinaryTrainer 	            Binary classification 	    Yes
+FastForestRegressionTrainer             Regression 	                Yes
+
+Generalized additive model (GAM) Best for problems that perform well with tree algorithms but where explainability is a priority.
+
+Trainer 	                            Task 	                    ONNX Exportable
+GamBinaryTrainer 	                    Binary classification 	    No
+GamRegressionTrainer 	                Regression 	                No
+
+
+Matrix Factorization (Used for collaborative filtering in recommendation.)
+Trainer 	                            Task 	                    ONNX Exportable
+MatrixFactorizationTrainer 	            Recommendation 	            No
+
+Field Aware Factorization Machine (Best for sparse categorical data, with large datasets.)
+Trainer 	                            Task 	                    ONNX Exportable
+FieldAwareFactorizationMachineTrainer   Binary classification 	    No
+
+
+Meta-trainers
+These trainers create a multiclass trainer from a binary trainer. 
+Use with AveragedPerceptronTrainer, LbfgsLogisticRegressionBinaryTrainer, SymbolicSgdLogisticRegressionBinaryTrainer, LightGbmBinaryTrainer, FastTreeBinaryTrainer, FastForestBinaryTrainer, GamBinaryTrainer
+
+One versus all This multiclass classifier trains one binary classifier for each class, which distinguishes that class from all other classes. Is limited in scale by the number of classes to categorize.
+One versus all
+Trainer 	                            Task 	                    ONNX Exportable
+OneVersusAllTrainer 	                Multiclass classification 	Yes
+PairwiseCouplingTrainer 	            Multiclass classification 	No
+KMeansTrainer 	                        Clustering 	                Yes
+RandomizedPcaTrainer 	                Anomaly detection 	        No
+NaiveBayesMulticlassTrainer 	        Multiclass classification 	Yes
+PriorTrainer 	                        Binary classification 	    Yes
+
+
+Support vector machines (SVMs) are an extremely popular and well-researched class of supervised learning models, which can be used in linear and non-linear classification tasks.
+
+Trainer 	                            Task 	                    ONNX Exportable
+LinearSvmTrainer 	                    Binary classification 	    Yes
+LdSvmTrainer 	                        Binary classification 	    Yes
+
+Ordinary least squares (OLS) is one of the most commonly used techniques in linear regression.
+
+Ordinary least squares refers to the loss function, which computes error as the sum of the square of distance from the actual value to the predicted line, and fits the model by minimizing the squared error. This method assumes a strong linear relationship between the inputs and the dependent variable.
+Trainer 	                            Task 	                    ONNX Exportable
+OlsTrainer 	                            Regression 	                Yes
+
+
+
 
 
 # Examples
@@ -260,3 +455,7 @@ RNNs are used for time-series analysis, where the sequential ordering and contex
 How to install GPU support in Model Builder
 https://docs.microsoft.com/en-us/dotnet/machine-learning/how-to-guides/install-gpu-model-builder
 https://developer.nvidia.com/cuda-10.1-download-archive-update2
+
+
+https://rubikscode.net/tag/mlnet/
+https://rubikscode.net/tag/mlnet/page/2/

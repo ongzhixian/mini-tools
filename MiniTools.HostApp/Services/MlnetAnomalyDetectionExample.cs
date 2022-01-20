@@ -4,6 +4,7 @@ using Microsoft.ML.TimeSeries;
 
 namespace MiniTools.HostApp.Services;
 
+
 internal class MlnetAnomalyDetectionExample
 {
     public class PhoneCallsData
@@ -20,7 +21,17 @@ internal class MlnetAnomalyDetectionExample
         //vector to hold anomaly detection results. Including isAnomaly, anomalyScore, magnitude, expectedValue, boundaryUnits, upperBoundary and lowerBoundary.
         [VectorType(7)]
         public double[] Prediction { get; set; }
+
+        // The length of the output vector actually depends on the DetectMode (Default is AnomalyOnly)
+        //DetectMode                Output Vector is
+        //AnomalyOnly               a 3-element Double vector of(IsAnomaly, RawScore, Mag).
+        //AnomalyAndExpectedValue   a 4-element Double vector of(IsAnomaly, RawScore, Mag, ExpectedValue).
+        //AnomalyAndMargin,         a 7-element Double vector of(IsAnomaly, AnomalyScore, Mag, ExpectedValue, BoundaryUnit, UpperBoundary, LowerBoundary).
+        //RawScore is output by SR to determine whether a point is an anomaly or not.
+        //Under AnomalyAndMargin mode when a point is an anomaly, an AnomalyScore will be calculated according to sensitivity setting.
+        //
     }
+
 
     const string dataSetPath = @"D:\src\github\mini-tools\DataSets";
 
@@ -80,6 +91,10 @@ internal class MlnetAnomalyDetectionExample
                     nameof(PhoneCallsPrediction.Prediction),
                     nameof(PhoneCallsData.value),
                     options);
+
+        
+
+
 
         IEnumerable<PhoneCallsPrediction> predictions = mlContext.Data.CreateEnumerable<PhoneCallsPrediction>(
             outputDataView, reuseRowObject: false);

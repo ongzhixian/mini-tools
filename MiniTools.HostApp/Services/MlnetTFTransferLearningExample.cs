@@ -4,7 +4,7 @@ using static Microsoft.ML.DataOperationsCatalog;
 
 namespace MiniTools.HostApp.Services;
 
-internal class MlnetTransferLearningExample
+internal class MlnetTFTransferLearningExample
 {
     class ImageData
     {
