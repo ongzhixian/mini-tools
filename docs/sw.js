@@ -8,7 +8,7 @@ var APP_PREFIX = 'mtghp_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_07';
+var VERSION = 'version_08';
 
 const cacheName = `${APP_PREFIX}${VERSION}`;
 
@@ -20,13 +20,11 @@ var URLS = [
     `${GHPATH}/css/normalize.css`,
     `${GHPATH}/css/skeleton.css`,
     `${GHPATH}/images/favicon.png`,
-    `${GHPATH}/js/app.js`,
-    "//fonts.googleapis.com/css?family=Raleway:400,300,600"
+    `${GHPATH}/js/app.js`
 ]
 
 const contentToCache = URLS; // appShellFiles.concat(gamesImages)
 
-console.log(...contentToCache);
 
 // Installing Service Worker
 self.addEventListener('install', (e) => {
