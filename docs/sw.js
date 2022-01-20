@@ -18,5 +18,6 @@ var URLS = [
   `${GHPATH}/css/normalize.css`,
   `${GHPATH}/css/skeleton.css`,
   `${GHPATH}/images/favicon.png`,
-  `${GHPATH}/js/app.js`
+  `${GHPATH}/js/app.js`,
+  "//fonts.googleapis.com/css?family=Raleway:400,300,600"
 ]
