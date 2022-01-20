@@ -24,6 +24,8 @@ var URLS = [
     "//fonts.googleapis.com/css?family=Raleway:400,300,600"
 ]
 
+const contentToCache = URLS; // appShellFiles.concat(gamesImages);
+
 // Installing Service Worker
 self.addEventListener('install', (e) => {
     console.log('[Service Worker] Install');
