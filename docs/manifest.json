@@ -14,7 +14,13 @@
         {
             "src": "/mini-tools/images/pwaicon.png",
             "type": "image/png",
-            "sizes": "144x144"
+            "sizes": "144x144",
+            "purpose": "any maskable"
+        },
+        {
+            "src": "/mini-tools/images/splashicon.png",
+            "type": "image/png",
+            "sizes": "512x512"
         }
     ]
 }

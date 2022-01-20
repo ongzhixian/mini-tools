@@ -8,7 +8,7 @@ var APP_PREFIX = 'mtghp_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_11';
+var VERSION = 'version_12';
 
 const cacheName = `${APP_PREFIX}${VERSION}`;
 
