@@ -8,7 +8,7 @@ var APP_PREFIX = 'mtghp_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_06';
+var VERSION = 'version_07';
 
 const cacheName = `${APP_PREFIX}${VERSION}`;
 
@@ -26,6 +26,8 @@ var URLS = [
 
 const contentToCache = URLS; // appShellFiles.concat(gamesImages)
 
+console.log(...contentToCache);
+
 // Installing Service Worker
 self.addEventListener('install', (e) => {
     console.log('[Service Worker] Install');
@@ -34,6 +36,10 @@ self.addEventListener('install', (e) => {
         console.log('[Service Worker] Caching all: app shell and content');
         await cache.addAll(contentToCache);
     })());
+});
+
+self.addEventListener( "activate", event => {
+    console.log('WORKER: activate event in progress.');
 });
 
 // Fetching content using Service Worker
