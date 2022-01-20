@@ -8,9 +8,9 @@ var APP_PREFIX = 'mtghp_';
 // you need to change this version (version_01, version_02…). 
 // If you don't change the version, the service worker will give your
 // users the old files!
-var VERSION = 'version_00';
+var VERSION = 'version_04';
 
-const cacheName = 'mtghp_version_00';
+const cacheName = `${APP_PREFIX}${VERSION}`;
 
 // The files to make available for offline use. make sure to add 
 // others to this list
@@ -24,7 +24,7 @@ var URLS = [
     "//fonts.googleapis.com/css?family=Raleway:400,300,600"
 ]
 
-const contentToCache = URLS; // appShellFiles.concat(gamesImages);
+const contentToCache = URLS; // appShellFiles.concat(gamesImages)
 
 // Installing Service Worker
 self.addEventListener('install', (e) => {
