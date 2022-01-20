@@ -1,30 +1,17 @@
 {
-    // Name of the app and short name in case there isn't enough space
     "name": "Mini Tools PWA",
-    "short_name": "MTGHP",
-    // Description what your app is
     "description": "Github Page as a Progressive Web App",
-   
-    // Scope and start URL - these need to change to yours
     "scope": "/mini-tools/",
     "start_url": "/mini-tools/",
-   
-    // colours of the app as displayed in the installer
+    "lang": "en-US",
     "background_color": "#ffffff",
     "theme_color": "#ffffff",
-   
-    // Display of the app. 
-    //This could be "standalone", "fullscreen", "minimal-ui" or "browser"
-    "display": "standalone", 
-   
-    // The possible icons to display. Make sure to change the src URL,
-    // the type and the size to your needs. If the size isn't correct, 
-    // you may not be able to install the app. 
+    "display": "standalone",
     "icons": [
         {
-          "src": "/mini-tools/images/favicon.png",
-          "type": "image/png",
-          "sizes": "700x700"
+            "src": "/mini-tools/images/favicon.png",
+            "type": "image/png",
+            "sizes": "700x700"
         }
     ]
-  }
+}
