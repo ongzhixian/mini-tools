@@ -1,17 +1,20 @@
 {
     "name": "Mini Tools PWA",
-    "description": "Github Page as a Progressive Web App",
+    "short_name": "MTGHP",
+    "description": "Mini-Tools Github Page as a Progressive Web App",
     "scope": "/mini-tools/",
+    "id": "/mini-tools/",
     "start_url": "/mini-tools/",
     "lang": "en-US",
     "background_color": "#ffffff",
     "theme_color": "#ffffff",
     "display": "standalone",
+    "orientation": "any",
     "icons": [
         {
-            "src": "/mini-tools/images/favicon.png",
+            "src": "/mini-tools/images/pwaicon.png",
             "type": "image/png",
-            "sizes": "32x32"
+            "sizes": "144x144"
         }
     ]
 }
