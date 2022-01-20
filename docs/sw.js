@@ -1,4 +1,4 @@
-// Change this to your repository name
+
 var GHPATH = '/mini-tools';
 
 // Choose a different app prefix name
@@ -9,6 +9,8 @@ var APP_PREFIX = 'mtghp_';
 // If you don't change the version, the service worker will give your
 // users the old files!
 var VERSION = 'version_00';
+
+const cacheName = 'mtghp_version_00';
 
 // The files to make available for offline use. make sure to add 
 // others to this list
