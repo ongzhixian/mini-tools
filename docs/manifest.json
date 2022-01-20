@@ -11,7 +11,7 @@
         {
             "src": "/mini-tools/images/favicon.png",
             "type": "image/png",
-            "sizes": "700x700"
+            "sizes": "32x32"
         }
     ]
 }
