@@ -1,0 +1,41 @@
+﻿@using MiniTools.Web.MongoEntities
+@model Note
+
+<h1>Notes</h1>
+
+<div id="monaco-container" style="width: 800px; height: 600px; border: 1px solid grey"></div>
+
+<br />
+<div>
+    <form id="monacoForm" asp-controller="Note" asp-action="Edit" asp-route-id="@Model.Id" method="post" asp-antiforgery="true">
+        <input type="hidden" id="monacoContent" name="content" asp-for="Content" />
+        <button type="submit" class="btn btn-primary btn-sm" name="Action" value="Save"><span class="bi-pen-fill"></span> Save</button>
+    </form>
+
+</div>
+
+
+<script src="~/js/monaco/loader.js"></script>
+<script>
+    "use strict";
+
+    var editor;
+
+    document.onreadystatechange = function () {
+        if (document.readyState == "interactive") {
+
+            document.getElementById("monacoForm").addEventListener("submit", function(evt) {
+                document.getElementById("monacoContent").value = editor.getValue();
+                return true;
+            });
+
+            require.config({ paths: { vs: '/js/monaco' } });
+            require(['vs/editor/editor.main'], function () {
+                editor = monaco.editor.create(document.getElementById('monaco-container'), {
+                    language: 'markdown'
+                });
+                editor.setValue(document.getElementById("monacoContent").value);
+            });
+        }
+    }
+</script>

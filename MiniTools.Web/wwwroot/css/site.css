@@ -39,3 +39,17 @@ body {
 .interactive {
     cursor:pointer;
 }
+
+.tag {
+    border: 1px solid blueviolet;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-size: smaller;
+    margin-right: 4px;
+}
+
+button.btn-icon {
+    border: 0;
+    background: none;
+    padding: 0;
+}

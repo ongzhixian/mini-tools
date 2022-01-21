@@ -1,0 +1,26 @@
+﻿@model AddBookmarkViewModel
+
+<h1>Add bookmarks</h1>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <div class="alert alert-danger" role="alert">
+    @ViewBag.ErrorMessage
+    </div>
+}
+@if (ViewBag.SuccessMessage != null)
+{
+    <div class="alert alert-success" role="alert">
+    @ViewBag.SuccessMessage
+    </div>
+}
+
+<form asp-controller="Bookmark" asp-action="Create" method="post" asp-antiforgery="true">
+    <div class="mb-3">
+        <label asp-for="BookmarkLinks" class="form-label"></label>
+        <textarea asp-for="BookmarkLinks" rows=12 class="form-control" aria-describedby="bookmarkAddHelp"></textarea>
+        <div id="bookmarkAddHelp" class="form-text">Save each link on new line.</div>
+    </div>
+    <button type="submit" class="btn btn-primary" name="Action" value="Create"><span class="bi-plus-circle"></span> Add</button>
+    <a asp-area="" asp-controller="Bookmark" asp-action="Index" class="btn btn-primary"><span class="bi-arrow-return-left"></span> List</a>
+</form>

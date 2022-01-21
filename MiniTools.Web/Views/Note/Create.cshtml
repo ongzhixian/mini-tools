@@ -1,0 +1,44 @@
+﻿@model AddNoteViewModel
+
+<h1>Notes</h1>
+
+<div id="monaco-container" style="width: 800px; height: 600px; border: 1px solid grey"></div>
+
+<br/>
+<div>
+<form id="monacoForm" asp-controller="Note" asp-action="Create" method="post" asp-antiforgery="true">
+    <input type="hidden" id="monacoContent" name="content" asp-for="Content" />
+    <button type="submit" class="btn btn-primary btn-sm" name="Action" value="Create"><span class="bi-plus-circle"></span> Add</button>
+</form>
+
+</div>
+
+
+<script src="~/js/monaco/loader.js"></script>
+<script>
+    "use strict";
+
+    var editor;
+
+    require.config({ paths: { vs: '/js/monaco' } });
+    require(['vs/editor/editor.main'], function () {
+        editor = monaco.editor.create(document.getElementById('monaco-container'), {
+            value: ["# title", "some content here", "some content here"].join("\n"),
+            language: 'markdown'
+        });
+    });
+
+    document.getElementById("monacoForm").addEventListener("submit", function(evt) {
+        document.getElementById("monacoContent").value = editor.getValue();
+        return true;
+    });
+
+    //document.addEventListener("DOMContentLoaded", function() {
+    //});
+    // alternative to DOMContentLoaded
+    document.onreadystatechange = function () {
+        if (document.readyState == "interactive") {
+            // Initialize your application or run some code.
+        }
+    }
+</script>

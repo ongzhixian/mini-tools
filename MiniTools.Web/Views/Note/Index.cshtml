@@ -1,0 +1,33 @@
+﻿@model List<MiniTools.Web.MongoEntities.Note>?
+@{
+    var rowNumber = 1;
+}
+
+<h1>Notes</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th class="col-md-1">#</th>
+            <th class="col-md-9">Title</th>
+            <th class="col-md-1">Tags</th>
+            <th class="col-md-1">Action</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in @Model)
+        {
+            <tr>
+                <th scope="row">
+                    <a asp-area="" asp-controller="Note" asp-action="Edit" asp-route-id="@item.Id"><span class="bi-pen"></span></a>
+                    @(rowNumber++)
+                    </th>
+                <td>@item.Title</td>
+                <td>@item.Tags.Count()</td>
+                <td>@@mdo</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-area="" asp-controller="Note" asp-action="Create" class="btn btn-primary"><span class="bi-plus-circle-fill"></span> Add note</a>

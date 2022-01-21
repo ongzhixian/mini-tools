@@ -1,0 +1,53 @@
+﻿@model BookmarkLinksViewModel
+@{
+    var rowNumber = 1;
+}
+
+<h1>Bookmarks</h1>
+
+<p>Total number of links collected: @Model.DocumentCount</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Url</th>
+            <th scope="col">Count</th>
+            <th scope="col">Tags</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.BookmarkList)
+        {
+            <tr>
+                <th scope="row">
+                    <a asp-area="" asp-controller="Bookmark" asp-action="Edit" asp-route-id="@item.Id"><span class="bi-pen"></span></a>
+                    @(rowNumber++)</th>
+                <td>@item.Url <br/>
+                    <span class="bi-pen-fill interactive"></span>
+                    <form asp-controller="Bookmark" asp-action="Tag" asp-route-id="@item.Id" method="post" asp-antiforgery="true">
+                        <input type="text" id="newTags" name="newTags" />
+                        <button type="submit" class="btn btn-primary btn-sm" name="Action" value="Create"><span class="bi-plus-circle"></span> Add</button>
+                    </form>
+                    <div class="tag-tray">
+                        <form asp-controller="Bookmark" asp-action="RemoveTag" asp-route-id="@item.Id" method="post" asp-antiforgery="true">
+                        @foreach (var tag in item.Tags)
+                        {
+                        <span class="tag">@tag 
+                            <button type="submit" class="btn-icon" name="Tag" value="@tag">
+                                <span class="bi-x-circle"></span>
+                            </button>
+                        </span>
+                        }
+                        </form>
+                    </div>
+
+                </td>
+                <td>@item.Count</td>
+                <td>@item.Tags.Count()</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-area="" asp-controller="Bookmark" asp-action="Create" class="btn btn-primary"><span class="bi-plus-circle-fill"></span> Add bookmark links</a>

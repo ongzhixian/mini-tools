@@ -98,6 +98,9 @@ builder.Services.AddScoped<IAuthenticationService, AuthenticationService>();
 builder.Services.AddScoped<IUserCollectionService, UserCollectionService>();
 builder.Services.AddScoped<IJwtService, JwtService>();
 
+builder.Services.AddScoped<IBookmarkLinkService, BookmarkLinkService>();
+builder.Services.AddScoped<INoteService, NoteService>();
+
 //builder.Services.AddTransient<MiniTools.Web.Helpers.ActivityEnricher>(sp =>
 //{
 //    var httpAccessor = sp.GetRequiredService<IHttpContextAccessor>();
@@ -182,6 +185,9 @@ builder.Services.AddSingleton<IMongoDatabase>(sp =>
 
 
 builder.Services.AddSingleton<IMongoCollection<User>>(sp => sp.GetRequiredService<IMongoDatabase>().GetCollection<User>("user"));
+builder.Services.AddSingleton<IMongoCollection<Bookmark>>(sp => sp.GetRequiredService<IMongoDatabase>().GetCollection<Bookmark>("bookmark"));
+builder.Services.AddSingleton<IMongoCollection<Note>>(sp => sp.GetRequiredService<IMongoDatabase>().GetCollection<Note>("note"));
+
 
 // Configurations
 
