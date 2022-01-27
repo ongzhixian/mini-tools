@@ -127,6 +127,7 @@ See: https://docs.microsoft.com/en-us/aspnet/core/signalr/messagepackhubprotocol
 
 dotnet new -i SpecFlow.Templates.DotNet
 dotnet new -i BenchmarkDotNet.Templates
+dotnet new -i Microsoft.MobileBlazorBindings.Templates
 
 ## Tools
 
@@ -138,6 +139,7 @@ dotnet tool install -g dotnet-grpc
 dotnet tool install -g Microsoft.Web.LibraryManager.Cli
 dotnet tool install -g mlnet
 dotnet tool install --global Apache.Avro.Tools
+
 
 ### cleanupcode
 
