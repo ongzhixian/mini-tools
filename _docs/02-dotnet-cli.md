@@ -137,7 +137,9 @@ dotnet tool install -g JetBrains.ReSharper.GlobalTools
 dotnet tool install -g dotnet-grpc
 dotnet tool install -g Microsoft.Web.LibraryManager.Cli
 dotnet tool install -g mlnet
+
 dotnet tool install --global Apache.Avro.Tools
+dotnet tool install -g dotnet-mgcb      (MonoGame)
 
 ### cleanupcode
 
